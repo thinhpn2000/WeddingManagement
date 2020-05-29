@@ -174,7 +174,7 @@
                                         <a href="<%= request.getContextPath() %>/lobby">LOBBY</a>
                                     </div>
                                     <div class="col title">
-                                        <a href="<%= request.getContextPath() %>/sfood">FOOD</a>
+                                        <a href="<%= request.getContextPath() %>/food">FOOD</a>
                                     </div>
                                     <div class="col title active">
                                         <a href="<%= request.getContextPath() %>/service">SERVICE</a>
