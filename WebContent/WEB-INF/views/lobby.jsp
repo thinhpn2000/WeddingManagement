@@ -113,7 +113,7 @@
         	</c:when>
         	<c:otherwise>
         		<a href="<%= request.getContextPath() %>/reservation">
-                  <span class="menu-tab-icon">s
+                  <span class="menu-tab-icon">
                     <i class="fa fa-list"></i>
                   </span>
                   <span>Reservation</span>
