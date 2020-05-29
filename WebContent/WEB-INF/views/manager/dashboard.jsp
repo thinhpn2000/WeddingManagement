@@ -46,8 +46,7 @@
 					</div>
 					<div class="modal-body">Are you sure?</div>
 					<div class="modal-footer">
-						<button type="button" class="btn btn-danger btn-sm"
-							data-dismiss="modal">Sign out</button>
+						<a href="<%=request.getContextPath() %>/logout" class="btn btn-danger">Sign out</a>
 						<button type="button" class="btn btn-success btn-sm"
 							data-dismiss="modal">Cancel</button>
 					</div>
@@ -96,40 +95,66 @@
 		<!-- /Header -->
 
 		<!-- Navbar -->
+		
 		<div class="admin-wrapper">
-			<div class="nav">
-				<div class="logo">
-					<img src="<c:url value="/assets/images/logo.png"/>">
-				</div>
-				<ul>
-					<li><a href="#" class="active"> <span
-							class="menu-tab-icon"> <i class="fa fa-chart-bar"></i>
-						</span> <span>Dashboard</span>
-					</a></li>
-					<li><a href="employee.html"> <span class="menu-tab-icon">
-								<i class="fa fa-users-cog"></i>
-						</span> <span>Employee</span>
-					</a></li>
-					<li><a href="/public-html/lobby.html"> <span
-							class="menu-tab-icon"> <i class="fa fa-door-open"></i>
-						</span> <span>Lobby</span>
-					</a></li>
-					<li><a href="/public-html/food.html"> <span
-							class="menu-tab-icon"> <i class='fas fa-drumstick-bite'></i>
-						</span> <span>Food</span>
-					</a></li>
-					<li><a href="/public-html/service.html"> <span
-							class="menu-tab-icon"> <i class="fab fa-readme"></i>
-						</span> <span>Service</span>
-					</a></li>
-
-					<li><a href="#"> <span class="menu-tab-icon"> <i
-								class="fab fa-cc-visa"></i>
-						</span> <span>Payment</span>
-					</a></li>
-				</ul>
-			</div>
-		</div>
+        <div class="nav">
+          <div class="logo">
+            <img src="<c:url value="/assets/images/logo.png"/>">
+          </div> 
+          <ul>
+          <li>
+              <a href="<%= request.getContextPath() %>/dashboard" class="active">
+                  <span class="menu-tab-icon">
+                    <i class="fa fa-chart-bar"></i>
+                  </span>
+                  <span>Dashboard</span>
+              </a>
+          </li>
+          <li>
+              <a href="<%= request.getContextPath() %>/employee">
+                  <span class="menu-tab-icon">
+                    <i class="fa fa-users-cog"></i>
+                  </span>
+                  <span>Employee</span>
+              </a>
+          </li>
+          <li>
+            <a href="<%= request.getContextPath() %>/lobby">
+                <span class="menu-tab-icon">
+                  <i class="fa fa-door-open"></i>
+                </span>
+                <span>Lobby</span>
+            </a>
+            </li>
+          <li>
+              <a href="<%= request.getContextPath() %>/food">
+                  <span class="menu-tab-icon">
+                    <i class='fas fa-drumstick-bite'></i>
+                  </span>
+                  
+                  <span>Food</span>
+              </a>
+          </li>
+          <li>
+              <a href="<%= request.getContextPath() %>/service">
+                  <span class="menu-tab-icon">
+                    <i class="fab fa-readme"></i>
+                  </span>
+                  <span>Service</span>
+              </a>
+          </li>
+          
+          <li>
+            <a href="<%= request.getContextPath() %>/payment">
+                <span class="menu-tab-icon">
+                  <i class="fab fa-cc-visa"></i>
+                </span>
+                <span>Payment</span>
+            </a>
+          </li>
+          </ul>
+        </div>
+      </div>
 		<!-- //Navbar -->
 
 		<!-- Page Content -->

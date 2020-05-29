@@ -12,6 +12,8 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css">
     <link rel="stylesheet" href='<c:url value="/assets/css/style.css"/>'>
+    <!-- Favicon -->
+    <link rel="icon" href="<c:url value="/assets/images/icon.png"/>" type="image/x-icon">
     
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
@@ -24,7 +26,7 @@
                 <div class="animationBg">
                     <div class="loginForm active" id="loginForm">
                         <p class="loginTitle">Welcome back</p>
-                        <form action="" method=""> 
+                        <form action="<%= request.getContextPath() %>/login" method="POST"> 
                             <p>Username</p>
                             <input name="username" id="username" type="text" required>
                             <p>Password</p>
@@ -68,15 +70,6 @@
             <div class="col-sm"></div>
         </div>
     </div>
-
-
-
-
-
-
-
-
-
 
 
 
