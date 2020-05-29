@@ -171,13 +171,13 @@
                             <div class="container-fluid">
                                 <div class="row">
                                     <div class="col title active">
-                                        <a href="<%= request.getContextPath() %>/manager/lobby">LOBBY</a>
+                                        <a href="<%= request.getContextPath() %>/lobby">LOBBY</a>
                                     </div>
                                     <div class="col title">
-                                        <a href="<%= request.getContextPath() %>/manager/food">FOOD</a>
+                                        <a href="<%= request.getContextPath() %>/food">FOOD</a>
                                     </div>
                                     <div class="col title">
-                                        <a href="<%= request.getContextPath() %>/manager/service">SERVICE</a>
+                                        <a href="<%= request.getContextPath() %>/service">SERVICE</a>
                                     </div>
                                 </div>
                             </div>
