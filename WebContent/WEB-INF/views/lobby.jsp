@@ -300,8 +300,14 @@
 
                                     <!-- Btn add lobby-->
                                     <div class="text-right">
-                                        <button class="btn btn-secondary btn-sm" type="button"
-                                            onclick="showForm(1)">Add</button>
+                                        <c:choose>
+											<c:when test="${ userRole == 'ROLE_MANAGER'}">
+												<button class="btn btn-secondary btn-sm mt-2" type="button"
+													onclick="showForm(1)">Add</button>
+											</c:when>
+											<c:otherwise>
+											</c:otherwise>
+										</c:choose>
                                     </div>
                                 </div>
                             </div>

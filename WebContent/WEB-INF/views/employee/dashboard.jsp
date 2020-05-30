@@ -94,7 +94,7 @@
           </li>
           <li>
               <a href="<%= request.getContextPath() %>/reservation">
-                  <span class="menu-tab-icon">s
+                  <span class="menu-tab-icon">
                     <i class="fa fa-list"></i>
                   </span>
                   <span>Reservation</span>
@@ -204,14 +204,14 @@
                             </div>
                           </a>
                         </div>
-                        <!-- Settings -->
+                        <!-- Logout -->
                         <div class="col-lg-4 col-sm-6 col-6 mb-3">
-                          <a href="#">
+                          <a href="#" data-toggle="modal" data-target="#signOutModal"  data-toggle="tooltip">
                             <div class="item text-center">
                               <div class="icon">
-                                <img src="<c:url value ="/assets/images/icon2.png"/>" alt="">
+                                <img src="<c:url value ="/assets/images/iconlogout.png"/>" alt="">
                               </div>
-                              <div class="content font-sm">Settings</div>
+                              <div class="content font-sm">Sign out</div>
                             </div>
                           </a>
                         </div>
