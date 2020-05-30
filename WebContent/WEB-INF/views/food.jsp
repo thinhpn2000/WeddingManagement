@@ -11,20 +11,13 @@
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <!-- CSS -->
-<link rel='stylesheet'
-	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-
-<link rel="stylesheet"
-	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css">
+<link rel="stylesheet" href="<c:url value="/assets/font-awesome-5.13.0/css/all.min.css"/>">
 <link rel="stylesheet" href="<c:url value="/assets/css/style.css"/>">
 <!-- Favicon -->
-<link rel="icon" href="<c:url value="/assets/images/icon.png"/>"
+<link rel="icon" href="<c:url value="/assets/images/logo1-dark.png"/>"
 	type="image/x-icon">
 <!-- Bootstrap CSS -->
-<link rel="stylesheet"
-	href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-	integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
-	crossorigin="anonymous">
+<link rel="stylesheet" href="<c:url value="/assets/bootstrap/css/bootstrap.min.css"/>">
 </head>
 
 <body onload="startTime() && showDate() && showFoodUpdated()">
@@ -48,7 +41,7 @@
 					</div>
 					<div class="modal-body">Are you sure?</div>
 					<div class="modal-footer">
-						<a href="<%=request.getContextPath() %>/logout"
+						<a href="<%=request.getContextPath()%>/logout"
 							class="btn btn-danger">Sign out</a>
 						<button type="button" class="btn btn-success btn-sm"
 							data-dismiss="modal">Cancel</button>
@@ -58,10 +51,13 @@
 		</div>
 
 		<!-- Header content-->
+		<%
+			String username = request.getAttribute("username").toString();
+		%>
 		<div class="header sticky-top">
 			<div class="date-time d-flex flex-direction-row align-items-center">
 				<div class="calendar">
-					<i class="fa fa-clock-o mr-3"></i> <span id="time" class="mr-5"></span>
+					<i class="fas fa-clock mr-3"></i> <span id="time" class="mr-5"></span>
 				</div>
 				<div class="calendar">
 					<div id="date"></div>
@@ -74,16 +70,8 @@
 
 			<div
 				class="function-icon d-flex flex-direction-row align-items-center">
-				<div data-toggle="tooltip" title="Settings">
-					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-						viewBox="0 0 24 24" fill="none" stroke="currentColor"
-						stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"
-						class="feather feather-settings">
-                        <circle cx="12" cy="12" r="3"></circle>
-                        <path
-							d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z">
-                        </path>
-                    </svg>
+				<div>
+					Hi! <span id="username"><%=username%></span>
 				</div>
 				<div data-toggle="modal" data-target="#signOutModal"
 					data-toggle="tooltip" title="Sign out!">
@@ -98,46 +86,48 @@
 		<!-- /Header -->
 
 		<!-- Navbar -->
-		<% String userRole = request.getAttribute("userRole").toString(); %>
+		<%
+			String userRole = request.getAttribute("userRole").toString();
+		%>
 		<div class="admin-wrapper">
 			<div class="nav">
 				<div class="logo">
 					<img src="<c:url value="/assets/images/logo.png"/>">
 				</div>
 				<ul>
-					<li><a href="<%= request.getContextPath() %>/dashboard"> <span
+					<li><a href="<%=request.getContextPath()%>/dashboard"> <span
 							class="menu-tab-icon"> <i class="fa fa-chart-bar"></i>
 						</span> <span>Dashboard</span>
 					</a></li>
 					<li><c:choose>
 							<c:when test="${ userRole == 'ROLE_MANAGER'}">
-								<a href="<%= request.getContextPath() %>/employee"> <span
+								<a href="<%=request.getContextPath()%>/employee"> <span
 									class="menu-tab-icon"> <i class="fa fa-users-cog"></i>
 								</span> <span>Employee</span>
 								</a>
 							</c:when>
 							<c:otherwise>
-								<a href="<%= request.getContextPath() %>/reservation"> <span
+								<a href="<%=request.getContextPath()%>/reservation"> <span
 									class="menu-tab-icon"> <i class="fa fa-list"></i>
 								</span> <span>Reservation</span>
 								</a>
 							</c:otherwise>
 						</c:choose></li>
-					<li><a href="<%= request.getContextPath() %>/lobby"> <span
+					<li><a href="<%=request.getContextPath()%>/lobby"> <span
 							class="menu-tab-icon"> <i class="fa fa-door-open"></i>
 						</span> <span>Lobby</span>
 					</a></li>
-					<li><a href="<%= request.getContextPath() %>/food"
+					<li><a href="<%=request.getContextPath()%>/food"
 						class="active"> <span class="menu-tab-icon"> <i
 								class='fas fa-drumstick-bite'></i>
 						</span> <span>Food</span>
 					</a></li>
-					<li><a href="<%= request.getContextPath() %>/service"> <span
+					<li><a href="<%=request.getContextPath()%>/service"> <span
 							class="menu-tab-icon"> <i class="fab fa-readme"></i>
 						</span> <span>Service</span>
 					</a></li>
 
-					<li><a href="<%= request.getContextPath() %>/payment"> <span
+					<li><a href="<%=request.getContextPath()%>/payment"> <span
 							class="menu-tab-icon"> <i class="fab fa-cc-visa"></i>
 						</span> <span>Payment</span>
 					</a></li>
@@ -158,13 +148,13 @@
 							<div class="container-fluid">
 								<div class="row">
 									<div class="col title">
-										<a href="<%= request.getContextPath() %>/lobby">LOBBY</a>
+										<a href="<%=request.getContextPath()%>/lobby">LOBBY</a>
 									</div>
 									<div class="col title active">
-										<a href="<%= request.getContextPath() %>/food">FOOD</a>
+										<a href="<%=request.getContextPath()%>/food">FOOD</a>
 									</div>
 									<div class="col title">
-										<a href="<%= request.getContextPath() %>/service">SERVICE</a>
+										<a href="<%=request.getContextPath()%>/service">SERVICE</a>
 									</div>
 								</div>
 							</div>
@@ -282,9 +272,9 @@
 												<button class="btn btn-secondary btn-sm mt-2" type="button"
 													onclick="showForm(1)">Add</button>
 											</c:when>
-										
-										<c:otherwise>
-										</c:otherwise>
+
+											<c:otherwise>
+											</c:otherwise>
 										</c:choose>
 									</div>
 								</div>
@@ -306,17 +296,9 @@
 	<script src="<c:url value="/assets/js/update.js"/>"></script>
 
 	<!-- jQuery first, then Popper.js, then Bootstrap JS -->
-	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-		integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-		crossorigin="anonymous"></script>
-	<script
-		src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
-		integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
-		crossorigin="anonymous"></script>
-	<script
-		src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
-		integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
-		crossorigin="anonymous"></script>
+	<script src="<c:url value="/assets/bootstrap/jquery.slim.min.js"/>"></script>
+	<script src="<c:url value="/assets/bootstrap/popper.min.js"/>"></script>
+	<script src="<c:url value="/assets/bootstrap/js/bootstrap.min.js"/>"></script>
 </body>
 
 </html>

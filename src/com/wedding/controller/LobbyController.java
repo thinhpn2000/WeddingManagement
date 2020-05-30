@@ -21,6 +21,9 @@ public class LobbyController extends HttpServlet {
 		String role = userSession.getAttribute("USER_ROLE").toString();
 		req.setAttribute("userRole", role);
 		
+		String username = userSession.getAttribute("LOGIN_USER").toString();
+		req.setAttribute("username", username);
+		
 		req.getRequestDispatcher(PathConstant.Path_VIEWS + "lobby.jsp").forward(req, resp);	
 	}
 }

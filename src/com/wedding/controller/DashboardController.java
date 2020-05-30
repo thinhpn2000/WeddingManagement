@@ -20,6 +20,9 @@ public class DashboardController extends HttpServlet {
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		HttpSession userSession = req.getSession();
 		String role = userSession.getAttribute("USER_ROLE").toString();
+
+		String username = userSession.getAttribute("LOGIN_USER").toString();
+		req.setAttribute("username", username);
 		switch(role) {
 			case RoleConstant.ROLE_MANAGER:
 				req.getRequestDispatcher(PathConstant.Path_VIEWS_MANAGER + "dashboard.jsp").forward(req, resp);

@@ -20,6 +20,9 @@ public class ServiceController extends HttpServlet {
 		HttpSession userSession = req.getSession();
 		String role = userSession.getAttribute("USER_ROLE").toString();
 		req.setAttribute("userRole", role);
+
+		String username = userSession.getAttribute("LOGIN_USER").toString();
+		req.setAttribute("username", username);
 		
 		req.getRequestDispatcher(PathConstant.Path_VIEWS + "service.jsp").forward(req, resp);	
 	}

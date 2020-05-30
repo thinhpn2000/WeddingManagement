@@ -19,6 +19,9 @@ public class FoodController extends HttpServlet {
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		
 		HttpSession userSession = req.getSession();
+		String username = userSession.getAttribute("LOGIN_USER").toString();
+		req.setAttribute("username", username);
+		
 		String role = userSession.getAttribute("USER_ROLE").toString();
 		req.setAttribute("userRole", role);
 		
