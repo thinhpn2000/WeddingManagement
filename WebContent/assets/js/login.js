@@ -1,9 +1,1 @@
-var changeForm = (formName) => {
-    console.log("hi");
-    var arrForm = document.getElementsByClassName("loginForm");
-    for (const form of Array.from(arrForm)) {
-        form.classList.replace("active","disable");
-      }
-    var form = document.getElementById(formName);
-    form.classList.replace("disable","active");
-}
+var changeForm=e=>{console.log("hi");var a=document.getElementsByClassName("loginForm");for(const e of Array.from(a))e.classList.replace("active","disable");document.getElementById(e).classList.replace("disable","active")};

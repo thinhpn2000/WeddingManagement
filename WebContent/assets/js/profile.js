@@ -1,5 +1,1 @@
-var showProfile = () => {
-    var profile = document.getElementById('profile');
-    profile.classList.replace('disable', 'active');
-
-}
+var showProfile=()=>{document.getElementById("profile").classList.replace("disable","active")};
