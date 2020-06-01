@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+ <%@ page import="com.wedding.models.Lobby" %>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -276,7 +277,7 @@
 
 									<!-- List lobby-->
 									<div class="scroll">
-										<table id="updatedLobby" class="table table-hover table-sm">
+										<table class="table table-hover table-sm">
 											<thead>
 												<tr>
 													<th>Name</th>
@@ -288,7 +289,19 @@
 												</tr>
 											</thead>
 											<tbody>
-
+											<c:forEach var = "lobby" items="${lobbies }">
+												<tr>
+													<td>${lobby.lobbyName}</td>
+													<td>${lobby.lobbyType}</td>
+													<td>${lobby.maxTable}</td>
+													<td>${lobby.minPrice}</td>
+													<td>${lobby.lobbyName}</td>
+													<td>
+														<button type="button" class="btn btn-danger btn-sm" onclick="" data-toggle="modal" data-target="#deleteLobbyModal">Delete</button> 
+														<button type="button" class="btn btn-warning btn-sm" onclick="showForm(0)">Edit</button>
+													</td>
+												</tr>
+											</c:forEach>
 											</tbody>
 										</table>
 									</div>
