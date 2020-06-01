@@ -21,7 +21,7 @@
 <link rel="stylesheet" href="<c:url value="/assets/bootstrap/css/bootstrap.min.css"/>">
 </head>
 
-<body onload="startTime() && showDate() && showLobbyUpdated()">
+<body onload="startTime() && showDate()">
 	<div class="preloader">
 		<div class="cssload-speeding-wheel"></div>
 	</div>
@@ -277,14 +277,13 @@
 
 									<!-- List lobby-->
 									<div class="scroll">
-										<table class="table table-hover table-sm">
+										<table id="updatedLobby" class="table table-hover table-sm">
 											<thead>
 												<tr>
 													<th>Name</th>
 													<th>Type</th>
 													<th>Maximum table</th>
 													<th>Minimum price per table</th>
-													<th>Note</th>
 													<th>Action</th>
 												</tr>
 											</thead>
@@ -295,7 +294,6 @@
 													<td>${lobby.lobbyType}</td>
 													<td>${lobby.maxTable}</td>
 													<td>${lobby.minPrice}</td>
-													<td>${lobby.lobbyName}</td>
 													<td>
 														<button type="button" class="btn btn-danger btn-sm" onclick="" data-toggle="modal" data-target="#deleteLobbyModal">Delete</button> 
 														<button type="button" class="btn btn-warning btn-sm" onclick="showForm(0)">Edit</button>
