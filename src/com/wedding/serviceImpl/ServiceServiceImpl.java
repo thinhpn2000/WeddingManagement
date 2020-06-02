@@ -16,7 +16,7 @@ public class ServiceServiceImpl implements ServiceService {
 
 	@Override
 	public void addService(Service service) {
-		// TODO Auto-generated method stub
+		serviceRepository.add(service);
 		
 	}
 

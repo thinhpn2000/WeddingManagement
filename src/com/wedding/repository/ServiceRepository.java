@@ -12,17 +12,16 @@ import com.wedding.models.Service;
 
 public class ServiceRepository {
 
-public List<Service> getAll(){
-		
-		
+	public List<Service> getAll() {
+
 		String query = "SELECT * FROM SERVICE WHERE NOT isDeleted";
-	
+
 		Connection connection = MySqlConnection.getInstance().getConnection();
 		List<Service> serviceList = new ArrayList<Service>();
 		try {
 			PreparedStatement statement = connection.prepareStatement(query);
 			ResultSet res = statement.executeQuery();
-			while(res.next()) {
+			while (res.next()) {
 				Service service = new Service();
 				service.setServiceID(res.getInt("serviceID"));
 				service.setServiceName(res.getString("serviceName"));
@@ -34,10 +33,27 @@ public List<Service> getAll(){
 			}
 			connection.close();
 			return serviceList;
-		} catch(SQLException e) {
+		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		return null;
-		
+
+	}
+
+	public void add(Service service) {
+		String query = "INSERT INTO SERVICE(serviceName,servicePrice,startingDate,endingDate) VALUES (?,?,?,?)";
+		Connection connection = MySqlConnection.getInstance().getConnection();
+		try {
+			PreparedStatement statement = connection.prepareStatement(query);
+			statement.setString(1, service.getServiceName());
+			statement.setInt(2, service.getServicePrice());
+			statement.setString(3, service.getStartingDate());
+			statement.setString(4, service.getEndingDate());
+			statement.executeUpdate();
+			connection.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
 	}
 }

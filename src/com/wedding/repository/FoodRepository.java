@@ -14,27 +14,31 @@ public class FoodRepository {
 
 	public List<Food> getAll() {
 
-		String query = "SELECT * FROM FOOD WHERE NOT isDeleted";
+		String queryinFood = "SELECT foodID, foodName, foodPrice, foodNote FROM FOOD WHERE NOT isDeleted AND endingDate IS NULL";
+		String queryinUpdatedFood = "SELECT FOOD.foodID, FOOD.foodName, UPDATEDFOOD.foodPrice, FOOD.foodNote FROM FOOD, UPDATEDFOOD WHERE NOT UPDATEDFOOD.isDeleted AND  FOOD.foodID = UPDATEDFOOD.foodID AND UPDATEDFOOD.endingDate IS NULL";
 
 		Connection connection = MySqlConnection.getInstance().getConnection();
 		List<Food> foodList = new ArrayList<Food>();
 		try {
-			PreparedStatement statement = connection.prepareStatement(query);
+			PreparedStatement statement = connection.prepareStatement(queryinFood);
 			ResultSet res = statement.executeQuery();
 			while (res.next()) {
 				Food food = new Food();
 				food.setFoodID(res.getInt("foodID"));
 				food.setFoodName(res.getString("foodName"));
-				;
 				food.setFoodPrice(res.getInt("foodPrice"));
-				;
 				food.setFoodNote(res.getString("foodNote"));
-				food.setStartingDate(res.getString("startingDate"));
-				;
-				food.setEndingDate(res.getString("endingDate"));
-				;
-				food.setDeleted(res.getBoolean("isDeleted"));
-				;
+		
+				foodList.add(food);
+			}
+			statement = connection.prepareStatement(queryinUpdatedFood);
+			res = statement.executeQuery();
+			while (res.next()) {
+				Food food = new Food();
+				food.setFoodID(res.getInt("foodID"));
+				food.setFoodName(res.getString("foodName"));
+				food.setFoodPrice(res.getInt("foodPrice"));
+				food.setFoodNote(res.getString("foodNote"));
 				foodList.add(food);
 			}
 			connection.close();

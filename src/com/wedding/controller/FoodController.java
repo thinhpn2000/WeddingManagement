@@ -54,7 +54,9 @@ public class FoodController extends HttpServlet {
 
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		req.setCharacterEncoding("UTF-8");
 		String foodName = req.getParameter("foodName");
+
 		int foodPrice = Integer.parseInt(req.getParameter("foodPrice"));
 		String foodNote = req.getParameter("foodNote");
 		String startingDate = java.time.LocalDate.now().toString();
@@ -65,6 +67,7 @@ public class FoodController extends HttpServlet {
 		food.setFoodNote(foodNote);
 		food.setStartingDate(startingDate);
 		food.setEndingDate(endingDate);
+		System.out.println(foodName);
 		foodService.addFood(food);
 		resp.sendRedirect(req.getContextPath() + "/food");
 	}

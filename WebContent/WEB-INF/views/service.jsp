@@ -214,18 +214,18 @@
 									</form>
 
 									<!-- Form add service-->
-									<form class="formAdd">
+									<form class="formAdd" action="<%=request.getContextPath() %>/service" method = "POST">
 										<h2 class="text-center">New Service Information</h2>
 										<div id="newService" class="container-fluid text-left mb-3">
 											<div class="row mb-3">
 												<div class="col-sm-6">
 													<lable>Name</lable>
-													<input type="text" class="form-control" name="name"
+													<input type="text" class="form-control" name="serviceName"
 														required>
 												</div>
 												<div class="col-sm">
 													<lable>Price</lable>
-													<input type="text" name="cost" class="form-control"
+													<input type="text" name="servicePrice" class="form-control"
 														onkeypress='return event.charCode >= 48 && event.charCode <= 57'
 														required>
 												</div>
