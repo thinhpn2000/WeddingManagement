@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ page import="com.wedding.models.Service" %>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -20,7 +21,7 @@
 <link rel="stylesheet" href="<c:url value="/assets/bootstrap/css/bootstrap.min.css"/>">
 </head>
 
-<body onload="startTime() && showDate() && showServiceUpdated()">
+<body onload="startTime() && showDate()">
 	<div class="preloader">
 		<div class="cssload-speeding-wheel"></div>
 	</div>
@@ -249,7 +250,18 @@
 												</tr>
 											</thead>
 											<tbody>
-
+												<c:forEach var = "service" items="${services }">
+													<tr>
+														<td>${service.serviceName}</td>
+														<td>${service.servicePrice}</td>
+														
+											
+														<td>
+															<button type="button" class="btn btn-danger btn-sm" onclick="" data-toggle="modal" data-target="#deleteServiceModal">Delete</button> 
+															<button type="button" class="btn btn-warning btn-sm" onclick="showForm(0)">Edit</button>
+														</td>
+													</tr>
+												</c:forEach>
 											</tbody>
 										</table>
 									</div>

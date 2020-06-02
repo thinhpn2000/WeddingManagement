@@ -3,13 +3,20 @@ package com.wedding.serviceImpl;
 import java.util.List;
 
 import com.wedding.models.Food;
+import com.wedding.repository.FoodRepository;
 import com.wedding.service.FoodService;
 
 public class FoodServiceImpl implements FoodService {
+	
+	private FoodRepository foodRepository;
+	
+	public FoodServiceImpl() {
+		foodRepository = new FoodRepository();
+	}
 
 	@Override
 	public void addFood(Food food) {
-		// TODO Auto-generated method stub
+		foodRepository.add(food);
 		
 	}
 
@@ -27,8 +34,7 @@ public class FoodServiceImpl implements FoodService {
 
 	@Override
 	public List<Food> getAllFood() {
-		// TODO Auto-generated method stub
-		return null;
+		return foodRepository.getAll();
 	}
 
 	@Override

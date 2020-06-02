@@ -14,7 +14,7 @@ public class LobbyRepository {
 	public List<Lobby> getAll(){
 		
 		
-		String query = "SELECT * FROM LOBBY";
+		String query = "SELECT * FROM LOBBY WHERE NOT isDeleted";
 	
 		Connection connection = MySqlConnection.getInstance().getConnection();
 		List<Lobby> lobbyList = new ArrayList<Lobby>();
@@ -34,7 +34,6 @@ public class LobbyRepository {
 			connection.close();
 			return lobbyList;
 		} catch(SQLException e) {
-			System.out.println("ko vo dc");
 			e.printStackTrace();
 		}
 		return null;

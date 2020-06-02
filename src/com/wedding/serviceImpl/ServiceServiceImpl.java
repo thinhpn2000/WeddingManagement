@@ -9,6 +9,10 @@ import com.wedding.service.ServiceService;
 public class ServiceServiceImpl implements ServiceService {
 	
 	private ServiceRepository serviceRepository;
+	
+	public ServiceServiceImpl() {
+		serviceRepository = new ServiceRepository();
+	}
 
 	@Override
 	public void addService(Service service) {
@@ -30,8 +34,7 @@ public class ServiceServiceImpl implements ServiceService {
 
 	@Override
 	public List<Service> getAllService() {
-		// TODO Auto-generated method stub
-		return null;
+		return serviceRepository.getAll();
 	}
 
 	@Override
