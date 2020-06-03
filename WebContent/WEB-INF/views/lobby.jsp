@@ -170,7 +170,7 @@
 										role="dialog" aria-labelledby="" aria-hidden="true">
 										<div class="modal-dialog modal-sm modal-dialog-centered"
 											role="document">
-											<div class="modal-content">
+											<form class="modal-content">
 												<div class="modal-header">
 													<h5 class="modal-title" id="">Delete Lobby</h5>
 													<button type="button" class="close" data-dismiss="modal"
@@ -179,14 +179,14 @@
 													</button>
 												</div>
 												<div class="modal-body">Do you want to delete this
-													lobby?</div>
+													lobby?
+													<input type="hidden" name="lobbyID"></div>
 												<div class="modal-footer">
-													<button type="button" class="btn btn-danger btn-sm"
-														data-dismiss="modal" onclick="deleteLobby()">Yes</button>
+													<button type="submit" class="btn btn-danger btn-sm">Yes</button>
 													<button type="button" class="btn btn-success btn-sm"
 														data-dismiss="modal">Cancel</button>
 												</div>
-											</div>
+											</form>
 										</div>
 									</div>
 
@@ -298,7 +298,7 @@
 														<td>${lobby.minPrice}</td>
 														<td>
 															<button type="button" class="btn btn-danger btn-sm"
-																onclick="" data-toggle="modal"
+																onclick="getIdLobby('${lobby.lobbyID}')" data-toggle="modal"
 																data-target="#deleteLobbyModal">Delete</button>
 															<button type="button" class="btn btn-warning btn-sm"
 																onclick="showForm(0) &&  edit(['${lobby.lobbyID}','${lobby.lobbyName}','${lobby.lobbyType}','${lobby.maxTable}','${lobby.minPrice}'])">Edit</button>

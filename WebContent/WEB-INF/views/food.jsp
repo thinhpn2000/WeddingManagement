@@ -167,7 +167,7 @@
 										role="dialog" aria-labelledby="" aria-hidden="true">
 										<div class="modal-dialog modal-sm modal-dialog-centered"
 											role="document">
-											<div class="modal-content">
+											<form class="modal-content" method="GET">
 												<div class="modal-header">
 													<h5 class="modal-title" id="">Delete Food</h5>
 													<button type="button" class="close" data-dismiss="modal"
@@ -175,15 +175,17 @@
 														<span aria-hidden="true">&times;</span>
 													</button>
 												</div>
-												<div class="modal-body">Do you want to delete this
-													food?</div>
+												<div class="modal-body">
+												Do you want to delete this food?
+												<input type="hidden" name="foodID">
+												</div>
 												<div class="modal-footer">
-													<button type="button" class="btn btn-danger btn-sm"
-														data-dismiss="modal" onclick="deleteFood()">Yes</button>
+													<button type="submit" class="btn btn-danger btn-sm"
+														 onclick="">Yes</button>
 													<button type="button" class="btn btn-success btn-sm"
 														data-dismiss="modal">Cancel</button>
 												</div>
-											</div>
+											</form>
 										</div>
 									</div>
 
@@ -269,7 +271,7 @@
 														<td>${food.foodPrice}</td>
 											
 														<td>
-															<button type="button" class="btn btn-danger btn-sm" onclick="" data-toggle="modal" data-target="#deleteFoodModal">Delete</button> 
+															<button type="button" class="btn btn-danger btn-sm" onclick="getIdFood('${food.foodID}')" data-toggle="modal" data-target="#deleteFoodModal">Delete</button> 
 															<button type="button" class="btn btn-warning btn-sm" onclick="showForm(0) && edit(['${food.foodID}','${food.foodName}','${food.foodNote }','${food.foodPrice}'])">Edit</button>
 														</td>
 													</tr>

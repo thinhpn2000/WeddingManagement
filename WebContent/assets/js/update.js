@@ -64,5 +64,16 @@ var selection = (action) => {
 	}
 	return true;
 }
-
+var getIdFood = (id) => {
+	document.getElementById('deleteFoodModal').querySelector('input[name="foodID"]').value = id;
+	console.log(document.getElementById('deleteFoodModal').querySelector('input[name="foodID"]').value);
+}
+var getIdLobby = (id) => {
+	document.getElementById('deleteLobbyModal').querySelector('input[name="lobbyID"]').value = id;
+	console.log(document.getElementById('deleteLobbyModal').querySelector('input[name="lobbyID"]').value);
+}
+var getIdService = (id) => {
+	document.getElementById('deleteServiceModal').querySelector('input[name="serviceID"]').value = id;
+	console.log(document.getElementById('deleteServiceModal').querySelector('input[name="serviceID"]').value);
+}
 
