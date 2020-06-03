@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
- <%@ page import="com.wedding.models.Lobby" %>
+<%@ page import="com.wedding.models.Lobby"%>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -12,13 +12,15 @@
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <!-- CSS -->
-<link rel="stylesheet" href="<c:url value="/assets/font-awesome-5.13.0/css/all.min.css"/>">
+<link rel="stylesheet"
+	href="<c:url value="/assets/font-awesome-5.13.0/css/all.min.css"/>">
 <link rel="stylesheet" href="<c:url value="/assets/css/style.css"/>">
 <!-- Favicon -->
 <link rel="icon" href="<c:url value="/assets/images/logo1-dark.png"/>"
 	type="image/x-icon">
 <!-- Bootstrap CSS -->
-<link rel="stylesheet" href="<c:url value="/assets/bootstrap/css/bootstrap.min.css"/>">
+<link rel="stylesheet"
+	href="<c:url value="/assets/bootstrap/css/bootstrap.min.css"/>">
 </head>
 
 <body onload="startTime() && showDate()">
@@ -191,78 +193,78 @@
 									<!-- Form edit lobby-->
 									<form class="formAdd" action="" method="">
 										<h2 class="text-center">Lobby Information Update Form</h2>
-										<div id="" class="container-fluid text-left">
+										<div id="updatedLobby" class="container-fluid text-left">
 											<div class="row mb-3">
-												<div class="col-lg-5 col-md-6">
+												<input type="hidden" name="lobbyID">
+												<div class="col-lg-3 col-md-6">
 													<lable>Name</lable>
-													<input type="text" class="form-control" name="name"
+													<input type="text" class="form-control" name="lobbyName"
 														required>
 												</div>
 												<div class="col-lg-2 col-md-6">
 													<lable>Type</lable>
-													<input type="text" class="form-control" name="type"
-														required>
+													<select style="display: none" class="form-control pt-0 pb-0" id="editLobby" onchange="selectType('edit')">
+														<c:forEach var="lobbyType" items="${lobbyTypes }">
+															<option id="${lobbyType.lobbyTypeID }" value='${lobbyType.minPrice }'>${lobbyType.lobbyTypeName }</option>
+														</c:forEach>
+													</select>
+													<input type="text" id="lobbyTypeName" class="form-control" required onclick="selection('show')">
 												</div>
-												<div class="col-lg-5 col-md-4">
+												<div class="col-lg-3 col-md-6">
 													<lable>Maximum table</lable>
-													<input type="text" name="maxQuantity" class="form-control"
+													<input type="text" name="maxTable" class="form-control"
 														onkeypress='return event.charCode >= 48 && event.charCode <= 57'
 														required>
 												</div>
 
-												<div class="col-lg col-md-4">
+												<div class="col-lg-4 col-md-6">
 													<lable>Minimum price per table</lable>
-													<input type="text" class="form-control" name="costMin"
-														onkeypress='return event.charCode >= 48 && event.charCode <= 57'
-														required>
+													<input type="text" name="minPrice"
+														value=""
+														class="form-control disable" disabled>
 												</div>
-												<div class="col-lg col-md-4">
-													<lable>Note</lable>
-													<input type="text" class="form-control" name="note"
-														required>
-												</div>
+												<input type="hidden" name="lobbyTypeID">
 											</div>
 											<div class="text-right">
 												<button class="btn btn-secondary btn-sm" type="submit"
 													onclick="">OK</button>
 												<button class="btn btn-outline-secondary btn-sm"
-													type="button" onclick="closeForm(0)">Cancel</button>
+													type="button" onclick="selection('hide') && closeForm(0)">Cancel</button>
 											</div>
 										</div>
 									</form>
 
 									<!-- Form add lobby-->
-									<form class="formAdd" action="" method="">
+									<form class="formAdd" action="<%=request.getContextPath()%>/lobby" method="POST">
 										<h2 class="text-center">New Lobby Information</h2>
 										<div id="newLobby" class="container-fluid text-left">
 											<div class="row mb-3">
-												<div class="col-lg-5 col-md-6">
+												<input name="lobbyTypeID" type="hidden" value='${lobbyTypes[0].lobbyTypeID }'>
+												<div class="col-lg-3 col-md-6">
 													<lable>Name</lable>
-													<input type="text" class="form-control" name="name"
+													<input type="text" class="form-control" name="lobbyName"
 														required>
 												</div>
 												<div class="col-lg-2 col-md-6">
 													<lable>Type</lable>
-													<input type="text" class="form-control" name="type"
-														required>
+													<select class="form-control pt-0 pb-0" id="addLobby" onchange="selectType('add')">
+														<c:forEach var="lobbyType" items="${lobbyTypes }">
+															<option id="${lobbyType.lobbyTypeID }" value='${lobbyType.minPrice }'>${lobbyType.lobbyTypeName }</option>
+														</c:forEach>
+													</select>
 												</div>
-												<div class="col-lg-5 col-md-4">
+												<div class="col-lg-3 col-md-6">
 													<lable>Maximum table</lable>
-													<input type="text" name="maxQuantity" class="form-control"
+													<input type="text" name="maxTable" class="form-control"
 														onkeypress='return event.charCode >= 48 && event.charCode <= 57'
 														required>
 												</div>
 
-												<div class="col-lg col-md-4">
+												<div class="col-lg-4 col-md-6">
 													<lable>Minimum price per table</lable>
-													<input type="text" name="costMin" class="form-control"
-														onkeypress='return event.charCode >= 48 && event.charCode <= 57'
-														required>
-												</div>
-												<div class="col-lg col-md-4">
-													<lable>Note</lable>
-													<input type="text" name="note" class="form-control"
-														required>
+													<input type="text" name="minPrice"
+														value="${lobbyTypes[0].minPrice }"
+														class="form-control disable" disabled>
 												</div>
 											</div>
 											<div class="text-right">
@@ -288,18 +290,21 @@
 												</tr>
 											</thead>
 											<tbody>
-											<c:forEach var = "lobby" items="${lobbies }">
-												<tr>
-													<td>${lobby.lobbyName}</td>
-													<td>${lobby.lobbyType}</td>
-													<td>${lobby.maxTable}</td>
-													<td>${lobby.minPrice}</td>
-													<td>
-														<button type="button" class="btn btn-danger btn-sm" onclick="" data-toggle="modal" data-target="#deleteLobbyModal">Delete</button> 
-														<button type="button" class="btn btn-warning btn-sm" onclick="showForm(0)">Edit</button>
-													</td>
-												</tr>
-											</c:forEach>
+												<c:forEach var="lobby" items="${lobbies }">
+													<tr>
+														<td>${lobby.lobbyName}</td>
+														<td>${lobby.lobbyType}</td>
+														<td>${lobby.maxTable}</td>
+														<td>${lobby.minPrice}</td>
+														<td>
+															<button type="button" class="btn btn-danger btn-sm"
+																onclick="" data-toggle="modal"
+																data-target="#deleteLobbyModal">Delete</button>
+															<button type="button" class="btn btn-warning btn-sm"
+																onclick="showForm(0) &&  edit(['${lobby.lobbyID}','${lobby.lobbyName}','${lobby.lobbyType}','${lobby.maxTable}','${lobby.minPrice}'])">Edit</button>
+														</td>
+													</tr>
+												</c:forEach>
 											</tbody>
 										</table>
 									</div>

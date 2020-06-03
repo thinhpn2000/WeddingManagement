@@ -20,7 +20,7 @@ public class FoodRepository {
 		Connection connection = MySqlConnection.getInstance().getConnection();
 		List<Food> foodList = new ArrayList<Food>();
 		try {
-			PreparedStatement statement = connection.prepareStatement(queryinFood);
+			PreparedStatement statement = connection.prepareStatement(queryinUpdatedFood);
 			ResultSet res = statement.executeQuery();
 			while (res.next()) {
 				Food food = new Food();
@@ -31,7 +31,7 @@ public class FoodRepository {
 		
 				foodList.add(food);
 			}
-			statement = connection.prepareStatement(queryinUpdatedFood);
+			statement = connection.prepareStatement(queryinFood);
 			res = statement.executeQuery();
 			while (res.next()) {
 				Food food = new Food();

@@ -9,7 +9,7 @@ public class MySqlConnection {
 	private final String url = "jdbc:mysql://localhost:3306/WEDDING_MANAGEMENT";
 	
 	private final String username = "root";
-	private final String password = "thinthinh";
+	private final String password = "CPIUCT26/2/2014";
 
 	private static MySqlConnection _instance = null;
 	

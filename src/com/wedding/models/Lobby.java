@@ -3,6 +3,7 @@ package com.wedding.models;
 public class Lobby {
 	
 	private int lobbyID;
+	private int lobbyTypeID;
 	private String lobbyName;
 	private String lobbyType;
 	private int maxTable;
@@ -54,6 +55,12 @@ public class Lobby {
 	}
 	public void setDeleted(boolean isDeleted) {
 		this.isDeleted = isDeleted;
+	}
+	public int getLobbyTypeID() {
+		return lobbyTypeID;
+	}
+	public void setLobbyTypeID(int lobbyTypeID) {
+		this.lobbyTypeID = lobbyTypeID;
 	}
 	
 	

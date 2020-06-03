@@ -192,21 +192,22 @@
 										<h2 class="text-center">Food Information Update Form</h2>
 										<div id="" class="container-fluid text-left mb-3">
 											<div class="row mb-3">
+												<input type="hidden" name="foodID">
 												<div class="col-sm-6">
 													<lable>Name</lable>
-													<input type="text" class="form-control" name="name"
+													<input type="text" class="form-control" name="foodName"
 														required>
 												</div>
 												<div class="col-sm">
 													<lable>Note</lable>
-													<input type="text" class="form-control" name="note"
+													<input type="text" class="form-control" name="foodNote"
 														required>
 												</div>
 												<div class="col-sm">
 													<lable>Price</lable>
 													<input type="text" class="form-control"
 														onkeypress='return event.charCode >= 48 && event.charCode <= 57'
-														name="cost" required>
+														name="foodPrice" required>
 												</div>
 											</div>
 											<div class="text-right">
@@ -269,7 +270,7 @@
 											
 														<td>
 															<button type="button" class="btn btn-danger btn-sm" onclick="" data-toggle="modal" data-target="#deleteFoodModal">Delete</button> 
-															<button type="button" class="btn btn-warning btn-sm" onclick="showForm(0)">Edit</button>
+															<button type="button" class="btn btn-warning btn-sm" onclick="showForm(0) && edit(['${food.foodID}','${food.foodName}','${food.foodNote }','${food.foodPrice}'])">Edit</button>
 														</td>
 													</tr>
 												</c:forEach>

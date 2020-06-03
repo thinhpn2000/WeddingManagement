@@ -55,9 +55,11 @@ public class ServiceController extends HttpServlet {
 		req.setCharacterEncoding("UTF-8");
 		String serviceName = req.getParameter("serviceName");
 		int servicePrice = Integer.parseInt(req.getParameter("servicePrice"));
+		String startingDate = java.time.LocalDate.now().toString();
 		Service service = new Service();
 		service.setServiceName(serviceName);
 		service.setServicePrice(servicePrice);
+		service.setStartingDate(startingDate);
 		serviceService.addService(service);
 		resp.sendRedirect(req.getContextPath() + "/service");
 	}

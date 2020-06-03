@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ page import="com.wedding.models.Service" %>
+<%@ page import="com.wedding.models.Service"%>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -12,13 +12,15 @@
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <!-- CSS -->
-<link rel="stylesheet" href="<c:url value="/assets/font-awesome-5.13.0/css/all.min.css"/>">
+<link rel="stylesheet"
+	href="<c:url value="/assets/font-awesome-5.13.0/css/all.min.css"/>">
 <link rel="stylesheet" href="<c:url value="/assets/css/style.css"/>">
 <!-- Favicon -->
 <link rel="icon" href="<c:url value="/assets/images/logo1-dark.png"/>"
 	type="image/x-icon">
 <!-- Bootstrap CSS -->
-<link rel="stylesheet" href="<c:url value="/assets/bootstrap/css/bootstrap.min.css"/>">
+<link rel="stylesheet"
+	href="<c:url value="/assets/bootstrap/css/bootstrap.min.css"/>">
 </head>
 
 <body onload="startTime() && showDate()">
@@ -192,14 +194,15 @@
 										<h2 class="text-center">Service Information Update Form</h2>
 										<div id="" class="container-fluid text-left mb-3">
 											<div class="row mb-3">
+												<input type="hidden" name="serviceID">
 												<div class="col-sm-6">
 													<lable>Name</lable>
-													<input type="text" class="form-control" name="name"
+													<input type="text" class="form-control" name="serviceName"
 														required>
 												</div>
 												<div class="col-sm">
 													<lable>Price</lable>
-													<input type="text" name="cost" class="form-control"
+													<input type="text" name="servicePrice" class="form-control"
 														onkeypress='return event.charCode >= 48 && event.charCode <= 57'
 														required>
 												</div>
@@ -214,7 +217,8 @@
 									</form>
 
 									<!-- Form add service-->
-									<form class="formAdd" action="<%=request.getContextPath() %>/service" method = "POST">
+									<form class="formAdd"
+										action="<%=request.getContextPath()%>/service" method="POST">
 										<h2 class="text-center">New Service Information</h2>
 										<div id="newService" class="container-fluid text-left mb-3">
 											<div class="row mb-3">
@@ -250,15 +254,18 @@
 												</tr>
 											</thead>
 											<tbody>
-												<c:forEach var = "service" items="${services }">
+												<c:forEach var="service" items="${services }">
 													<tr>
 														<td>${service.serviceName}</td>
 														<td>${service.servicePrice}</td>
-														
-											
+
+
 														<td>
-															<button type="button" class="btn btn-danger btn-sm" onclick="" data-toggle="modal" data-target="#deleteServiceModal">Delete</button> 
-															<button type="button" class="btn btn-warning btn-sm" onclick="showForm(0)">Edit</button>
+															<button type="button" class="btn btn-danger btn-sm"
+																onclick="" data-toggle="modal"
+																data-target="#deleteServiceModal">Delete</button>
+															<button type="button" class="btn btn-warning btn-sm"
+																onclick="showForm(0) && edit(['${service.serviceID}','${service.serviceName}','${service.servicePrice}'])">Edit</button>
 														</td>
 													</tr>
 												</c:forEach>

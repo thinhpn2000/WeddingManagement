@@ -15,8 +15,7 @@ public class LobbyServiceImpl implements LobbyService {
 	}
 	@Override
 	public void addLobby(Lobby sanh) {
-		// TODO Auto-generated method stub
-		
+		lobbyRepository.addLobby(sanh);
 	}
 
 	@Override
