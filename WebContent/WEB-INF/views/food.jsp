@@ -167,7 +167,7 @@
 										role="dialog" aria-labelledby="" aria-hidden="true">
 										<div class="modal-dialog modal-sm modal-dialog-centered"
 											role="document">
-											<form class="modal-content" method="GET">
+											<form class="modal-content" action="<%=request.getContextPath() %>/food/delete" method="GET">
 												<div class="modal-header">
 													<h5 class="modal-title" id="">Delete Food</h5>
 													<button type="button" class="close" data-dismiss="modal"
@@ -190,7 +190,7 @@
 									</div>
 
 									<!-- Form edit food-->
-									<form class="formAdd" action="" method="">
+									<form class="formAdd" action="<%=request.getContextPath() %>/food/update" method="POST">
 										<h2 class="text-center">Food Information Update Form</h2>
 										<div id="" class="container-fluid text-left mb-3">
 											<div class="row mb-3">

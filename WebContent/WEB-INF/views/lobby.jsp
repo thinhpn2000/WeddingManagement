@@ -170,7 +170,7 @@
 										role="dialog" aria-labelledby="" aria-hidden="true">
 										<div class="modal-dialog modal-sm modal-dialog-centered"
 											role="document">
-											<form class="modal-content">
+											<form class="modal-content" method = "GET" action="<%= request.getContextPath() %>/lobby/delete">
 												<div class="modal-header">
 													<h5 class="modal-title" id="">Delete Lobby</h5>
 													<button type="button" class="close" data-dismiss="modal"
@@ -191,7 +191,7 @@
 									</div>
 
 									<!-- Form edit lobby-->
-									<form class="formAdd" action="" method="">
+									<form class="formAdd" action="<%= request.getContextPath() %>/lobby/update" method="POST">
 										<h2 class="text-center">Lobby Information Update Form</h2>
 										<div id="updatedLobby" class="container-fluid text-left">
 											<div class="row mb-3">
@@ -247,7 +247,7 @@
 												</div>
 												<div class="col-lg-2 col-md-6">
 													<lable>Type</lable>
-													<select class="form-control pt-0 pb-0" id="addLobby" onchange="selectType('add')">
+													<select name="lobbyTypeID" class="form-control pt-0 pb-0" id="addLobby" onchange="selectType('add')">
 														<c:forEach var="lobbyType" items="${lobbyTypes }">
 															<option id="${lobbyType.lobbyTypeID }" value='${lobbyType.minPrice }'>${lobbyType.lobbyTypeName }</option>
 														</c:forEach>

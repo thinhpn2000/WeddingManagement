@@ -13,7 +13,7 @@ import com.wedding.models.Lobby;
 public class LobbyRepository {
 	public List<Lobby> getAll() {
 
-		String query = "SELECT lobbyID, lobbyName, lobbyTypeName, maxTable, LOBBY.isDeleted, minPrice FROM TYPE_LOBBY, LOBBY WHERE LOBBY.lobbyType = TYPE_LOBBY.lobbyTypeID AND LOBBY.isDeleted is not null ORDER BY lobbyID ASC;";
+		String query = "SELECT lobbyID, lobbyName, lobbyTypeName, maxTable, LOBBY.isDeleted, minPrice FROM TYPE_LOBBY, LOBBY WHERE LOBBY.lobbyType = TYPE_LOBBY.lobbyTypeID AND NOT LOBBY.isDeleted ORDER BY lobbyID ASC;";
 
 		Connection connection = MySqlConnection.getInstance().getConnection();
 		List<Lobby> lobbyList = new ArrayList<Lobby>();
@@ -49,6 +49,20 @@ public class LobbyRepository {
 				prep.executeUpdate();
 				connection.close();
 		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void delele(int id) {
+		Connection connection = MySqlConnection.getInstance().getConnection();
+		String query = "UPDATE LOBBY SET isDeleted = ? WHERE lobbyID = ?";
+		try {
+			PreparedStatement statement = connection.prepareStatement(query);
+			statement.setBoolean(1, true);
+			statement.setInt(2, id);
+			statement.executeUpdate();
+			connection.close();
+		} catch(SQLException e) {
 			e.printStackTrace();
 		}
 	}

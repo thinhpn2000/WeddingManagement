@@ -1,48 +1,49 @@
 package com.wedding.models;
 
 public class Food {
-	
+
 	private int foodID;
 	private String foodName;
 	private int foodPrice;
 	private String foodNote;
 
+	private boolean fromUpdatedFood;
 
+	public Food() {
+	}
 
-	private String startingDate;
-	private String endingDate;
-	private boolean isDeleted;
-	
-	public Food() {}
-	
-	
-
-	
-
-	public Food(int foodID, String foodName, int foodPrice, String foodNote, String startingDate, String endingDate,
-			boolean isDeleted) {
+	public Food(int foodID, String foodName, int foodPrice, String foodNote, boolean fromUpdatedFood,
+			String startingDate, String endingDate, boolean isDeleted) {
 		super();
 		this.foodID = foodID;
 		this.foodName = foodName;
 		this.foodPrice = foodPrice;
 		this.foodNote = foodNote;
+		this.fromUpdatedFood = fromUpdatedFood;
 		this.startingDate = startingDate;
 		this.endingDate = endingDate;
 		this.isDeleted = isDeleted;
 	}
 
+	public boolean isFromUpdatedFood() {
+		return fromUpdatedFood;
+	}
 
+	public void setFromUpdatedFood(boolean fromUpdatedFood) {
+		this.fromUpdatedFood = fromUpdatedFood;
+	}
 
-
+	private String startingDate;
+	private String endingDate;
+	private boolean isDeleted;
 
 	public String getFoodNote() {
 		return foodNote;
 	}
-	
+
 	public void setFoodNote(String foodNote) {
 		this.foodNote = foodNote;
 	}
-
 
 	public int getFoodID() {
 		return foodID;
@@ -91,6 +92,5 @@ public class Food {
 	public void setDeleted(boolean isDeleted) {
 		this.isDeleted = isDeleted;
 	};
-	
-	
+
 }

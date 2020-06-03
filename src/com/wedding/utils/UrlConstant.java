@@ -1,12 +1,30 @@
 package com.wedding.utils;
 
 public class UrlConstant {
+	
+	// URL LOGIN/ LOGOUT
 	public static final String URL_LOGIN = "/login";
 	public static final String URL_LOGOUT = "/logout";
 	
+	// URL LOBBY
 	public static final String URL_LOBBY = "/lobby";
+	public static final String URL_LOBBY_ADD = "/lobby/add";
+	public static final String URL_LOBBY_DELETE = "/lobby/delete";
+	public static final String URL_LOBBY_UPDATE = "/lobby/update";
+	
+	// URL FOOD
 	public static final String URL_FOOD = "/food";
+	public static final String URL_FODD_ADD ="/food/add";
+	public static final String URL_FOOD_DELETE = "/food/delete";
+	public static final String URL_FOOD_UPDATE = "/food/update";
+	
+	// URL SERVICE
 	public static final String URL_SERVICE = "/service";
+	public static final String URL_SERVICE_ADD = "/service/add";
+	public static final String URL_SERVICE_DELETE = "/service/delete";
+	public static final String URL_SERVICE_UPDATE = "/service/update";
+	
+	
 	public static final String URL_PAYMENT = "/payment";
 	public static final String URL_DASHBOARD = "/dashboard";
 	

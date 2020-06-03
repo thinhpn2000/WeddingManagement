@@ -22,13 +22,21 @@ public class FoodServiceImpl implements FoodService {
 
 	@Override
 	public void deleteFood(int id) {
-		// TODO Auto-generated method stub
+		foodRepository.delele(id);
 		
 	}
 
 	@Override
 	public Food getFoodById(int id) {
-		// TODO Auto-generated method stub
+		Food food = foodRepository.getByIDInFood(id);
+		if(food != null) {
+			if(food.getEndingDate() != null) {
+				food = foodRepository.getByIDInUpdatedFood(id);
+				food.setFromUpdatedFood(true);
+				return food;
+			}
+			return food;
+		}
 		return null;
 	}
 
@@ -38,9 +46,17 @@ public class FoodServiceImpl implements FoodService {
 	}
 
 	@Override
-	public void updateFood(Food food) {
-		// TODO Auto-generated method stub
-		
+	public void updateFood(Food foodToUpdate) {
+		Food food = getFoodById(foodToUpdate.getFoodID());
+		if(food != null) {
+			if(food.getFoodPrice() == foodToUpdate.getFoodPrice()) {
+				foodRepository.updateOthersInFood(foodToUpdate);
+			} else if(food.isFromUpdatedFood() && (food.getFoodPrice() != foodToUpdate.getFoodPrice())) {
+				foodRepository.updateHasPriceInUpdatedFood(foodToUpdate);
+			} else {
+				foodRepository.updateHasPriceInFood(foodToUpdate);
+			}
+		}
 	}
 
 }

@@ -169,7 +169,7 @@
 										role="dialog" aria-labelledby="" aria-hidden="true">
 										<div class="modal-dialog modal-sm modal-dialog-centered"
 											role="document">
-											<form class="modal-content">
+											<form class="modal-content" action="<%=request.getContextPath() %>/service/delete" method = "GET">
 												<div class="modal-header">
 													<h5 class="modal-title" id="">Delete Service</h5>
 													<button type="button" class="close" data-dismiss="modal"
@@ -191,7 +191,7 @@
 									</div>
 
 									<!-- Form edit service-->
-									<form class="formAdd" action="" method="">
+									<form class="formAdd" action="<%= request.getContextPath() %>/service/update" method="POST">
 										<h2 class="text-center">Service Information Update Form</h2>
 										<div id="" class="container-fluid text-left mb-3">
 											<div class="row mb-3">

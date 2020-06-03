@@ -14,21 +14,28 @@ public class ServiceRepository {
 
 	public List<Service> getAll() {
 
-		String query = "SELECT * FROM SERVICE WHERE NOT isDeleted";
+		String queryinService = "SELECT serviceID, serviceName, servicePrice FROM SERVICE WHERE NOT isDeleted AND endingDate IS NULL";
+		String queryinUpdatedService = "SELECT SERVICE.serviceID, SERVICE.serviceName, UPDATEDSERVICE.servicePrice FROM SERVICE, UPDATEDSERVICE WHERE NOT UPDATEDSERVICE.isDeleted AND  SERVICE.serviceID = UPDATEDSERVICE.serviceID AND UPDATEDSERVICE.endingDate IS NULL";
 
 		Connection connection = MySqlConnection.getInstance().getConnection();
 		List<Service> serviceList = new ArrayList<Service>();
 		try {
-			PreparedStatement statement = connection.prepareStatement(query);
+			PreparedStatement statement = connection.prepareStatement(queryinUpdatedService);
 			ResultSet res = statement.executeQuery();
 			while (res.next()) {
 				Service service = new Service();
 				service.setServiceID(res.getInt("serviceID"));
 				service.setServiceName(res.getString("serviceName"));
 				service.setServicePrice(res.getInt("servicePrice"));
-				service.setStartingDate(res.getString("startingDate"));
-				service.setEndingDate(res.getString("endingDate"));
-				service.setDeleted(res.getBoolean("isDeleted"));
+				serviceList.add(service);
+			}
+			statement = connection.prepareStatement(queryinService);
+			res = statement.executeQuery();
+			while (res.next()) {
+				Service service = new Service();
+				service.setServiceID(res.getInt("serviceID"));
+				service.setServiceName(res.getString("serviceName"));
+				service.setServicePrice(res.getInt("servicePrice"));
 				serviceList.add(service);
 			}
 			connection.close();
@@ -55,5 +62,23 @@ public class ServiceRepository {
 			e.printStackTrace();
 		}
 
+	}
+	public void delele(int id) {
+		Connection connection = MySqlConnection.getInstance().getConnection();
+		String queryService = "UPDATE SERVICE SET isDeleted = ? WHERE serviceID = ?";
+		String queryUpdatedService = "UPDATE UPDATEDSERVICE SET isDeleted = ? WHERE serviceID = ?";
+		try {
+			PreparedStatement statement = connection.prepareStatement(queryService);
+			statement.setBoolean(1, true);
+			statement.setInt(2, id);
+			statement.executeUpdate();
+			statement = connection.prepareStatement(queryUpdatedService);
+			statement.setBoolean(1, true);
+			statement.setInt(2, id);
+			statement.executeUpdate();
+			connection.close();
+		} catch(SQLException e) {
+			e.printStackTrace();
+		}
 	}
 }

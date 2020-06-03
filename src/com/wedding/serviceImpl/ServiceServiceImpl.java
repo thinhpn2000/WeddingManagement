@@ -22,7 +22,7 @@ public class ServiceServiceImpl implements ServiceService {
 
 	@Override
 	public void deleteService(int id) {
-		// TODO Auto-generated method stub
+		serviceRepository.delele(id);
 		
 	}
 

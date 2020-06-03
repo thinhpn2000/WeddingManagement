@@ -16,7 +16,7 @@ import com.wedding.serviceImpl.ServiceServiceImpl;
 import com.wedding.utils.PathConstant;
 import com.wedding.utils.UrlConstant;
 
-@WebServlet(UrlConstant.URL_SERVICE)
+@WebServlet({UrlConstant.URL_SERVICE, UrlConstant.URL_SERVICE_ADD, UrlConstant.URL_SERVICE_DELETE, UrlConstant.URL_SERVICE_UPDATE})
 public class ServiceController extends HttpServlet {
 	
 	private ServiceService serviceService;
@@ -34,18 +34,31 @@ public class ServiceController extends HttpServlet {
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		HttpSession userSession = req.getSession();
-		String role = userSession.getAttribute("USER_ROLE").toString();
-		req.setAttribute("userRole", role);
+		String servletPath = req.getServletPath();
+		switch(servletPath) {
+			case UrlConstant.URL_SERVICE:
+				HttpSession userSession = req.getSession();
+				String role = userSession.getAttribute("USER_ROLE").toString();
+				req.setAttribute("userRole", role);
 
-		String username = userSession.getAttribute("LOGIN_USER").toString();
-		req.setAttribute("username", username);
-		
-		List<Service> services = serviceService.getAllService();
-		
-		req.setAttribute("services", services);
-		
-		req.getRequestDispatcher(PathConstant.Path_VIEWS + "service.jsp").forward(req, resp);	
+				String username = userSession.getAttribute("LOGIN_USER").toString();
+				req.setAttribute("username", username);
+				
+				List<Service> services = serviceService.getAllService();
+				
+				req.setAttribute("services", services);
+				
+				req.getRequestDispatcher(PathConstant.Path_VIEWS + "service.jsp").forward(req, resp);
+				break;
+			case UrlConstant.URL_SERVICE_DELETE:
+				int serviceID = Integer.parseInt(req.getParameter("serviceID"));
+				serviceService.deleteService(serviceID);
+				resp.sendRedirect(req.getContextPath() + "/service");
+				break;
+				default:
+					resp.sendRedirect(req.getContextPath() + "/service");
+					break;
+		}
 	}
 
 

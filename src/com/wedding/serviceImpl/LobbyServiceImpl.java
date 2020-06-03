@@ -20,7 +20,7 @@ public class LobbyServiceImpl implements LobbyService {
 
 	@Override
 	public void deleteLobby(int id) {
-		// TODO Auto-generated method stub
+		lobbyRepository.delele(id);
 		
 	}
 
