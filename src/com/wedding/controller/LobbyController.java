@@ -72,22 +72,27 @@ public class LobbyController extends HttpServlet {
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		req.setCharacterEncoding("UTF-8");
 		String servletPath = req.getServletPath();
+		String lobbyName = req.getParameter("lobbyName").toString();;
+		int lobbyTypeID = Integer.parseInt(req.getParameter("lobbyTypeID"));
+		int maxTable = Integer.parseInt(req.getParameter("maxTable"));;
+		Lobby lobby = new Lobby();
+		lobby.setLobbyName(lobbyName);
+		lobby.setLobbyTypeID(lobbyTypeID);
+		lobby.setMaxTable(maxTable);
+		
 		switch(servletPath) {
-			case UrlConstant.URL_LOBBY_ADD:
-				int lobbyTypeID = Integer.parseInt(req.getParameter("lobbyTypeID"));
-				String lobbyName = req.getParameter("lobbyName").toString();
-				int maxTable = Integer.parseInt(req.getParameter("maxTable"));
-				Lobby lobby = new Lobby();
-				lobby.setLobbyName(lobbyName);
-				lobby.setLobbyTypeID(lobbyTypeID);
-				lobby.setMaxTable(maxTable);
+			case UrlConstant.URL_LOBBY_ADD: {
 				lobbyService.addLobby(lobby);
 				resp.sendRedirect(req.getContextPath() + "/lobby");
 				break;
-			case UrlConstant.URL_LOBBY_UPDATE:
-				String lobbyTypeIDs = req.getParameter("lobbyTypeID");
-				System.out.println(lobbyTypeIDs);
+			}
+			case UrlConstant.URL_LOBBY_UPDATE: {
+				int lobbyID = Integer.parseInt(req.getParameter("lobbyID"));
+				lobby.setLobbyID(lobbyID);
+				lobbyService.updateLobby(lobby);
+				resp.sendRedirect(req.getContextPath() + "/lobby");
 				break;
+			}
 			default:
 					break;
 		}

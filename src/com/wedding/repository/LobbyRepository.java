@@ -13,7 +13,7 @@ import com.wedding.models.Lobby;
 public class LobbyRepository {
 	public List<Lobby> getAll() {
 
-		String query = "SELECT lobbyID, lobbyName, lobbyTypeName, maxTable, LOBBY.isDeleted, minPrice FROM TYPE_LOBBY, LOBBY WHERE LOBBY.lobbyType = TYPE_LOBBY.lobbyTypeID AND NOT LOBBY.isDeleted ORDER BY lobbyID ASC;";
+		String query = "SELECT lobbyID, lobbyName, lobbyTypeName, maxTable, LOBBY.isDeleted, minPrice, lobbyTypeID FROM TYPE_LOBBY, LOBBY WHERE LOBBY.lobbyType = TYPE_LOBBY.lobbyTypeID AND NOT LOBBY.isDeleted ORDER BY lobbyID ASC;";
 
 		Connection connection = MySqlConnection.getInstance().getConnection();
 		List<Lobby> lobbyList = new ArrayList<Lobby>();
@@ -28,6 +28,7 @@ public class LobbyRepository {
 				lobby.setMaxTable(res.getInt("maxTable"));
 				lobby.setMinPrice(res.getInt("minPrice"));
 				lobby.setDeleted(res.getBoolean("isDeleted"));
+				lobby.setLobbyTypeID(res.getInt("lobbyTypeID"));
 				lobbyList.add(lobby);
 			}
 			connection.close();
@@ -63,6 +64,22 @@ public class LobbyRepository {
 			statement.executeUpdate();
 			connection.close();
 		} catch(SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void update(Lobby sanh) {
+		Connection connection = MySqlConnection.getInstance().getConnection();
+		String query = "UPDATE LOBBY SET lobbyName = ?, maxTable = ?, lobbyType = ? WHERE lobbyID = ?";
+		try {
+			PreparedStatement prep = connection.prepareStatement(query);
+			prep.setString(1, sanh.getLobbyName());
+			prep.setInt(2, sanh.getMaxTable());
+			prep.setInt(3, sanh.getLobbyTypeID());
+			prep.setInt(4, sanh.getLobbyID());
+			prep.executeUpdate();
+			connection.close();
+		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}

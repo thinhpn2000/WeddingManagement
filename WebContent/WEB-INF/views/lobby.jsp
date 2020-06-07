@@ -170,7 +170,8 @@
 										role="dialog" aria-labelledby="" aria-hidden="true">
 										<div class="modal-dialog modal-sm modal-dialog-centered"
 											role="document">
-											<form class="modal-content" method = "GET" action="<%= request.getContextPath() %>/lobby/delete">
+											<form class="modal-content" method="GET"
+												action="<%=request.getContextPath()%>/lobby/delete">
 												<div class="modal-header">
 													<h5 class="modal-title" id="">Delete Lobby</h5>
 													<button type="button" class="close" data-dismiss="modal"
@@ -178,9 +179,10 @@
 														<span aria-hidden="true">&times;</span>
 													</button>
 												</div>
-												<div class="modal-body">Do you want to delete this
-													lobby?
-													<input type="hidden" name="lobbyID"></div>
+												<div class="modal-body">
+													Do you want to delete this lobby? <input type="hidden"
+														name="lobbyID">
+												</div>
 												<div class="modal-footer">
 													<button type="submit" class="btn btn-danger btn-sm">Yes</button>
 													<button type="button" class="btn btn-success btn-sm"
@@ -191,7 +193,9 @@
 									</div>
 
 									<!-- Form edit lobby-->
-									<form class="formAdd" action="<%= request.getContextPath() %>/lobby/update" method="POST">
+									<form class="formAdd"
+										action="<%=request.getContextPath()%>/lobby/update"
+										method="POST">
 										<h2 class="text-center">Lobby Information Update Form</h2>
 										<div id="updatedLobby" class="container-fluid text-left">
 											<div class="row mb-3">
@@ -203,12 +207,15 @@
 												</div>
 												<div class="col-lg-2 col-md-6">
 													<lable>Type</lable>
-													<select style="display: none" class="form-control pt-0 pb-0" id="editLobby" onchange="selectType('edit')">
+													<select style="display: none"
+														class="form-control pt-0 pb-0" id="editLobby"
+														onchange="selectType('edit')">
 														<c:forEach var="lobbyType" items="${lobbyTypes }">
-															<option id="${lobbyType.lobbyTypeID }" value='${lobbyType.minPrice }'>${lobbyType.lobbyTypeName }</option>
+															<option id="${lobbyType.lobbyTypeID }"
+																value='${lobbyType.minPrice }'>${lobbyType.lobbyTypeName }</option>
 														</c:forEach>
-													</select>
-													<input type="text" id="lobbyTypeName" class="form-control" required onclick="selection('show')">
+													</select> <input type="text" id="lobbyTypeName" class="form-control"
+														required onclick="selection('show')">
 												</div>
 												<div class="col-lg-3 col-md-6">
 													<lable>Maximum table</lable>
@@ -219,11 +226,10 @@
 
 												<div class="col-lg-4 col-md-6">
 													<lable>Minimum price per table</lable>
-													<input type="text" name="minPrice"
-														value=""
+													<input type="text" name="minPrice" value=""
 														class="form-control disable" disabled>
 												</div>
-												<input type="hidden" name="lobbyTypeID">
+												<input type="hidden" name="lobbyTypeID" value="">
 											</div>
 											<div class="text-right">
 												<button class="btn btn-secondary btn-sm" type="submit"
@@ -235,11 +241,13 @@
 									</form>
 
 									<!-- Form add lobby-->
-									<form class="formAdd" action="<%=request.getContextPath()%>/lobby" method="POST">
+									<form class="formAdd"
+										action="<%=request.getContextPath()%>/lobby/add" method="POST">
 										<h2 class="text-center">New Lobby Information</h2>
 										<div id="newLobby" class="container-fluid text-left">
 											<div class="row mb-3">
-												<input name="lobbyTypeID" type="hidden" value='${lobbyTypes[0].lobbyTypeID }'>
+												<input name="lobbyTypeID" type="hidden"
+													value='${lobbyTypes[0].lobbyTypeID }'>
 												<div class="col-lg-3 col-md-6">
 													<lable>Name</lable>
 													<input type="text" class="form-control" name="lobbyName"
@@ -247,9 +255,11 @@
 												</div>
 												<div class="col-lg-2 col-md-6">
 													<lable>Type</lable>
-													<select name="lobbyTypeID" class="form-control pt-0 pb-0" id="addLobby" onchange="selectType('add')">
+													<select name="lobbyTypeID" class="form-control pt-0 pb-0"
+														id="addLobby" onchange="selectType('add')">
 														<c:forEach var="lobbyType" items="${lobbyTypes }">
-															<option id="${lobbyType.lobbyTypeID }" value='${lobbyType.minPrice }'>${lobbyType.lobbyTypeName }</option>
+															<option id="${lobbyType.lobbyTypeID }"
+																value='${lobbyType.minPrice }'>${lobbyType.lobbyTypeName }</option>
 														</c:forEach>
 													</select>
 												</div>
@@ -286,7 +296,13 @@
 													<th>Type</th>
 													<th>Maximum table</th>
 													<th>Minimum price per table</th>
-													<th>Action</th>
+													<c:choose>
+														<c:when test="${userRole == 'ROLE_MANAGER' }">
+															<th>Action</th>
+														</c:when>
+														<c:otherwise>
+														</c:otherwise>
+													</c:choose>
 												</tr>
 											</thead>
 											<tbody>
@@ -296,13 +312,20 @@
 														<td>${lobby.lobbyType}</td>
 														<td>${lobby.maxTable}</td>
 														<td>${lobby.minPrice}</td>
-														<td>
-															<button type="button" class="btn btn-danger btn-sm"
-																onclick="getIdLobby('${lobby.lobbyID}')" data-toggle="modal"
-																data-target="#deleteLobbyModal">Delete</button>
-															<button type="button" class="btn btn-warning btn-sm"
-																onclick="showForm(0) &&  edit(['${lobby.lobbyID}','${lobby.lobbyName}','${lobby.lobbyType}','${lobby.maxTable}','${lobby.minPrice}'])">Edit</button>
-														</td>
+														<c:choose>
+															<c:when test="${userRole == 'ROLE_MANAGER' }">
+																<td>
+																	<button type="button" class="btn btn-danger btn-sm"
+																		onclick="getIdLobby('${lobby.lobbyID}')"
+																		data-toggle="modal" data-target="#deleteLobbyModal">Delete</button>
+																	<button type="button" class="btn btn-warning btn-sm"
+																		onclick="showForm(0) &&  edit(['${lobby.lobbyID}','${lobby.lobbyName}','${lobby.lobbyType}','${lobby.maxTable}','${lobby.minPrice}','${lobby.lobbyTypeID}'])">Edit</button>
+																</td>
+
+															</c:when>
+															<c:otherwise>
+															</c:otherwise>
+														</c:choose>
 													</tr>
 												</c:forEach>
 											</tbody>

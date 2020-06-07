@@ -14,10 +14,14 @@ var showForm = (id) => {
     }
 }
 var edit = (info) => {
+	console.log("hi");
     let inputs = Array.from(document.getElementsByClassName('formAdd')[0].getElementsByTagName('input'));
     for(let i = 0; i < inputs.length; i++) {
-    	if(info[i])
+    	if(info[i]) {
+    		console.log(info[i]);
     		inputs[i].value = info[i];
+    		console.log(inputs[i].value);
+    	}
     }
 }
 var closeForm = (id) => {

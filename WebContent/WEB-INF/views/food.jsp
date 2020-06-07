@@ -222,7 +222,7 @@
 									</form>
 
 									<!-- Form add food-->
-									<form class="formAdd" action="<%= request.getContextPath() %>/food" method="POST">
+									<form class="formAdd" action="<%= request.getContextPath() %>/food/add" method="POST">
 										<h2 class="text-center">New Food Information</h2>
 										<div id="newFood" class="container-fluid text-left mb-3">
 											<div class="row mb-3">
@@ -260,7 +260,13 @@
 													<th>Name</th>
 													<th>Note</th>
 													<th>Price</th>
-													<th>Hành động</th>
+													<c:choose>
+														<c:when test = "${userRole == 'ROLE_MANAGER' }">
+															<th>Action</th>
+														</c:when>
+														<c:otherwise>
+														</c:otherwise>
+													</c:choose>
 												</tr>
 											</thead>
 											<tbody>
@@ -269,11 +275,16 @@
 														<td>${food.foodName}</td>
 														<td>${food.foodNote}</td>
 														<td>${food.foodPrice}</td>
-											
-														<td>
-															<button type="button" class="btn btn-danger btn-sm" onclick="getIdFood('${food.foodID}')" data-toggle="modal" data-target="#deleteFoodModal">Delete</button> 
-															<button type="button" class="btn btn-warning btn-sm" onclick="showForm(0) && edit(['${food.foodID}','${food.foodName}','${food.foodNote }','${food.foodPrice}'])">Edit</button>
-														</td>
+														<c:choose>
+															<c:when test = "${userRole == 'ROLE_MANAGER' }">
+																<td>
+																	<button type="button" class="btn btn-danger btn-sm" onclick="getIdFood('${food.foodID}')" data-toggle="modal" data-target="#deleteFoodModal">Delete</button> 
+																	<button type="button" class="btn btn-warning btn-sm" onclick="showForm(0) && edit(['${food.foodID}','${food.foodName}','${food.foodNote }','${food.foodPrice}'])">Edit</button>
+																</td>
+															</c:when>
+															<c:otherwise>
+															</c:otherwise>
+														</c:choose>
 													</tr>
 												</c:forEach>
 											</tbody>

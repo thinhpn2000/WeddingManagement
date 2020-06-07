@@ -169,7 +169,9 @@
 										role="dialog" aria-labelledby="" aria-hidden="true">
 										<div class="modal-dialog modal-sm modal-dialog-centered"
 											role="document">
-											<form class="modal-content" action="<%=request.getContextPath() %>/service/delete" method = "GET">
+											<form class="modal-content"
+												action="<%=request.getContextPath()%>/service/delete"
+												method="GET">
 												<div class="modal-header">
 													<h5 class="modal-title" id="">Delete Service</h5>
 													<button type="button" class="close" data-dismiss="modal"
@@ -177,10 +179,10 @@
 														<span aria-hidden="true">&times;</span>
 													</button>
 												</div>
-												<div class="modal-body">Do you want to delete this
-													service?
-													<input type="hidden" name="serviceID">
-													</div>
+												<div class="modal-body">
+													Do you want to delete this service? <input type="hidden"
+														name="serviceID">
+												</div>
 												<div class="modal-footer">
 													<button type="submit" class="btn btn-danger btn-sm">Yes</button>
 													<button type="button" class="btn btn-success btn-sm"
@@ -191,7 +193,9 @@
 									</div>
 
 									<!-- Form edit service-->
-									<form class="formAdd" action="<%= request.getContextPath() %>/service/update" method="POST">
+									<form class="formAdd"
+										action="<%=request.getContextPath()%>/service/update"
+										method="POST">
 										<h2 class="text-center">Service Information Update Form</h2>
 										<div id="" class="container-fluid text-left mb-3">
 											<div class="row mb-3">
@@ -219,7 +223,8 @@
 
 									<!-- Form add service-->
 									<form class="formAdd"
-										action="<%=request.getContextPath()%>/service" method="POST">
+										action="<%=request.getContextPath()%>/service/add"
+										method="POST">
 										<h2 class="text-center">New Service Information</h2>
 										<div id="newService" class="container-fluid text-left mb-3">
 											<div class="row mb-3">
@@ -251,7 +256,13 @@
 												<tr>
 													<th>Name</th>
 													<th>Price</th>
-													<th>Action</th>
+													<c:choose>
+														<c:when test = "${userRole == 'ROLE_MANAGER' }">
+															<th>Action</th>
+														</c:when>
+														<c:otherwise>
+														</c:otherwise>
+													</c:choose>
 												</tr>
 											</thead>
 											<tbody>
@@ -259,15 +270,19 @@
 													<tr>
 														<td>${service.serviceName}</td>
 														<td>${service.servicePrice}</td>
-
-
-														<td>
-															<button type="button" class="btn btn-danger btn-sm"
-																onclick="getIdService('${service.serviceID}')" data-toggle="modal"
-																data-target="#deleteServiceModal">Delete</button>
-															<button type="button" class="btn btn-warning btn-sm"
-																onclick="showForm(0) && edit(['${service.serviceID}','${service.serviceName}','${service.servicePrice}'])">Edit</button>
-														</td>
+														<c:choose>
+															<c:when test="${userRole =='ROLE_MANAGER' }">
+																<td>
+																	<button type="button" class="btn btn-danger btn-sm"
+																		onclick="getIdService('${service.serviceID}')"
+																		data-toggle="modal" data-target="#deleteServiceModal">Delete</button>
+																	<button type="button" class="btn btn-warning btn-sm"
+																		onclick="showForm(0) && edit(['${service.serviceID}','${service.serviceName}','${service.servicePrice}'])">Edit</button>
+																</td>
+															</c:when>
+															<c:otherwise>
+															</c:otherwise>
+														</c:choose>
 													</tr>
 												</c:forEach>
 											</tbody>

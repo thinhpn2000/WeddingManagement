@@ -54,7 +54,7 @@ public class ServiceController extends HttpServlet {
 				int serviceID = Integer.parseInt(req.getParameter("serviceID"));
 				serviceService.deleteService(serviceID);
 				resp.sendRedirect(req.getContextPath() + "/service");
-				break;
+				break;	
 				default:
 					resp.sendRedirect(req.getContextPath() + "/service");
 					break;
@@ -73,8 +73,19 @@ public class ServiceController extends HttpServlet {
 		service.setServiceName(serviceName);
 		service.setServicePrice(servicePrice);
 		service.setStartingDate(startingDate);
-		serviceService.addService(service);
-		resp.sendRedirect(req.getContextPath() + "/service");
+		String servletPath = req.getServletPath();
+		switch (servletPath) {
+		case UrlConstant.URL_SERVICE_ADD:
+			serviceService.addService(service);
+			resp.sendRedirect(req.getContextPath() + "/service");
+			break;
+		case UrlConstant.URL_SERVICE_UPDATE:
+			int serviceID = Integer.parseInt(req.getParameter("serviceID"));
+			service.setServiceID(serviceID);
+			serviceService.updateService(service);
+			resp.sendRedirect(req.getContextPath() + "/service");
+			break;
+		}
 	}
 	
 	
