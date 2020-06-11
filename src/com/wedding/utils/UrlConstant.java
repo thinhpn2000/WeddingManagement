@@ -24,6 +24,8 @@ public class UrlConstant {
 	public static final String URL_SERVICE_DELETE = "/service/delete";
 	public static final String URL_SERVICE_UPDATE = "/service/update";
 	
+	//URL PROFILE
+	public static final String URL_PROFILE = "/profile";
 	
 	public static final String URL_PAYMENT = "/payment";
 	public static final String URL_DASHBOARD = "/dashboard";

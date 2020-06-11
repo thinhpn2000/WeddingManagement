@@ -10,13 +10,15 @@
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <!-- CSS -->
-<link rel="stylesheet" href="<c:url value="/assets/font-awesome-5.13.0/css/all.min.css"/>">
+<link rel="stylesheet"
+	href="<c:url value="/assets/font-awesome-5.13.0/css/all.min.css"/>">
 <link rel="stylesheet" href="<c:url value="/assets/css/style.css"/>">
 <!-- Favicon -->
 <link rel="icon" href="<c:url value="/assets/images/logo1-dark.png"/>"
 	type="image/x-icon">
 <!-- Bootstrap CSS -->
-<link rel="stylesheet" href="<c:url value="/assets/bootstrap/css/bootstrap.min.css"/>">
+<link rel="stylesheet"
+	href="<c:url value="/assets/bootstrap/css/bootstrap.min.css"/>">
 </head>
 <body onload="startTime() && showDate() && showTab(0)">
 	<div class="preloader">
@@ -39,8 +41,9 @@
 					</div>
 					<div class="modal-body">Are you sure?</div>
 					<div class="modal-footer">
-						<a href="<%=request.getContextPath() %>/logout"
-							class="btn btn-danger">Sign out</a>
+						<a href="<%=request.getContextPath()%>/logout">
+							<button type="button" class="btn btn-danger btn-sm">Sign out</button>
+						</a>
 						<button type="button" class="btn btn-success btn-sm"
 							data-dismiss="modal">Cancel</button>
 					</div>
@@ -75,8 +78,10 @@
 					data-toggle="tooltip" title="Sign out!">
 					<i class="fa fa-sign-out-alt mx-4" aria-hidden="true"></i>
 				</div>
-				<div class="avatar-user" onclick="">
-					<img src="<c:url value="/assets/images/avatar.jpg"/>">
+				<div class="avatar-user" data-toggle="tooltip" title="Your profile">
+					<a href="<%=request.getContextPath()%>/profile"> <img
+						src="<c:url value="/assets/images/avatar.png"/>">
+					</a>
 				</div>
 			</div>
 
@@ -90,29 +95,29 @@
 					<img src="<c:url value="/assets/images/logo.png"/>">
 				</div>
 				<ul>
-					<li><a href="<%= request.getContextPath() %>/dashboard"> <span
+					<li><a href="<%=request.getContextPath()%>/dashboard"> <span
 							class="menu-tab-icon"> <i class="fa fa-chart-bar"></i>
 						</span> <span>Dashboard</span>
 					</a></li>
-					<li><a href="<%= request.getContextPath() %>/reservation"
+					<li><a href="<%=request.getContextPath()%>/reservation"
 						class="active"> <span class="menu-tab-icon"> <i
 								class="fa fa-list"></i>
 						</span> <span>Reservation</span>
 					</a></li>
-					<li><a href="<%= request.getContextPath() %>/lobby"> <span
+					<li><a href="<%=request.getContextPath()%>/lobby"> <span
 							class="menu-tab-icon"> <i class="fa fa-door-open"></i>
 						</span> <span>Lobby</span>
 					</a></li>
-					<li><a href="<%= request.getContextPath() %>/food"> <span
+					<li><a href="<%=request.getContextPath()%>/food"> <span
 							class="menu-tab-icon"> <i class='fas fa-drumstick-bite'></i>
 						</span> <span>Food</span>
 					</a></li>
-					<li><a href="<%= request.getContextPath() %>/service"> <span
+					<li><a href="<%=request.getContextPath()%>/service"> <span
 							class="menu-tab-icon"> <i class="fab fa-readme"></i>
 						</span> <span>Service</span>
 					</a></li>
 
-					<li><a href="<%= request.getContextPath() %>/payment"> <span
+					<li><a href="<%=request.getContextPath()%>/payment"> <span
 							class="menu-tab-icon"> <i class="fab fa-cc-visa"></i>
 						</span> <span>Payment</span>
 					</a></li>
@@ -181,238 +186,238 @@
 							<div class="container-fluid">
 								<div class="row">
 									<div class="col-sm">
-
-										<form id="regEvent" name="regEvent" class="regEvent py-3"
-											action="" method="">
-											<!-- lobby -->
-											<div class="tab container-fluid">
-												<!--Filter-->
-												<div class="row">
-													<div class="col-sm-1"></div>
-													<div class="col-sm">
-														<div class="row">
-															<div class="col-sm">
-																<div class="form-group">
-																	<label for="dateWedding">Preferred wedding date</label>
-																	<input placeholder="Date" class="form-control"
-																		type="text" onfocus="(this.type='date')"
-																		id="dateWedding" name="dateWedding"
-																		onblur="validate('dateWedding')">
-																</div>
-															</div>
-															<div class="col-sm-3">
-																<div class="form-group text-center">
-																	<lable style="display: block; margin-bottom: 15px;">Shift</lable>
-																	<div class="form-check-inline">
-																		<label class="form-check-label" for="radio1">
-																			<input type="radio" class="form-check-input"
-																			id="radio1" name="shift" value="Trưa" checked>Evening
-																		</label>
-																	</div>
-																	<div class="form-check-inline">
-																		<label class="form-check-label" for="radio2">
-																			<input type="radio" class="form-check-input"
-																			id="radio2" name="shift" value="Tối">Night
-																		</label>
-																	</div>
-																</div>
-															</div>
-															<div class="col-sm-3 text-center">
-																<button id="btnFilter" type="button"
-																	class="btn btn-outline-secondary mt-3"
-																	onclick="filter()">Filter</button>
+										<div class="regEvent py-3">
+											<!--Filter-->
+											<form class="row" id="filterLobby">
+												<div class="col-sm-1"></div>
+												<div class="col-sm">
+													<div class="row">
+														<div class="col-sm">
+															<div class="form-group">
+																<label for="dateWedding">Preferred wedding date</label>
+																<input placeholder="Date" class="form-control"
+																	type="text" onfocus="(this.type='date')"
+																	id="dateWedding" name="dateWedding"
+																	onblur="validate('dateWedding')">
 															</div>
 														</div>
-													</div>
-													<div class="col-sm-1"></div>
-												</div>
-
-												<!--List Lobby-->
-												<div class="row mt-3">
-													<div class="col-sm-1"></div>
-													<div class="col-sm"
-														style="overflow-y: scroll; max-height: 290px;">
-														<table id="tableLobby" class="table table-sm table-hover">
-															<thead>
-																<tr>
-																	<th>Name</th>
-																	<th>Type</th>
-																	<th>Maximum table permitted</th>
-																	<th>Minimum price per table</th>
-																	<th>Note</th>
-																	<th>Action</th>
-																</tr>
-															</thead>
-															<tbody>
-
-															</tbody>
-
-														</table>
-													</div>
-													<div class="col-sm-1"></div>
-												</div>
-											</div>
-
-											<!-- info bride and grooom -->
-											<div class="container-fluid tab">
-												<div class="row">
-													<div class="col-sm-1"></div>
-													<div class="col-sm">
-														<div class="row">
-															<div class="col-xl col-sm-6">
-																<div class="form-group">
-																	<label for="nameGroom">Name of Groom</label> <input
-																		id="nameGroom" type="text" class="form-control"
-																		placeholder="" onblur="validate('nameGroom')"
-																		name="nameGroom">
+														<div class="col-sm-3">
+															<div class="form-group text-center">
+																<lable style="display: block; margin-bottom: 15px;">Shift</lable>
+																<div class="form-check-inline">
+																	<label class="form-check-label" for="radio1"> <input
+																		type="radio" class="form-check-input" id="radio1"
+																		name="shift" value="Trưa" checked>Evening
+																	</label>
 																</div>
-															</div>
-															<div class="col-xl col-sm-6">
-																<div class="form-group">
-																	<label for="nameBride">Name of Bride</label> <input
-																		id="nameBride" type="text" class="form-control"
-																		placeholder="" onblur="validate('nameBride')"
-																		name="nameBride">
+																<div class="form-check-inline">
+																	<label class="form-check-label" for="radio2"> <input
+																		type="radio" class="form-check-input" id="radio2"
+																		name="shift" value="Tối">Night
+																	</label>
 																</div>
 															</div>
 														</div>
-														<div class="row">
+														<div class="col-sm-3 text-center">
+															<button id="btnFilter" type="button"
+																class="btn btn-outline-secondary mt-3"
+																onclick="filter()">Filter</button>
+														</div>
+													</div>
+												</div>
+												<div class="col-sm-1"></div>
+											</form>
+											<form id="regEvent" name="regEvent" class="" action=""
+												method="">
+												<input type="hidden" name="dateWedding"> <input
+													type="hidden" name="shift">
+												<!-- lobby -->
+												<div class="tab container-fluid">
+													<!--List Lobby-->
+													<div class="row mt-3">
+														<div class="col-sm-1"></div>
+														<div class="col-sm"
+															style="overflow-y: scroll; max-height: 290px;">
+															<table id="tableLobby" class="table table-sm table-hover">
+																<thead>
+																	<tr>
+																		<th>Name</th>
+																		<th>Type</th>
+																		<th>Maximum table permitted</th>
+																		<th>Minimum price per table</th>
+																		<th>Action</th>
+																	</tr>
+																</thead>
+																<tbody>
 
-															<div class="col-xl-4 col-sm-4">
-																<div class="form-group">
-																	<label for="phone">Phone number</label> <input
-																		id="phone" type="text" class="form-control"
-																		placeholder="" onblur="validate('phone')"
+																</tbody>
+
+															</table>
+														</div>
+														<div class="col-sm-1"></div>
+													</div>
+												</div>
+
+												<!-- info bride and grooom -->
+												<div class="container-fluid tab">
+													<div class="row">
+														<div class="col-sm-1"></div>
+														<div class="col-sm">
+															<div class="row">
+																<div class="col-xl col-sm-6">
+																	<div class="form-group">
+																		<label for="nameGroom">Name of Groom</label> <input
+																			id="nameGroom" type="text" class="form-control"
+																			placeholder="" onblur="validate('nameGroom')"
+																			name="nameGroom">
+																	</div>
+																</div>
+																<div class="col-xl col-sm-6">
+																	<div class="form-group">
+																		<label for="nameBride">Name of Bride</label> <input
+																			id="nameBride" type="text" class="form-control"
+																			placeholder="" onblur="validate('nameBride')"
+																			name="nameBride">
+																	</div>
+																</div>
+															</div>
+															<div class="row">
+
+																<div class="col-xl-4 col-sm-4">
+																	<div class="form-group">
+																		<label for="phone">Phone number</label> <input
+																			id="phone" type="text" class="form-control"
+																			placeholder="" onblur="validate('phone')"
+																			onkeypress='return event.charCode >= 48 && event.charCode <= 57'
+																			name="phone">
+																	</div>
+																</div>
+																<div class="col-xl-3 col-sm-4">
+																	<div class="form-group">
+																		<label>Maximum table</label> <input type="text"
+																			class="form-control disable" name="tableMax"
+																			placeholder="" disabled>
+																	</div>
+
+																</div>
+																<div class="col-xl-3 col-sm-4">
+																	<div class="form-group">
+																		<label for="tableQuantity">Number of Tables</label> <input
+																			type="number" value=0 min=0 id="tableQuantity"
+																			name="tableQuantity" class="form-control"
+																			placeholder="" onblur="validate('tableQuantity')"
+																			onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
+																	</div>
+																</div>
+																<div class="col-xl-2 col-sm-4">
+																	<div class="form-group">
+																		<label for="reservedTable">Extra tables</label> <input
+																			id="reservedTable" type="number" min=0
+																			name="reservedTable" class="form-control"
+																			placeholder="" onblur="validate('reservedTable')"
+																			value=0
+																			onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
+																	</div>
+																</div>
+															</div>
+														</div>
+														<div class="col-sm-1"></div>
+													</div>
+												</div>
+
+												<!-- Food -->
+												<div class="tab container-fluid">
+													<div class="row">
+														<div class="col-sm-1"></div>
+														<div class="col-sm">
+															<h2 style="text-align: center;">Reserved Food</h2>
+															<div style="overflow-y: scroll; max-height: 300px;">
+																<!-- Reserved Food-->
+																<table id="food" class="table table-hover table-sm">
+																	<thead>
+																		<tr>
+																			<th>Name</th>
+																			<th>Price</th>
+																			<th>Action</th>
+																		</tr>
+																	</thead>
+																	<tbody>
+																	<tbody>
+																	<tfoot>
+																		<tr>
+																			<th>Total :</th>
+																			<td id="totalFood"></td>
+																			<th id="costMin"></th>
+																		</tr>
+																	</tfoot>
+																</table>
+															</div>
+
+															<!-- Deposit and menu-->
+															<div
+																class="d-flex flex-direction-row align-items-center justify-content-between">
+																<div class="form-group" style="width: 200px;">
+																	<label for="deposit">Deposit paid</label> <input
+																		type="number" min=0 id="deposit" type="text"
+																		class="form-control" onblur="validate('deposit')"
+																		style="width: 100%"
 																		onkeypress='return event.charCode >= 48 && event.charCode <= 57'
-																		name="phone">
+																		name="deposit">
 																</div>
+																<div id="alert-food" class="alert alert-danger mb-0">
+																	Please add more food to continue</div>
+																<button type="button" class="btn btn-secondary"
+																	data-toggle="modal" data-target="#menuModal"
+																	onclick="showMenu()">Menu</button>
 															</div>
-															<div class="col-xl-3 col-sm-4">
-																<div class="form-group">
-																	<label>Maximum table</label> <input type="text"
-																		class="form-control disable" name="tableMax" value=40
-																		placeholder="" disabled>
-																</div>
 
-															</div>
-															<div class="col-xl-3 col-sm-4">
-																<div class="form-group">
-																	<label for="tableQuantity">Number of Tables</label> <input
-																		type="number" value=0 min=0 id="tableQuantity"
-																		name="tableQuantity" class="form-control"
-																		placeholder="" onblur="validate('tableQuantity')"
-																		onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
-																</div>
-															</div>
-															<div class="col-xl-2 col-sm-4">
-																<div class="form-group">
-																	<label for="reservedTable">Extra tables</label> <input
-																		id="reservedTable" type="number" min=0
-																		name="reservedTable" class="form-control"
-																		placeholder="" onblur="validate('reservedTable')"
-																		value=0
-																		onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
-																</div>
-															</div>
 														</div>
+														<div class="col-sm-1"></div>
 													</div>
-													<div class="col-sm-1"></div>
-												</div>
-											</div>
 
-											<!-- Food -->
-											<div class="tab container-fluid">
-												<div class="row">
-													<div class="col-sm-1"></div>
-													<div class="col-sm">
-														<h2 style="text-align: center;">Reserved Food</h2>
-														<div style="overflow-y: scroll; max-height: 300px;">
-															<!-- Reserved Food-->
-															<table id="food" class="table table-hover table-sm">
-																<thead>
-																	<tr>
-																		<th>Name</th>
-																		<th>Note</th>
-																		<th>Price</th>
-																		<th>Action</th>
-																	</tr>
-																</thead>
-																<tbody>
-																<tbody>
-																<tfoot>
-																	<tr>
-																		<th colspan="2">Total :</th>
-																		<td id="totalFood"></td>
-																		<th id="costMin"></th>
-																	</tr>
-																</tfoot>
-															</table>
-														</div>
-
-														<!-- Deposit and menu-->
-														<div
-															class="d-flex flex-direction-row align-items-center justify-content-between">
-															<div class="form-group" style="width: 200px;">
-																<label for="deposit">Deposit paid</label> <input
-																	type="number" min=0 id="deposit" type="text"
-																	class="form-control" onblur="validate('deposit')"
-																	style="width: 100%"
-																	onkeypress='return event.charCode >= 48 && event.charCode <= 57'
-																	name="deposit">
-															</div>
-															<div id="alert-food" class="alert alert-danger mb-0">
-																Please add more food to continue</div>
-															<button type="button" class="btn btn-secondary"
-																data-toggle="modal" data-target="#menuModal"
-																onclick="showMenu()">Menu</button>
-														</div>
-
-													</div>
-													<div class="col-sm-1"></div>
 												</div>
 
-											</div>
+												<!-- Service -->
+												<div class="tab container-fluid">
+													<div class="row">
+														<div class="col-sm-1"></div>
+														<div class="col-sm">
+															<h2 style="text-align: center;">Services</h2>
+															<div style="overflow-y: scroll; max-height: 350px;">
+																<!-- Reserved Services-->
+																<table id="services" class="table table-sm table-hover">
+																	<thead>
+																		<tr>
+																			<th>Name</th>
+																			<th>Quantity</th>
+																			<th>Price</th>
+																			<th>Action</th>
+																		</tr>
+																	</thead>
+																	<tbody>
+																	<tbody>
+																	<tfoot>
+																		<tr>
+																			<th colspan="2">Total :</th>
+																			<td id="totalServices"></td>
+																		</tr>
+																	</tfoot>
+																</table>
+															</div>
 
-											<!-- Service -->
-											<div class="tab container-fluid">
-												<div class="row">
-													<div class="col-sm-1"></div>
-													<div class="col-sm">
-														<h2 style="text-align: center;">Services</h2>
-														<div style="overflow-y: scroll; max-height: 350px;">
-															<!-- Reserved Services-->
-															<table id="services" class="table table-sm table-hover">
-																<thead>
-																	<tr>
-																		<th>Name</th>
-																		<th>Quantity</th>
-																		<th>Price</th>
-																		<th>Action</th>
-																	</tr>
-																</thead>
-																<tbody>
-																<tbody>
-																<tfoot>
-																	<tr>
-																		<th colspan="2">Total :</th>
-																		<td id="totalServices"></td>
-																	</tr>
-																</tfoot>
-															</table>
+															<!--Menu-->
+															<div class="text-right">
+																<button type="button" class="btn btn-secondary"
+																	data-toggle="modal" data-target="#servicesModal"
+																	onclick="showServices()">Menu</button>
+															</div>
 														</div>
-
-														<!--Menu-->
-														<div class="text-right">
-															<button type="button" class="btn btn-secondary"
-																data-toggle="modal" data-target="#servicesModal"
-																onclick="showServices()">Menu</button>
-														</div>
+														<div class="col-sm-1"></div>
 													</div>
-													<div class="col-sm-1"></div>
 												</div>
-											</div>
 
-										</form>
+											</form>
+										</div>
 										<div id="alert-lobby" class="alert alert-danger" role="alert">
 											Please choose at least one lobby to continue</div>
 

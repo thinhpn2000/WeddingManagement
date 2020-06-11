@@ -41,8 +41,9 @@
 					</div>
 					<div class="modal-body">Are you sure?</div>
 					<div class="modal-footer">
-						<a href="<%=request.getContextPath()%>/logout"
-							class="btn btn-danger">Sign out</a>
+						<a href="<%=request.getContextPath()%>/logout">
+							<button type="button" class="btn btn-danger btn-sm">Sign out</button>
+						</a>
 						<button type="button" class="btn btn-success btn-sm"
 							data-dismiss="modal">Cancel</button>
 					</div>
@@ -77,8 +78,10 @@
 					data-toggle="tooltip" title="Sign out!">
 					<i class="fa fa-sign-out-alt mx-4" aria-hidden="true"></i>
 				</div>
-				<div class="avatar-user" onclick="">
-					<img src="<c:url value="/assets/images/avatar.jpg"/>">
+				<div class="avatar-user" data-toggle="tooltip" title="Your profile">
+					<a href="<%=request.getContextPath() %>/profile">
+						<img src="<c:url value="/assets/images/avatar.png"/>">
+					</a>
 				</div>
 			</div>
 

@@ -20,7 +20,7 @@
 <link rel="stylesheet"
 	href="<c:url value="/assets/bootstrap/css/bootstrap.min.css"/>">
 </head>
-<body onload="startTime() && showDate() && showListEmployee()">
+<body onload="startTime() && showDate()">
 	<div class="preloader">
 		<div class="cssload-speeding-wheel"></div>
 	</div>
@@ -41,8 +41,9 @@
 					</div>
 					<div class="modal-body">Are you sure?</div>
 					<div class="modal-footer">
-						<a href="<%=request.getContextPath()%>/logout"
-							class="btn btn-danger">Sign out</a>
+						<a href="<%=request.getContextPath()%>/logout">
+							<button type="button" class="btn btn-danger btn-sm">Sign out</button>
+						</a>
 						<button type="button" class="btn btn-success btn-sm"
 							data-dismiss="modal">Cancel</button>
 					</div>
@@ -77,8 +78,10 @@
 					data-toggle="tooltip" title="Sign out!">
 					<i class="fa fa-sign-out-alt mx-4" aria-hidden="true"></i>
 				</div>
-				<div class="avatar-user" onclick="">
-					<img src="<c:url value="/assets/images/avatar.jpg"/>">
+				<div class="avatar-user" data-toggle="tooltip" title="Your profile">
+					<a href="<%=request.getContextPath()%>/profile"> <img
+						src="<c:url value="/assets/images/avatar.png"/>">
+					</a>
 				</div>
 			</div>
 
@@ -130,13 +133,13 @@
 				<div class="container-fluid mt-3">
 					<div class="row">
 						<div class="col-sm"></div>
-						<div class="col-sm-10 ">
+						<div class="col-sm-11">
 							<!--Modal delete-->
 							<div class="modal fade" id="deleteEmployeeModal" tabindex="-1"
 								role="dialog" aria-labelledby="" aria-hidden="true">
 								<div class="modal-dialog modal-sm modal-dialog-centered"
 									role="document">
-									<div class="modal-content">
+									<form class="modal-content">
 										<div class="modal-header">
 											<h5 class="modal-title" id="">Delete employee</h5>
 											<button type="button" class="close" data-dismiss="modal"
@@ -144,15 +147,16 @@
 												<span aria-hidden="true">&times;</span>
 											</button>
 										</div>
-										<div class="modal-body">Do you want to delete this
-											employee?</div>
+										<div class="modal-body">
+											Do you want to delete this employee? <input type="hidden"
+												name="userID">
+										</div>
 										<div class="modal-footer">
-											<button type="button" class="btn btn-danger btn-sm"
-												data-dismiss="modal" onclick="deleteEmployee()">Yes</button>
+											<button type="button" class="btn btn-danger btn-sm">Yes</button>
 											<button type="button" class="btn btn-success btn-sm"
 												data-dismiss="modal">Cancel</button>
 										</div>
-									</div>
+									</form>
 								</div>
 							</div>
 
@@ -166,14 +170,15 @@
 								method="">
 								<div id="newEmployee" class="text-left">
 									<div class="row mb-3">
-										<div class="col-lg-3 col-md-6">
+										<div class="col-lg-4 col-md-6">
 											<lable>Fullname</lable>
 											<input type="text" class="form-control" name="fullname"
 												required>
 										</div>
-										<div class="col-lg-3 col-md-3">
+										<div class="col-lg-4 col-md-3">
 											<lable>D.O.B</lable>
-											<input type="date" class="form-control" name="DOB" required onblur="checkDate()">
+											<input type="date" class="form-control" name="DOB" required
+												onblur="checkDate()">
 										</div>
 										<div class="col-lg-2 col-md-3">
 											<lable>Gender</lable>
@@ -183,50 +188,39 @@
 												<option value="other">Other</option>
 											</select>
 										</div>
-										<div class="col-lg-4 col-md-6">
-											<lable>Email</lable>
-											<input type="text" class="form-control" name="email" required>
+										<div class="col-lg-2 col-md-4">
+											<lable>Role</lable>
+											<input type="text" class="form-control" value="Employee"
+												disabled>
 										</div>
-
-										<div class="col-lg-3 col-md-3">
-											<lable>Username</lable>
+										<div class="col-lg-5 col-md-6">
+											<lable>Username (Your email)</lable>
 											<input type="text" class="form-control" name="username"
 												required>
 										</div>
-										<div class="col-lg-2 col-md-3">
-											<lable>Password</lable>
-											<input type="password" class="form-control" name="pswd"
-												required>
-										</div>
-										<div class="col-lg-2 col-md-4">
+
+										<div class="col-lg-3 col-md-4">
 											<lable>Salary</lable>
 											<input type="text" class="form-control" name="salary"
 												onkeypress='return event.charCode >= 48 && event.charCode <= 57'
 												required>
 										</div>
-										<div class="col-lg-3 col-md-4">
+										<div class="col-lg-4 col-md-4">
 											<lable>Joining date</lable>
 											<input type="date" class="form-control" name="joiningDate"
 												required onblur="checkDate()">
 										</div>
-										<div class="col-lg-2 col-md-4">
-											<lable>Role</lable>
-											<select class="form-control pt-0 pb-0" name="roleID" required>
-												<option value="admin">admin</option>
-												<option value="employee">employee</option>
-											</select>
-										</div>
 									</div>
 									<div class="d-flex justify-content-end">
-										<div id="alert-date" class="alert alert-danger mb-0 mr-4" style="display:none">
-	                                    	Please check DOB and joining date again.
-	                                  	</div>
-	                                  	<div>
-											<button id="btnAddEmployee" class="btn btn-secondary mb-3" type="submit"
-												onclick="">Add</button>
+										<div id="alert-date" class="alert alert-danger mb-0 mr-4"
+											style="display: none">Please check DOB and joining date
+											again.</div>
+										<div>
+											<button id="btnAddEmployee" class="btn btn-secondary mb-3"
+												type="submit" onclick="">Add</button>
 											<button class="btn btn-outline-secondary mb-3" type="button"
 												onclick="closeForm(0)">Cancel</button>
-	                                  	</div>
+										</div>
 									</div>
 								</div>
 							</form>
@@ -241,49 +235,43 @@
 								method="">
 								<div class="text-left">
 									<div class="row mb-3">
-			                            <div class="col-lg-4 col-md-6">
-			                                <lable>Fullname</lable>
-			                                <input type="text" class="form-control" name="fullname" required>
-			                            </div>
-			                            <div class="col-lg-4 col-md-3">
-			                              <lable>D.O.B</lable>
-			                              <input type="date" class="form-control" name="DOB" required>
-			                            </div>
-			                            <div class="col-lg-4 col-md-3">
-			                              <lable>Gender</lable>
-			                              <select class="form-control pt-0 pb-0" name="gender" required>
-			                                <option value="female">Female</option>
-			                                <option value="male">Male</option>
-			                                <option value="other">Other</option>
-			                              </select>
-			                            </div>
-			                            <div class="col-lg-6 col-md-6">
-			                              <lable>Email</lable>
-			                              <input type="text" class="form-control" name="email" required>
-			                            </div>
-			                            
-			                            <div class="col-lg-6 col-md-6">
-			                              <lable>Username</lable>
-			                              <input type="text" class="form-control" name="username" required>
-			                            </div>
-			                            
-			                            <div class="col-lg col-md-4">
-			                                <lable>Salary</lable>
-			                                <input type="text" class="form-control" name="salary" onkeypress='return event.charCode >= 48 && event.charCode <= 57' required>
-			                            </div>
-			                            <div class="col-lg col-md-4">
-			                                <lable>Joining date</lable>
-			                                <input type="date" class="form-control" name="joiningDate" required>
-			                            </div>
-			                            <div class="col-lg col-md-4">
-			                                <lable>Role</lable>
-			                                <select class="form-control pt-0 pb-0" name="roleID" required>
-			                                  <option value="admin">admin</option>
-			                                  <option value="employee">employee</option>
-			                                </select>
-			                            </div>
-		                            </div>
-									
+										<input type="hidden" class="form-control" name="userID">
+										<div class="col-lg-4 col-md-6">
+											<lable>Fullname</lable>
+											<input type="text" class="form-control" name="fullname"
+												required>
+										</div>
+										<div class="col-lg-4 col-md-3">
+											<lable>D.O.B</lable>
+											<input type="date" class="form-control" disabled>
+										</div>
+										<div class="col-lg-4 col-md-3">
+											<lable>Gender</lable>
+											<input type="text" class="form-control" disabled>
+										</div>
+										<div class="col-lg-6 col-md-6">
+											<lable>Username (Your email)</lable>
+											<input type="text" class="form-control" name="username"
+												required>
+										</div>
+
+										<div class="col-lg col-md-4">
+											<lable>Salary</lable>
+											<input type="text" class="form-control" name="salary"
+												onkeypress='return event.charCode >= 48 && event.charCode <= 57'
+												required>
+										</div>
+										<div class="col-lg col-md-4">
+											<lable>Joining date</lable>
+											<input type="date" class="form-control" disabled>
+										</div>
+										<div class="col-lg col-md-4">
+											<lable>Role</lable>
+											<p class="form-control" disabled>Employee
+											<p>
+										</div>
+									</div>
+
 									<div class="text-right">
 
 										<button class="btn btn-secondary mb-3" type="submit"
@@ -294,39 +282,10 @@
 								</div>
 							</form>
 
-							<!--Filter-->
+
 							<div
 								class="title-employee d-flex align-items-center justify-content-center">
 								<h2>Employee List</h2>
-							</div>
-							<div class="container-fluid py-2 filter">
-								<form class="row" action="" method="">
-									<div class="col-xl-5 col-sm">
-										<div class="form-group">
-											<label for="roleEmployee">Role:</label> <select
-												class="form-control pt-0 pb-0" id="role" name="role">
-												<option value="any">any</option>
-												<option value="admin">admin</option>
-												<option value="employee">employee</option>
-											</select>
-										</div>
-									</div>
-									<div class="col-xl-5 col-sm">
-										<div class="form-group">
-											<label for="statusEmployee">Status:</label> <select
-												class="form-control pt-0 pb-0" id="status" name="status">
-												<option value="any">any</option>
-												<option value="active">active</option>
-												<option value="offline">offline</option>
-											</select>
-										</div>
-									</div>
-									<div
-										class="col-xl col-sm-3 d-flex justify-content-center align-items-center">
-										<button id="btnSearchEmployee" type="submit"
-											class="btn btn-secondary" onclick="">Search</button>
-									</div>
-								</form>
 							</div>
 
 							<!--List Employee-->
@@ -335,18 +294,39 @@
 									<thead>
 										<tr>
 											<th>No.</th>
-											<th>Name</th>
+											<th>Full name</th>
+											<th>User name</th>
 											<th>Gender</th>
 											<th>D.O.B</th>
 											<th>Salary</th>
 											<th>Joining date</th>
-											<th>Status</th>
 											<th>Role</th>
 											<th>Action</th>
 										</tr>
 									</thead>
 									<tbody>
 
+										<c:forEach var="employee" items="${employees }"
+											varStatus="status">
+											<tr>
+												<td>${status.count}</td>
+												<td>${employee.fullname }</td>
+												<td>${employee.username }</td>
+												<td>${employee.gender }</td>
+												<td>${employee.DOB }</td>
+												<td>${employee.salary }</td>
+												<td>${employee.joiningDate }</td>
+												<td>Employee</td>
+												<td>
+													<button type="button" class="btn btn-danger btn-sm"
+														data-toggle="modal" data-target="#deleteEmployeeModal" onclick="deleteEmployee('${employee.userID}')">Delete</button>
+													<button type="button" class="btn btn-warning btn-sm"
+														onclick="showForm(1) && edit(['${employee.userID}','${employee.fullname}','${employee.DOB }','${employee.gender}', '${employee.username }', '${employee.salary }','${employee.joiningDate }'])">Edit</button>
+													<button type="button" class="btn btn-primary btn-sm ml-1">Reset
+														password</button>
+												</td>
+											</tr>
+										</c:forEach>
 									</tbody>
 								</table>
 							</div>

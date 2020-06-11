@@ -1,23 +1,27 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
+
 <head>
-<title>Dashboard</title>
+<title>Profile</title>
 <!-- Required meta tags -->
 <meta charset="utf-8">
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <!-- CSS -->
-<link rel="stylesheet" href="<c:url value="/assets/font-awesome-5.13.0/css/all.min.css"/>">
+<link rel="stylesheet"
+	href="<c:url value="/assets/font-awesome-5.13.0/css/all.min.css"/>">
 <link rel="stylesheet" href="<c:url value="/assets/css/style.css"/>">
 <!-- Favicon -->
 <link rel="icon" href="<c:url value="/assets/images/logo1-dark.png"/>"
 	type="image/x-icon">
 <!-- Bootstrap CSS -->
-<link rel="stylesheet" href="<c:url value="/assets/bootstrap/css/bootstrap.min.css"/>">
+<link rel="stylesheet"
+	href="<c:url value="/assets/bootstrap/css/bootstrap.min.css"/>">
 </head>
+
 <body onload="startTime() && showDate()">
 	<div class="preloader">
 		<div class="cssload-speeding-wheel"></div>
@@ -76,33 +80,44 @@
 					data-toggle="tooltip" title="Sign out!">
 					<i class="fa fa-sign-out-alt mx-4" aria-hidden="true"></i>
 				</div>
-				<div class="avatar-user" data-toggle="tooltip" title="Your profile">
-					<a href="<%=request.getContextPath() %>/profile">
-						<img src="<c:url value="/assets/images/avatar.png"/>">
-					</a>
+				<div class="avatar-user" onclick="" data-toggle="tooltip" title="Your profile">
+					<img src="<c:url value="/assets/images/avatar.png"/>">
 				</div>
 			</div>
 
 		</div>
+
+
 		<!-- /Header -->
 
-
 		<!-- Navbar -->
+		<%
+			String userRole = request.getAttribute("userRole").toString();
+		%>
 		<div class="admin-wrapper">
 			<div class="nav">
 				<div class="logo">
 					<img src="<c:url value="/assets/images/logo.png"/>">
 				</div>
 				<ul>
-					<li><a href="<%=request.getContextPath()%>/dashboard"
-						class="active"> <span class="menu-tab-icon"> <i
-								class="fa fa-chart-bar"></i>
+					<li><a href="<%=request.getContextPath()%>/dashboard"> <span
+							class="menu-tab-icon"> <i class="fa fa-chart-bar"></i>
 						</span> <span>Dashboard</span>
 					</a></li>
-					<li><a href="<%=request.getContextPath()%>/reservation">
-							<span class="menu-tab-icon"> <i class="fa fa-list"></i>
-						</span> <span>Reservation</span>
-					</a></li>
+					<li><c:choose>
+							<c:when test="${ userRole == 'ROLE_MANAGER'}">
+								<a href="<%=request.getContextPath()%>/employee"> <span
+									class="menu-tab-icon"> <i class="fa fa-users-cog"></i>
+								</span> <span>Employee</span>
+								</a>
+							</c:when>
+							<c:otherwise>
+								<a href="<%=request.getContextPath()%>/reservation"> <span
+									class="menu-tab-icon"> <i class="fa fa-list"></i>
+								</span> <span>Reservation</span>
+								</a>
+							</c:otherwise>
+						</c:choose></li>
 					<li><a href="<%=request.getContextPath()%>/lobby"> <span
 							class="menu-tab-icon"> <i class="fa fa-door-open"></i>
 						</span> <span>Lobby</span>
@@ -125,85 +140,71 @@
 		</div>
 		<!-- //Navbar -->
 
+		<!-- always call show...Updated-->
 		<!-- Page Content -->
 		<div
 			class="body-content d-flex align-items-center justify-content-center">
-			<div id="dashboard" class="dashboard-employee">
+			<!-- Profile -->
+			<div id="profile" class="profile">
 				<div class="container-fluid">
-					<div class="row mt-4">
+					<div class="row">
 						<div class="col-sm"></div>
-						<div class="col-sm-10">
-							<div class="row mb-3">
-								<!--Reservation-->
-								<div class="col-lg-4 col-sm-6 col-6 mb-3">
-									<a href="<%=request.getContextPath()%>/reservation">
-										<div class="item text-center">
-											<div class="icon">
-												<img src="<c:url value ="/assets/images/icon4.png"/>" alt="">
-											</div>
-											<div class="content font-sm">Reservation</div>
+						<div class="col-sm-8">
+							<div class="profile-content">
+								<div class="profile-title text-center">Formal profile</div>
+								<div class="profile-body">
+									<div class="profile-info text-center">
+										<div class="avatar-profile">
+											<img src="<c:url value="/assets/images/avatar.png"/>">
 										</div>
-									</a>
-								</div>
-								<!-- Lobbies -->
-								<div class="col-lg-4 col-sm-6 col-6 mb-3">
-									<a href="<%=request.getContextPath()%>/lobby">
-										<div class="item text-center">
-											<div class="icon">
-												<img src="<c:url value ="/assets/images/icon9.png"/>" alt="">
-											</div>
-											<div class="content font-sm">Lobbies</div>
+										<div class="pt-3">
+											<button type="button" class="btn btn-primary"
+												onclick="changePassword()">Change password</button>
 										</div>
-									</a>
-								</div>
-								<!-- Menu -->
-								<div class="col-lg-4 col-sm-6 col-6 mb-3">
-									<a href="<%=request.getContextPath()%>/food">
-										<div class="item text-center">
-											<div class="icon">
-												<img src="<c:url value ="/assets/images/icon10.png"/>"
-													alt="">
-											</div>
-											<div class="content font-sm">Menu</div>
-										</div>
-									</a>
-								</div>
+										<div class="py-4">Đinh Ngọc Uyên Phương</div>
+										<c:choose>
+											<c:when test="${ userRole == 'ROLE_MANAGER'}">
+												<div class="pb-4">Manager</div>
+											</c:when>
+											<c:otherwise>
+												<div class="pb-4">Employee</div>
+											</c:otherwise>
+										</c:choose>
 
-								<!-- Services -->
-								<div class="col-lg-4 col-sm-6 col-6 mb-3">
-									<a href="<%=request.getContextPath()%>/service">
-										<div class="item text-center">
-											<div class="icon">
-												<img src="<c:url value ="/assets/images/icon8.png"/>" alt="">
+										<div class="static-user container-fluid">
+											<div class="row">
+												<div class="col-sm text-center wedding">
+													<h5>Wedding</h5>
+													<p class="counter">350</p>
+												</div>
+												<div class="col-sm text-center revenue">
+													<h5>Revenue</h5>
+													<p class="counter">240</p>
+												</div>
+												<div class="col-sm text-center invoice">
+													<h5>Invoice</h5>
+													<p class="counter">350</p>
+												</div>
 											</div>
-											<div class="content font-sm">Services</div>
 										</div>
-									</a>
-								</div>
-								<!-- Payment -->
-								<div class="col-lg-4 col-sm-6 col-6 mb-3">
-									<a href="<%=request.getContextPath()%>/payment">
-										<div class="item text-center">
-											<div class="icon">
-												<img src="<c:url value ="/assets/images/icon11.png"/>"
-													alt="">
+									</div>
+									<div class="profile-password">
+										<form id="profile-password" action="<%=request.getContextPath()%>/profile" method="POST">
+											<p>Current password</p>
+											<input name="currentPassword" type="password" required>
+											<p>New password</p>
+											<input name="newPassword" type="password"
+												onblur="checkMatching()" required>
+											<p>Re-type new password</p>
+											<input type="password" id="confirmPassword"
+												onblur="checkMatching()" class="mb-3" required>
+											<div class="alert p-0">*Passwords do not match</div>
+											<div class="text-center mb-3">
+												<button type="button" class="btn" onclick="changePassword()">Cancel</button>
+												<button type="submit" class="btn" id="btnAccept">Accept</button>
 											</div>
-											<div class="content font-sm">Payment</div>
-										</div>
-									</a>
-								</div>
-								<!-- Logout -->
-								<div class="col-lg-4 col-sm-6 col-6 mb-3">
-									<a href="#" data-toggle="modal" data-target="#signOutModal"
-										data-toggle="tooltip">
-										<div class="item text-center">
-											<div class="icon">
-												<img src="<c:url value ="/assets/images/iconlogout.jpg"/>"
-													alt="">
-											</div>
-											<div class="content font-sm">Sign out</div>
-										</div>
-									</a>
+										</form>
+									</div>
 								</div>
 							</div>
 						</div>
@@ -211,14 +212,7 @@
 					</div>
 				</div>
 			</div>
-
-
 		</div>
-
-
-
-
-
 
 		<footer class="footer text-center"> 2020 UIT &copy;
 			wedding.com </footer>
@@ -226,12 +220,25 @@
 
 
 	<!-- Optional JavaScript -->
-	<script src=""></script>
-	<script src="<c:url value="/assets/js/header.js"/>"></script>
+	<script src="<c:url value="/assets/js/header.js"/>">
+		
+	</script>
+	<script src="<c:url value="/assets/js/profile.js"/>"></script>
+
+	<!-- JS for counter up-->
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/waypoints/2.0.5/waypoints.min.js"></script>
+	<script src="<c:url value="/assets/js/jquery.countup.min.js"/>"></script>
+	<script>
+		$('.counter').countUp();
+	</script>
 
 	<!-- jQuery first, then Popper.js, then Bootstrap JS -->
 	<script src="<c:url value="/assets/bootstrap/jquery.slim.min.js"/>"></script>
 	<script src="<c:url value="/assets/bootstrap/popper.min.js"/>"></script>
 	<script src="<c:url value="/assets/bootstrap/js/bootstrap.min.js"/>"></script>
 </body>
+
 </html>
