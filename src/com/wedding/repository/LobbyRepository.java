@@ -8,14 +8,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.wedding.databaseconnection.MySqlConnection;
+import com.wedding.databaseconnection.SqlServerConnection;
 import com.wedding.models.Lobby;
 
 public class LobbyRepository {
 	public List<Lobby> getAll() {
 
-		String query = "SELECT lobbyID, lobbyName, lobbyTypeName, maxTable, LOBBY.isDeleted, minPrice, lobbyTypeID FROM TYPE_LOBBY, LOBBY WHERE LOBBY.lobbyType = TYPE_LOBBY.lobbyTypeID AND NOT LOBBY.isDeleted ORDER BY lobbyID ASC;";
-
-		Connection connection = MySqlConnection.getInstance().getConnection();
+		//String query = "SELECT lobbyID, lobbyName, lobbyTypeName, maxTable, LOBBY.isDeleted, minPrice, lobbyTypeID FROM TYPE_LOBBY, LOBBY WHERE LOBBY.lobbyType = TYPE_LOBBY.lobbyTypeID AND NOT LOBBY.isDeleted ORDER BY lobbyID ASC;";
+		String query = "SELECT lobbyID, lobbyName, lobbyTypeName, maxTable, LOBBY.isDeleted, minPrice, lobbyTypeID FROM TYPE_LOBBY, LOBBY WHERE LOBBY.lobbyType = TYPE_LOBBY.lobbyTypeID AND LOBBY.isDeleted = 0 ORDER BY lobbyID ASC;";
+		//Connection connection = MySqlConnection.getInstance().getConnection();
+		Connection connection = SqlServerConnection.getInstance().getConnection();
 		List<Lobby> lobbyList = new ArrayList<Lobby>();
 		try {
 			PreparedStatement statement = connection.prepareStatement(query);
@@ -41,7 +43,8 @@ public class LobbyRepository {
 	}
 	public void addLobby(Lobby sanh) {
 		String query = "INSERT INTO LOBBY(lobbyName, lobbyType, maxTable) VALUES (?, ?, ?);";
-		Connection connection = MySqlConnection.getInstance().getConnection();
+		//Connection connection = MySqlConnection.getInstance().getConnection();
+		Connection connection = SqlServerConnection.getInstance().getConnection();
 		try {
 				PreparedStatement prep = connection.prepareStatement(query);
 				prep.setString(1, sanh.getLobbyName());

@@ -4,30 +4,28 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-public class MySqlConnection {
+public class PostgreConnection {
+	private final String url = "jdbc:postgresql://localhost/wedding-service(1)";
 	
-	private final String url = "jdbc:mysql://localhost:3306/WEDDING_MANAGEMENT";
-	
-	private final String username = "root";
-	private final String password = "@dinhngocup1802";
+	private final String username = "postgres";
+	private final String password = "134263";
 
-	private static MySqlConnection _instance = null;
+	private static PostgreConnection _instance = null;
 	
-	private MySqlConnection () {};
+	private PostgreConnection () {};
 	
-	public static MySqlConnection getInstance() {
+	public static PostgreConnection getInstance() {
 		if(_instance == null) {
-			_instance = new MySqlConnection();
+			_instance = new PostgreConnection();
 			return _instance;
 		}
 		return _instance;
 	}
-	
 	public Connection getConnection() {
 		try {
-			Class.forName("com.mysql.cj.jdbc.Driver");
+			Class.forName("org.postgresql.Driver");
 			return DriverManager.getConnection(url, username, password);
-		} catch(ClassNotFoundException e) {
+		} catch (ClassNotFoundException e) {
 			System.out.println("KHONG TIM THAY DRIVER");
 			e.printStackTrace();
 		} catch (SQLException e) {
