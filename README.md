@@ -7,7 +7,7 @@ Since most of the wedding receptions nowadays have not applied any special progr
 * The form of payment is mainly used handwritten receipt which is charged by the handheld calculators. 
  * The organization and management of employees, hours, work shifts, income statements, and monthly revenue summary, still use the very basic things such as Excel. <br>
 
-** `Conclusion` **: Because of these inconvenient and ambiguous surveys from our relatives and friends who have registered wedding reception services before, we have designed a special website for this service to both of the employees and managers that they can easily organize, manage, and improve service quality. At the same time, this site will provide better employee management. Also, employee can preside over the plans for the wedding reception through the website, so it should be less confusing and mistaken.
+**`Conclusion`**: Because of these inconvenient and ambiguous surveys from our relatives and friends who have registered wedding reception services before, we have designed a special website for this service to both of the employees and managers that they can easily organize, manage, and improve service quality. At the same time, this site will provide better employee management. Also, employee can preside over the plans for the wedding reception through the website, so it should be less confusing and mistaken.
 
 ### `Advantages:`
 * Using this web application instead of common desktop applications (WinForms) could make it compatible with different operating systems and computers. Ex: WinForms is not available for macOS, …
