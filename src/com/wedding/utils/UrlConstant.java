@@ -43,4 +43,6 @@ public class UrlConstant {
 //	public static final String URL_EMPLOYEE_FOOD = "/employee/food";
 //	public static final String URL_EMPLOYEE_SERVICE = "/employee/service";
 //	public static final String URL_EMPLOYEE_PAYMENT = "/employee/payment";
+	public static final int select_DB = 1;
+	
 }

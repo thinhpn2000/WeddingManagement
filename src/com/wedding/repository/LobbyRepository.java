@@ -7,17 +7,19 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.wedding.databaseconnection.DBConnection;
 import com.wedding.databaseconnection.MySqlConnection;
 import com.wedding.databaseconnection.SqlServerConnection;
 import com.wedding.models.Lobby;
+import com.wedding.utils.UrlConstant;
 
 public class LobbyRepository {
 	public List<Lobby> getAll() {
 
-		//String query = "SELECT lobbyID, lobbyName, lobbyTypeName, maxTable, LOBBY.isDeleted, minPrice, lobbyTypeID FROM TYPE_LOBBY, LOBBY WHERE LOBBY.lobbyType = TYPE_LOBBY.lobbyTypeID AND NOT LOBBY.isDeleted ORDER BY lobbyID ASC;";
-		String query = "SELECT lobbyID, lobbyName, lobbyTypeName, maxTable, LOBBY.isDeleted, minPrice, lobbyTypeID FROM TYPE_LOBBY, LOBBY WHERE LOBBY.lobbyType = TYPE_LOBBY.lobbyTypeID AND LOBBY.isDeleted = 0 ORDER BY lobbyID ASC;";
+		String query = "SELECT lobbyID, lobbyName, lobbyTypeName, maxTable, LOBBY.isDeleted, minPrice, lobbyTypeID FROM TYPE_LOBBY, LOBBY WHERE LOBBY.lobbyType = TYPE_LOBBY.lobbyTypeID AND NOT LOBBY.isDeleted ORDER BY lobbyID ASC;";
+		//String query = "SELECT lobbyID, lobbyName, lobbyTypeName, maxTable, LOBBY.isDeleted, minPrice, lobbyTypeID FROM TYPE_LOBBY, LOBBY WHERE LOBBY.lobbyType = TYPE_LOBBY.lobbyTypeID AND LOBBY.isDeleted = 0 ORDER BY lobbyID ASC;";
 		//Connection connection = MySqlConnection.getInstance().getConnection();
-		Connection connection = SqlServerConnection.getInstance().getConnection();
+		Connection connection = DBConnection.getInstance().getConnection(UrlConstant.select_DB);
 		List<Lobby> lobbyList = new ArrayList<Lobby>();
 		try {
 			PreparedStatement statement = connection.prepareStatement(query);
