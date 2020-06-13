@@ -1,1 +1,83 @@
-var idLobby,idFood,idService,titleTab=document.getElementsByClassName("title"),activeTab=0,isShownForm=!1,showForm=e=>{if(!isShownForm)return document.getElementsByClassName("formAdd")[e].className+=" active",isShownForm=!0,document.getElementsByClassName("scroll")[0].className=document.getElementsByClassName("scroll")[0].className.replace("scroll","scroll-shrink"),!0},closeForm=e=>{document.getElementsByClassName("formAdd")[e].classList.remove("active"),Array.from(document.getElementsByClassName("scroll-shrink")).length>0&&(document.getElementsByClassName("scroll-shrink")[0].className=document.getElementsByClassName("scroll-shrink")[0].className.replace("scroll-shrink","scroll")),clearData(),isShownForm=!1},clearData=()=>{let e=document.getElementsByTagName("input");return e=Array.from(e).map(e=>{e.value=""}),!0},lobbies=[{idLobby:"S1",nameLobby:"Sảnh A",typeLobby:"A",tableMax:40,costMin:1e6,note:"A",statusLobby:1},{idLobby:"S2",nameLobby:"Sảnh B",typeLobby:"B",tableMax:50,costMin:11e5,note:"B",statusLobby:1},{idLobby:"S3",nameLobby:"Sảnh C",typeLobby:"C",tableMax:40,costMin:12e5,note:"",statusLobby:1},{idLobby:"S4",nameLobby:"Sảnh D",typeLobby:"D",tableMax:60,costMin:14e5,note:"",statusLobby:1},{idLobby:"S5",nameLobby:"Sảnh E",typeLobby:"E",tableMax:50,costMin:16e5,note:"E",statusLobby:1},{idLobby:"S6",nameLobby:"Sảnh F",typeLobby:"F",tableMax:40,costMin:12e5,note:"",statusLobby:1},{idLobby:"S7",nameLobby:"Sảnh G",typeLobby:"G",tableMax:60,costMin:14e5,note:"G",statusLobby:1},{idLobby:"S8",nameLobby:"Sảnh H",typeLobby:"H",tableMax:50,costMin:16e5,note:"H",statusLobby:1}],showLobbyUpdated=()=>{var e=lobbies.map(e=>{if(1===e.statusLobby)return`<tr id='${e.idLobby}update'><td>${e.nameLobby}</td><td>${e.typeLobby}</td><td>${e.tableMax}</td><td>${e.costMin}</td><td>${e.note}</td><td><button type="button" class="btn btn-danger btn-sm" onclick="getIdLobby('${e.idLobby}')" data-toggle="modal" data-target="#deleteLobbyModal">Delete</button> <button type="button" class="btn btn-warning btn-sm" onclick="showForm(0) && editLobby('${e.idLobby}')">Edit</button></td></tr>`});return document.getElementById("updatedLobby").getElementsByTagName("tbody")[0].innerHTML=e.join(""),!0},getIdLobby=e=>{idFood=e},deleteLobby=()=>{console.log(idFood)},editLobby=e=>{console.log(e)},menu=[{idFood:"MA1",nameFood:"Món A",costFood:1e5,note:"Khai vị",statusFood:1},{idFood:"MA2",nameFood:"Món B",costFood:2e5,note:" Món chính",statusFood:1},{idFood:"MA3",nameFood:"Món C",costFood:3e5,note:"Món chính",statusFood:1},{idFood:"MA4",nameFood:"Món D",costFood:4e5,note:"Món chính",statusFood:1},{idFood:"MA5",nameFood:"Món E",costFood:5e5,note:"Tráng miệng",statusFood:1},{idFood:"MA6",nameFood:"Món F",costFood:6e5,note:"Tráng miệng",statusFood:1},{idFood:"MA7",nameFood:"Món G",costFood:3e5,note:"Món chính",statusFood:1},{idFood:"MA8",nameFood:"Món H",costFood:4e5,note:"Món chính",statusFood:1},{idFood:"MA9",nameFood:"Món I",costFood:5e5,note:"Tráng miệng",statusFood:1},{idFood:"MA10",nameFood:"Món G",costFood:6e5,note:"Tráng miệng",statusFood:1}],showFoodUpdated=()=>{var e=menu.map(e=>{if(1===e.statusFood)return`<tr id='${e.idFood}update'><td>${e.nameFood}</td><td>${e.note}</td><td>${e.costFood}</td><td><button type="button" class="btn btn-danger btn-sm"  onclick="getIdFood('${e.idFood}')" data-toggle="modal" data-target="#deleteFoodModal">Delete</button> <button type="button" class="btn btn-warning btn-sm" onclick="showForm(0) && editFood('${e.idFood}')">Edit</button></td></tr>`});return document.getElementById("updateFood").getElementsByTagName("tbody")[0].innerHTML=e.join(""),console.log(document.getElementById("updateFood")),isShownMenu=!1,!0},getIdFood=e=>{idFood=e},deleteFood=()=>{console.log(idFood)},editFood=e=>{console.log(e)},servicesMenu=[{idService:"DV1",nameService:"Dịch vụ 1",costService:1e5,statusService:1},{idService:"DV2",nameService:"Dịch vụ 2",costService:2e5,statusService:1},{idService:"DV3",nameService:"Dịch vụ 3",costService:3e5,statusService:1},{idService:"DV4",nameService:"Dịch vụ 4",costService:4e5,statusService:1},{idService:"DV5",nameService:"Dịch vụ 5",costService:5e5,statusService:1},{idService:"DV6",nameService:"Dịch vụ 6",costService:3e5,statusService:1},{idService:"DV7",nameService:"Dịch vụ 7",costService:4e5,statusService:1},{idService:"DV8",nameService:"Dịch vụ 8",costService:5e5,statusService:1},{idService:"DV9",nameService:"Dịch vụ 9",costService:3e5,statusService:1},{idService:"DV10",nameService:"Dịch vụ 10",costService:4e5,statusService:1},{idService:"DV11",nameService:"Dịch vụ 11",costService:5e5,statusService:1}],showServiceUpdated=()=>{var e=servicesMenu.map(e=>{if(1===e.statusService)return`<tr id='${e.idService}update'><td>${e.nameService}</td><td>${e.costService}</td><td><button type="button" class="btn btn-danger btn-sm" onclick="getIdService('${e.idService}')" data-toggle="modal" data-target="#deleteServiceModal">Delete</button> <button type="button" class="btn btn-warning btn-sm" onclick="showForm(0) && editFood('${e.idService}')">Edit</button></td></tr>`});return document.getElementById("updateService").getElementsByTagName("tbody")[0].innerHTML=e.join(""),isShownServices=!1,!0},getIdService=e=>{idService=e},deleteService=()=>{console.log(idService)},editService=e=>{console.log(e)};
+var titleTab = document.getElementsByClassName('title');
+var activeTab = 0;
+var isShownForm = false;
+var idLobby;
+var idFood;
+var idService;
+
+var showForm = (id) => {
+    if (!isShownForm) {
+        document.getElementsByClassName('formAdd')[id].className += (" active");
+        isShownForm = true;
+        document.getElementsByClassName('scroll')[0].className = document.getElementsByClassName('scroll')[0].className.replace("scroll", "scroll-shrink");
+        return true;
+    }
+}
+var edit = (info) => {
+	console.log("hi");
+    let inputs = Array.from(document.getElementsByClassName('formAdd')[0].getElementsByTagName('input'));
+    for(let i = 0; i < inputs.length; i++) {
+    	if(info[i]) {
+    		console.log(info[i]);
+    		inputs[i].value = info[i];
+    		console.log(inputs[i].value);
+    	}
+    }
+}
+var closeForm = (id) => {
+    let form = document.getElementsByClassName('formAdd')[id];
+    form.classList.remove("active");
+    if (Array.from(document.getElementsByClassName('scroll-shrink')).length > 0)
+        document.getElementsByClassName('scroll-shrink')[0].className = document.getElementsByClassName('scroll-shrink')[0].className.replace('scroll-shrink', 'scroll');
+    clearData();
+    isShownForm = false;
+}
+var clearData = () => {
+    let elements = document.getElementsByTagName('input');
+    elements = Array.from(elements).map(element => { element.value = '' })
+    return true;
+}
+var selectType = (action) => {
+	let selectInput;
+	let form;
+	if(action === 'add') {
+		selectInput = 'addLobby';
+		form = 'newLobby';
+	} else {
+		selectInput = 'editLobby';
+		form = 'updatedLobby';
+	}
+	
+	let option = document.getElementById(selectInput).querySelector('option:checked');
+	let price = option.value;
+	let id = option.id;
+    document.getElementById(form).querySelector('input[name="minPrice"]').value = price;
+    document.getElementById(form).querySelector('input[name="lobbyTypeID"]').value = id;
+    
+}
+var selection = (action) => {
+	let input = document.getElementById("lobbyTypeName");	
+	let selection = document.getElementById("editLobby");	
+	if(action === 'show') {
+		selection.style.display = "block";
+		input.style.display = "none";
+		selectType('edit');
+	} else {
+		selection.style.display = "none";
+		input.style.display = "block";
+	}
+	return true;
+}
+var getIdFood = (id) => {
+	document.getElementById('deleteFoodModal').querySelector('input[name="foodID"]').value = id;
+	console.log(document.getElementById('deleteFoodModal').querySelector('input[name="foodID"]').value);
+}
+var getIdLobby = (id) => {
+	document.getElementById('deleteLobbyModal').querySelector('input[name="lobbyID"]').value = id;
+	console.log(document.getElementById('deleteLobbyModal').querySelector('input[name="lobbyID"]').value);
+}
+var getIdService = (id) => {
+	document.getElementById('deleteServiceModal').querySelector('input[name="serviceID"]').value = id;
+	console.log(document.getElementById('deleteServiceModal').querySelector('input[name="serviceID"]').value);
+}
+

@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ page import="com.wedding.models.Service"%>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -11,16 +12,18 @@
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <!-- CSS -->
-<link rel="stylesheet" href="<c:url value="/assets/font-awesome-5.13.0/css/all.min.css"/>">
+<link rel="stylesheet"
+	href="<c:url value="/assets/font-awesome-5.13.0/css/all.min.css"/>">
 <link rel="stylesheet" href="<c:url value="/assets/css/style.css"/>">
 <!-- Favicon -->
 <link rel="icon" href="<c:url value="/assets/images/logo1-dark.png"/>"
 	type="image/x-icon">
 <!-- Bootstrap CSS -->
-<link rel="stylesheet" href="<c:url value="/assets/bootstrap/css/bootstrap.min.css"/>">
+<link rel="stylesheet"
+	href="<c:url value="/assets/bootstrap/css/bootstrap.min.css"/>">
 </head>
 
-<body onload="startTime() && showDate() && showServiceUpdated()">
+<body onload="startTime() && showDate()">
 	<div class="preloader">
 		<div class="cssload-speeding-wheel"></div>
 	</div>
@@ -41,8 +44,9 @@
 					</div>
 					<div class="modal-body">Are you sure?</div>
 					<div class="modal-footer">
-						<a href="<%=request.getContextPath()%>/logout"
-							class="btn btn-danger">Sign out</a>
+						<a href="<%=request.getContextPath()%>/logout">
+							<button type="button" class="btn btn-danger btn-sm">Sign out</button>
+						</a>
 						<button type="button" class="btn btn-success btn-sm"
 							data-dismiss="modal">Cancel</button>
 					</div>
@@ -77,8 +81,10 @@
 					data-toggle="tooltip" title="Sign out!">
 					<i class="fa fa-sign-out-alt mx-4" aria-hidden="true"></i>
 				</div>
-				<div class="avatar-user" onclick="">
-					<img src="<c:url value="/assets/images/avatar.jpg"/>">
+				<div class="avatar-user" data-toggle="tooltip" title="Your profile">
+					<a href="<%=request.getContextPath() %>/profile">
+						<img src="<c:url value="/assets/images/avatar.png"/>">
+					</a>
 				</div>
 			</div>
 
@@ -166,7 +172,9 @@
 										role="dialog" aria-labelledby="" aria-hidden="true">
 										<div class="modal-dialog modal-sm modal-dialog-centered"
 											role="document">
-											<div class="modal-content">
+											<form class="modal-content"
+												action="<%=request.getContextPath()%>/service/delete"
+												method="GET">
 												<div class="modal-header">
 													<h5 class="modal-title" id="">Delete Service</h5>
 													<button type="button" class="close" data-dismiss="modal"
@@ -174,31 +182,35 @@
 														<span aria-hidden="true">&times;</span>
 													</button>
 												</div>
-												<div class="modal-body">Do you want to delete this
-													service?</div>
+												<div class="modal-body">
+													Do you want to delete this service? <input type="hidden"
+														name="serviceID">
+												</div>
 												<div class="modal-footer">
-													<button type="button" class="btn btn-danger btn-sm"
-														data-dismiss="modal" onclick="deleteService()">Yes</button>
+													<button type="submit" class="btn btn-danger btn-sm">Yes</button>
 													<button type="button" class="btn btn-success btn-sm"
 														data-dismiss="modal">Cancel</button>
 												</div>
-											</div>
+											</form>
 										</div>
 									</div>
 
 									<!-- Form edit service-->
-									<form class="formAdd" action="" method="">
+									<form class="formAdd"
+										action="<%=request.getContextPath()%>/service/update"
+										method="POST">
 										<h2 class="text-center">Service Information Update Form</h2>
 										<div id="" class="container-fluid text-left mb-3">
 											<div class="row mb-3">
+												<input type="hidden" name="serviceID">
 												<div class="col-sm-6">
 													<lable>Name</lable>
-													<input type="text" class="form-control" name="name"
+													<input type="text" class="form-control" name="serviceName"
 														required>
 												</div>
 												<div class="col-sm">
 													<lable>Price</lable>
-													<input type="text" name="cost" class="form-control"
+													<input type="text" name="servicePrice" class="form-control"
 														onkeypress='return event.charCode >= 48 && event.charCode <= 57'
 														required>
 												</div>
@@ -213,18 +225,20 @@
 									</form>
 
 									<!-- Form add service-->
-									<form class="formAdd">
+									<form class="formAdd"
+										action="<%=request.getContextPath()%>/service/add"
+										method="POST">
 										<h2 class="text-center">New Service Information</h2>
 										<div id="newService" class="container-fluid text-left mb-3">
 											<div class="row mb-3">
 												<div class="col-sm-6">
 													<lable>Name</lable>
-													<input type="text" class="form-control" name="name"
+													<input type="text" class="form-control" name="serviceName"
 														required>
 												</div>
 												<div class="col-sm">
 													<lable>Price</lable>
-													<input type="text" name="cost" class="form-control"
+													<input type="text" name="servicePrice" class="form-control"
 														onkeypress='return event.charCode >= 48 && event.charCode <= 57'
 														required>
 												</div>
@@ -245,11 +259,35 @@
 												<tr>
 													<th>Name</th>
 													<th>Price</th>
-													<th>Action</th>
+													<c:choose>
+														<c:when test = "${userRole == 'ROLE_MANAGER' }">
+															<th>Action</th>
+														</c:when>
+														<c:otherwise>
+														</c:otherwise>
+													</c:choose>
 												</tr>
 											</thead>
 											<tbody>
-
+												<c:forEach var="service" items="${services }">
+													<tr>
+														<td>${service.serviceName}</td>
+														<td>${service.servicePrice}</td>
+														<c:choose>
+															<c:when test="${userRole =='ROLE_MANAGER' }">
+																<td>
+																	<button type="button" class="btn btn-danger btn-sm"
+																		onclick="getIdService('${service.serviceID}')"
+																		data-toggle="modal" data-target="#deleteServiceModal">Delete</button>
+																	<button type="button" class="btn btn-warning btn-sm"
+																		onclick="showForm(0) && edit(['${service.serviceID}','${service.serviceName}','${service.servicePrice}'])">Edit</button>
+																</td>
+															</c:when>
+															<c:otherwise>
+															</c:otherwise>
+														</c:choose>
+													</tr>
+												</c:forEach>
 											</tbody>
 										</table>
 									</div>

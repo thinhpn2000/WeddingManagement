@@ -17,6 +17,7 @@ public class AuthenticationFilter extends HttpFilter {
 	protected void doFilter(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
 			throws IOException, ServletException {
 
+		response.setCharacterEncoding("UTF-8");
 		HttpSession userSession = request.getSession();
 
 		if (!request.getServletPath().startsWith("/login") && !request.getServletPath().startsWith("/assets")
@@ -26,6 +27,7 @@ public class AuthenticationFilter extends HttpFilter {
 		} else {
 			chain.doFilter(request, response);
 			response.setCharacterEncoding("UTF-8");
+			
 		}
 
 	}

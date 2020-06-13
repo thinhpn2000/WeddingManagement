@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ page import="com.wedding.models.Food" %>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -20,7 +21,7 @@
 <link rel="stylesheet" href="<c:url value="/assets/bootstrap/css/bootstrap.min.css"/>">
 </head>
 
-<body onload="startTime() && showDate() && showFoodUpdated()">
+<body onload="startTime() && showDate()">
 	<div class="preloader">
 		<div class="cssload-speeding-wheel"></div>
 	</div>
@@ -41,8 +42,9 @@
 					</div>
 					<div class="modal-body">Are you sure?</div>
 					<div class="modal-footer">
-						<a href="<%=request.getContextPath()%>/logout"
-							class="btn btn-danger">Sign out</a>
+						<a href="<%=request.getContextPath()%>/logout">
+							<button type="button" class="btn btn-danger btn-sm">Sign out</button>
+						</a>
 						<button type="button" class="btn btn-success btn-sm"
 							data-dismiss="modal">Cancel</button>
 					</div>
@@ -77,8 +79,10 @@
 					data-toggle="tooltip" title="Sign out!">
 					<i class="fa fa-sign-out-alt mx-4" aria-hidden="true"></i>
 				</div>
-				<div class="avatar-user" onclick="">
-					<img src="<c:url value="/assets/images/avatar.jpg"/>">
+				<div class="avatar-user" data-toggle="tooltip" title="Your profile">
+					<a href="<%=request.getContextPath() %>/profile">
+						<img src="<c:url value="/assets/images/avatar.png"/>">
+					</a>
 				</div>
 			</div>
 
@@ -166,7 +170,7 @@
 										role="dialog" aria-labelledby="" aria-hidden="true">
 										<div class="modal-dialog modal-sm modal-dialog-centered"
 											role="document">
-											<div class="modal-content">
+											<form class="modal-content" action="<%=request.getContextPath() %>/food/delete" method="GET">
 												<div class="modal-header">
 													<h5 class="modal-title" id="">Delete Food</h5>
 													<button type="button" class="close" data-dismiss="modal"
@@ -174,38 +178,41 @@
 														<span aria-hidden="true">&times;</span>
 													</button>
 												</div>
-												<div class="modal-body">Do you want to delete this
-													food?</div>
+												<div class="modal-body">
+												Do you want to delete this food?
+												<input type="hidden" name="foodID">
+												</div>
 												<div class="modal-footer">
-													<button type="button" class="btn btn-danger btn-sm"
-														data-dismiss="modal" onclick="deleteFood()">Yes</button>
+													<button type="submit" class="btn btn-danger btn-sm"
+														 onclick="">Yes</button>
 													<button type="button" class="btn btn-success btn-sm"
 														data-dismiss="modal">Cancel</button>
 												</div>
-											</div>
+											</form>
 										</div>
 									</div>
 
 									<!-- Form edit food-->
-									<form class="formAdd" action="" method="">
+									<form class="formAdd" action="<%=request.getContextPath() %>/food/update" method="POST">
 										<h2 class="text-center">Food Information Update Form</h2>
 										<div id="" class="container-fluid text-left mb-3">
 											<div class="row mb-3">
+												<input type="hidden" name="foodID">
 												<div class="col-sm-6">
 													<lable>Name</lable>
-													<input type="text" class="form-control" name="name"
+													<input type="text" class="form-control" name="foodName"
 														required>
 												</div>
 												<div class="col-sm">
 													<lable>Note</lable>
-													<input type="text" class="form-control" name="note"
+													<input type="text" class="form-control" name="foodNote"
 														required>
 												</div>
 												<div class="col-sm">
 													<lable>Price</lable>
 													<input type="text" class="form-control"
 														onkeypress='return event.charCode >= 48 && event.charCode <= 57'
-														name="cost" required>
+														name="foodPrice" required>
 												</div>
 											</div>
 											<div class="text-right">
@@ -218,23 +225,23 @@
 									</form>
 
 									<!-- Form add food-->
-									<form class="formAdd" action="" method="">
+									<form class="formAdd" action="<%= request.getContextPath() %>/food/add" method="POST">
 										<h2 class="text-center">New Food Information</h2>
 										<div id="newFood" class="container-fluid text-left mb-3">
 											<div class="row mb-3">
 												<div class="col-sm-6">
 													<lable>Name</lable>
-													<input type="text" class="form-control" name="name"
+													<input type="text" class="form-control" name="foodName"
 														required>
 												</div>
 												<div class="col-sm">
 													<lable>Note</lable>
-													<input type="text" class="form-control" name="note"
+													<input type="text" class="form-control" name="foodNote"
 														required>
 												</div>
 												<div class="col-sm">
 													<lable>Price</lable>
-													<input type="text" class="form-control" name="cost"
+													<input type="text" class="form-control" name="foodPrice"
 														onkeypress='return event.charCode >= 48 && event.charCode <= 57'
 														required>
 												</div>
@@ -256,11 +263,33 @@
 													<th>Name</th>
 													<th>Note</th>
 													<th>Price</th>
-													<th>Hành động</th>
+													<c:choose>
+														<c:when test = "${userRole == 'ROLE_MANAGER' }">
+															<th>Action</th>
+														</c:when>
+														<c:otherwise>
+														</c:otherwise>
+													</c:choose>
 												</tr>
 											</thead>
 											<tbody>
-
+												<c:forEach var = "food" items="${foods }">
+													<tr>
+														<td>${food.foodName}</td>
+														<td>${food.foodNote}</td>
+														<td>${food.foodPrice}</td>
+														<c:choose>
+															<c:when test = "${userRole == 'ROLE_MANAGER' }">
+																<td>
+																	<button type="button" class="btn btn-danger btn-sm" onclick="getIdFood('${food.foodID}')" data-toggle="modal" data-target="#deleteFoodModal">Delete</button> 
+																	<button type="button" class="btn btn-warning btn-sm" onclick="showForm(0) && edit(['${food.foodID}','${food.foodName}','${food.foodNote }','${food.foodPrice}'])">Edit</button>
+																</td>
+															</c:when>
+															<c:otherwise>
+															</c:otherwise>
+														</c:choose>
+													</tr>
+												</c:forEach>
 											</tbody>
 										</table>
 									</div>

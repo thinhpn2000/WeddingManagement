@@ -16,7 +16,8 @@
 	type="image/x-icon">
 
 <!-- Bootstrap CSS -->
-<link rel="stylesheet" href="<c:url value="/assets/bootstrap/css/bootstrap.min.css"/>">
+<link rel="stylesheet"
+	href="<c:url value="/assets/bootstrap/css/bootstrap.min.css"/>">
 </head>
 <body>
 	<div class="loginBackground container-fluid">
@@ -44,32 +45,16 @@
 						<form action="" method="">
 							<p>Username</p>
 							<input type="text" name="username" required>
-							<p>What is your favorite food?</p>
-							<input type="text" name="secret_answer" required>
 							<div class="text-center mb-4">
 								<button class="btn" onclick="changeForm('loginForm')"
 									type="button">Cancel</button>
-								<button class="btn" type="button"
-									onclick="changeForm('changePasswordForm')" type="button">Next</button>
+								<a href="">
+									<button class="btn" type="submit">Send
+										request</button>
+								</a>
 							</div>
-						</form>
-					</div>
-					<div class="loginForm disable" id="changePasswordForm">
-						<p class="loginTitle" style="font-size: 25px;">Change your
-							Password</p>
-						<form action="" method="">
-							<p>New password</p>
-							<input name="new-password" id="new-password" type="password"
-								required>
-							<p>Re-enter your new password</p>
-							<input name="re-password" id="re-password" type="password"
-								value="" required>
-							<div class="text-center mb-4">
-								<button type="button" class="btn"
-									onclick="changeForm('loginForm')">Cancel</button>
-								<button type="button" class="btn"
-									onclick="changeForm('loginForm')">Accept</button>
-							</div>
+							<p class="text-center">Click 'Send request' and wait for manager to reset your
+								password</p>
 						</form>
 					</div>
 				</div>
@@ -83,7 +68,7 @@
 
 	<!-- Optional JavaScript -->
 	<script src='<c:url value="/assets/js/login.js"/>'></script>
-	
+
 	<!-- jQuery first, then Popper.js, then Bootstrap JS -->
 	<script src="<c:url value="/assets/bootstrap/jquery.slim.min.js"/>"></script>
 	<script src="<c:url value="/assets/bootstrap/popper.min.js"/>"></script>
