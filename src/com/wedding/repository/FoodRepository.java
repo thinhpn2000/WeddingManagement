@@ -9,19 +9,34 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.wedding.databaseconnection.DBConnection;
 import com.wedding.databaseconnection.MySqlConnection;
 import com.wedding.databaseconnection.PostgreConnection;
 import com.wedding.models.Food;
+import com.wedding.utils.UrlConstant;
 
 public class FoodRepository {
 
 	public List<Food> getAll() {
 
-		String queryinFood = "SELECT foodID, foodName, foodPrice, foodNote FROM FOOD WHERE NOT isDeleted AND endingDate IS NULL";
-		String queryinUpdatedFood = "SELECT FOOD.foodID, FOOD.foodName, UPDATEDFOOD.foodPrice, FOOD.foodNote FROM FOOD, UPDATEDFOOD WHERE NOT UPDATEDFOOD.isDeleted AND  FOOD.foodID = UPDATEDFOOD.foodID AND UPDATEDFOOD.endingDate IS NULL";
+		String queryinFood = "";
+		String queryinUpdatedFood = "";
 
-		//Connection connection = MySqlConnection.getInstance().getConnection();
-		Connection connection  = PostgreConnection.getInstance().getConnection();
+		Connection connection = DBConnection.getInstance().getConnection(UrlConstant.select_DB);
+		switch (UrlConstant.select_DB) {
+		case 1:
+			queryinFood = "SELECT foodID, foodName, foodPrice, foodNote FROM FOOD WHERE NOT isDeleted AND endingDate IS NULL";
+			queryinUpdatedFood = "SELECT FOOD.foodID, FOOD.foodName, UPDATEDFOOD.foodPrice, FOOD.foodNote FROM FOOD, UPDATEDFOOD WHERE NOT UPDATEDFOOD.isDeleted AND  FOOD.foodID = UPDATEDFOOD.foodID AND UPDATEDFOOD.endingDate IS NULL";
+			break;
+		case 2:
+			queryinFood = "SELECT foodID, foodName, foodPrice, foodNote FROM FOOD WHERE NOT isDeleted AND endingDate IS NULL";
+			queryinUpdatedFood = "SELECT FOOD.foodID, FOOD.foodName, UPDATEDFOOD.foodPrice, FOOD.foodNote FROM FOOD, UPDATEDFOOD WHERE NOT UPDATEDFOOD.isDeleted AND  FOOD.foodID = UPDATEDFOOD.foodID AND UPDATEDFOOD.endingDate IS NULL";
+			break;
+		case 3:
+			queryinFood = "SELECT foodID, foodName, foodPrice, foodNote FROM FOOD WHERE isDeleted = 0 AND endingDate IS NULL";
+			queryinUpdatedFood = "SELECT FOOD.foodID, FOOD.foodName, UPDATEDFOOD.foodPrice, FOOD.foodNote FROM FOOD, UPDATEDFOOD WHERE UPDATEDFOOD.isDeleted = 0 AND  FOOD.foodID = UPDATEDFOOD.foodID AND UPDATEDFOOD.endingDate IS NULL";
+			break;
+		}
 		List<Food> foodList = new ArrayList<Food>();
 		try {
 			PreparedStatement statement = connection.prepareStatement(queryinUpdatedFood);
@@ -55,11 +70,20 @@ public class FoodRepository {
 	}
 
 	public void add(Food food) {
-		//String query = "INSERT INTO FOOD(foodName,foodPrice,foodNote,startingDate,endingDate) VALUES (?,?,?,?,?)";
-		String query = "INSERT INTO FOOD(foodName,foodPrice,foodNote,startingDate,endingDate) VALUES (?,?,?,?::date,?::date)";
-		//Connection connection = MySqlConnection.getInstance().getConnection();
-		Connection connection  = PostgreConnection.getInstance().getConnection();
-		LocalDate localDate = LocalDate.now();
+		String query = "";
+
+		Connection connection = DBConnection.getInstance().getConnection(1);
+		switch (UrlConstant.select_DB) {
+		case 1:
+			query = "INSERT INTO FOOD(foodName,foodPrice,foodNote,startingDate,endingDate) VALUES (?,?,?,?,?)";
+			break;
+		case 2:
+			query = "INSERT INTO FOOD(foodName,foodPrice,foodNote,startingDate,endingDate) VALUES (?,?,?,?::date,?::date)";
+			break;
+		case 3:
+			query = "INSERT INTO FOOD(foodName,foodPrice,foodNote,startingDate,endingDate) VALUES (?,?,?,?,?)";
+			break;
+		}
 		try {
 			PreparedStatement statement = connection.prepareStatement(query);
 			statement.setString(1, food.getFoodName());
@@ -76,9 +100,21 @@ public class FoodRepository {
 	}
 
 	public void delele(int id) {
-		Connection connection = MySqlConnection.getInstance().getConnection();
-		String queryFood = "UPDATE FOOD SET isDeleted = ? WHERE foodID = ?";
+		Connection connection = DBConnection.getInstance().getConnection(1);
+		String queryFood = "";
 		String queryUpdatedFood = "UPDATE UPDATEDFOOD SET isDeleted = ? WHERE foodID = ?";
+		switch (UrlConstant.select_DB) {
+		case 1:
+			queryFood = "UPDATE FOOD SET isDeleted = ? WHERE foodID = ?";
+			queryUpdatedFood = "UPDATE UPDATEDFOOD SET isDeleted = ? WHERE foodID = ?";
+			break;
+		case 2:
+			//query = "INSERT INTO FOOD(foodName,foodPrice,foodNote,startingDate,endingDate) VALUES (?,?,?,?::date,?::date)";
+			break;
+		case 3:
+			//query = "INSERT INTO FOOD(foodName,foodPrice,foodNote,startingDate,endingDate) VALUES (?,?,?,?,?)";
+			break;
+		}
 		try {
 			PreparedStatement statement = connection.prepareStatement(queryFood);
 			statement.setBoolean(1, true);
@@ -96,7 +132,8 @@ public class FoodRepository {
 
 	public Food getByIDInFood(int id) {
 		String query = "SELECT * FROM FOOD WHERE FOOD.foodID = ? AND NOT isDeleted";
-		Connection connection = MySqlConnection.getInstance().getConnection();
+		
+		Connection connection = DBConnection.getInstance().getConnection(1);
 		try {
 			PreparedStatement statement = connection.prepareStatement(query);
 			statement.setInt(1, id);
@@ -119,7 +156,8 @@ public class FoodRepository {
 
 	public Food getByIDInUpdatedFood(int id) {
 		String query = "SELECT FOOD.foodID,FOOD.foodName,UPDATEDFOOD.foodPrice, FOOD.foodNote, UPDATEDFOOD.endingDate FROM FOOD,UPDATEDFOOD WHERE UPDATEDFOOD.foodID=FOOD.foodID AND UPDATEDFOOD.ENDINGDATE IS NULL AND FOOD.foodID = ? AND NOT FOOD.isDeleted";
-		Connection connection = MySqlConnection.getInstance().getConnection();
+
+		Connection connection = DBConnection.getInstance().getConnection(1);
 		try {
 			PreparedStatement statement = connection.prepareStatement(query);
 			statement.setInt(1, id);
@@ -142,7 +180,8 @@ public class FoodRepository {
 
 	public void updateOthersInFood(Food food) {
 		String query = "UPDATE FOOD SET foodName = ?, foodNote = ? WHERE foodID = ?";
-		Connection connection = MySqlConnection.getInstance().getConnection();
+
+		Connection connection = DBConnection.getInstance().getConnection(1);
 		try {
 			PreparedStatement statement = connection.prepareStatement(query);
 			statement.setString(1, food.getFoodName());
@@ -158,7 +197,8 @@ public class FoodRepository {
 	public void updateHasPriceInFood(Food food) {
 		String query = "UPDATE FOOD SET foodName = ?, foodNote = ?, endingDate = ? WHERE foodID = ?";
 		String queryInsertInUpdated = "INSERT INTO UPDATEDFOOD(foodID,foodPrice,startingDate,endingDate) VALUES (?,?,?,?)";
-		Connection connection = MySqlConnection.getInstance().getConnection();
+
+		Connection connection = DBConnection.getInstance().getConnection(1);
 		try {
 			PreparedStatement statement = connection.prepareStatement(query);
 			statement.setString(1, food.getFoodName());
@@ -183,7 +223,8 @@ public class FoodRepository {
 		updateOthersInFood(food);
 		String query = "UPDATE UPDATEDFOOD SET endingDate = ? WHERE foodID = ? AND endingDate IS NULL";
 		String queryInsertInUpdated = "INSERT INTO UPDATEDFOOD(foodID,foodPrice,startingDate,endingDate) VALUES (?,?,?,?)";
-		Connection connection = MySqlConnection.getInstance().getConnection();
+
+		Connection connection = DBConnection.getInstance().getConnection(1);
 		try {
 			PreparedStatement statement = connection.prepareStatement(query);
 			statement.setString(1, food.getStartingDate());

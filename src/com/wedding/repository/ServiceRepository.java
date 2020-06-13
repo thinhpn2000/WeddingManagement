@@ -8,18 +8,34 @@ import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.wedding.databaseconnection.DBConnection;
 import com.wedding.databaseconnection.MySqlConnection;
 import com.wedding.models.Food;
 import com.wedding.models.Service;
+import com.wedding.utils.UrlConstant;
 
 public class ServiceRepository {
 
 	public List<Service> getAll() {
 
-		String queryinService = "SELECT serviceID, serviceName, servicePrice FROM SERVICE WHERE NOT isDeleted AND endingDate IS NULL";
-		String queryinUpdatedService = "SELECT SERVICE.serviceID, SERVICE.serviceName, UPDATEDSERVICE.servicePrice FROM SERVICE, UPDATEDSERVICE WHERE NOT UPDATEDSERVICE.isDeleted AND  SERVICE.serviceID = UPDATEDSERVICE.serviceID AND UPDATEDSERVICE.endingDate IS NULL";
+		String queryinService = "";
+		String queryinUpdatedService = "";
 
-		Connection connection = MySqlConnection.getInstance().getConnection();
+		Connection connection = DBConnection.getInstance().getConnection(UrlConstant.select_DB);
+		switch (UrlConstant.select_DB) {
+		case 1:
+			queryinService = "SELECT serviceID, serviceName, servicePrice FROM SERVICE WHERE NOT isDeleted AND endingDate IS NULL";
+			queryinUpdatedService = "SELECT SERVICE.serviceID, SERVICE.serviceName, UPDATEDSERVICE.servicePrice FROM SERVICE, UPDATEDSERVICE WHERE NOT UPDATEDSERVICE.isDeleted AND  SERVICE.serviceID = UPDATEDSERVICE.serviceID AND UPDATEDSERVICE.endingDate IS NULL";
+			break;
+		case 2:
+			queryinService = "SELECT serviceID, serviceName, servicePrice FROM SERVICE WHERE NOT isDeleted AND endingDate IS NULL";
+			queryinUpdatedService = "SELECT SERVICE.serviceID, SERVICE.serviceName, UPDATEDSERVICE.servicePrice FROM SERVICE, UPDATEDSERVICE WHERE NOT UPDATEDSERVICE.isDeleted AND  SERVICE.serviceID = UPDATEDSERVICE.serviceID AND UPDATEDSERVICE.endingDate IS NULL";
+			break;
+		case 3:
+			queryinService = "SELECT serviceID, serviceName, servicePrice FROM SERVICE WHERE isDeleted = 0 AND endingDate IS NULL";
+			queryinUpdatedService = "SELECT SERVICE.serviceID, SERVICE.serviceName, UPDATEDSERVICE.servicePrice FROM SERVICE, UPDATEDSERVICE WHERE UPDATEDSERVICE.isDeleted = 0 AND  SERVICE.serviceID = UPDATEDSERVICE.serviceID AND UPDATEDSERVICE.endingDate IS NULL";
+			break;
+		}
 		List<Service> serviceList = new ArrayList<Service>();
 		try {
 			PreparedStatement statement = connection.prepareStatement(queryinUpdatedService);
@@ -51,7 +67,7 @@ public class ServiceRepository {
 
 	public void add(Service service) {
 		String query = "INSERT INTO SERVICE(serviceName,servicePrice,startingDate,endingDate) VALUES (?,?,?,?)";
-		Connection connection = MySqlConnection.getInstance().getConnection();
+		Connection connection = DBConnection.getInstance().getConnection(1);
 		try {
 			PreparedStatement statement = connection.prepareStatement(query);
 			statement.setString(1, service.getServiceName());
@@ -66,7 +82,7 @@ public class ServiceRepository {
 
 	}
 	public void delele(int id) {
-		Connection connection = MySqlConnection.getInstance().getConnection();
+		Connection connection = DBConnection.getInstance().getConnection(1);
 		String queryService = "UPDATE SERVICE SET isDeleted = ? WHERE serviceID = ?";
 		String queryUpdatedService = "UPDATE UPDATEDSERVICE SET isDeleted = ? WHERE serviceID = ?";
 		try {
@@ -84,7 +100,7 @@ public class ServiceRepository {
 		}
 	}
 	public Service getByIdInService(int id) {
-		Connection connection = MySqlConnection.getInstance().getConnection();
+		Connection connection = DBConnection.getInstance().getConnection(1);
 		String query = "SELECT serviceName, servicePrice, endingDate FROM SERVICE WHERE serviceID = ?";
 		try {
 			PreparedStatement prep = connection.prepareStatement(query);
@@ -104,7 +120,7 @@ public class ServiceRepository {
 		return null;
 	}
 	public Service getByIdInUpdatedService(int id) {
-		Connection connection = MySqlConnection.getInstance().getConnection();
+		Connection connection = DBConnection.getInstance().getConnection(1);
 		String query = "SELECT servicePrice FROM UPDATEDSERVICE WHERE serviceID = ? AND endingDate is null";
 		try {
 			PreparedStatement prep = connection.prepareStatement(query);
@@ -122,7 +138,7 @@ public class ServiceRepository {
 		return null;
 	}
 	public void updateEndingService(Service service) {
-		Connection connection = MySqlConnection.getInstance().getConnection();
+		Connection connection = DBConnection.getInstance().getConnection(1);
 		String queryUpdate = "UPDATE SERVICE SET endingDate = ? WHERE serviceID = ?";
 		String queryInsert = "INSERT INTO UPDATEDSERVICE(serviceID, servicePrice, startingDate, endingDate) VALUES (?,?,?,?)";
 		try {
@@ -143,7 +159,7 @@ public class ServiceRepository {
 		}
 	}
 	public void updateEndingUpdatedService(Service service) {
-		Connection connection = MySqlConnection.getInstance().getConnection();
+		Connection connection = DBConnection.getInstance().getConnection(1);
 		String queryUpdate = "UPDATE UPDATEDSERVICE SET endingDate = ? WHERE serviceID = ? AND endingDate IS NULL";
 		String queryInsert = "INSERT INTO UPDATEDSERVICE(serviceID, servicePrice, startingDate, endingDate) VALUES (?,?,?,?)";
 		try {
@@ -180,7 +196,7 @@ public class ServiceRepository {
 //	}
 
 	public void updateName(Service service) {
-		Connection connection = MySqlConnection.getInstance().getConnection();
+		Connection connection = DBConnection.getInstance().getConnection(1);
 		String query = "UPDATE SERVICE SET serviceName = ? WHERE serviceID = ?";
 		try {
 			PreparedStatement statement = connection.prepareStatement(query);

@@ -16,10 +16,20 @@ import com.wedding.utils.UrlConstant;
 public class LobbyRepository {
 	public List<Lobby> getAll() {
 
-		String query = "SELECT lobbyID, lobbyName, lobbyTypeName, maxTable, LOBBY.isDeleted, minPrice, lobbyTypeID FROM TYPE_LOBBY, LOBBY WHERE LOBBY.lobbyType = TYPE_LOBBY.lobbyTypeID AND NOT LOBBY.isDeleted ORDER BY lobbyID ASC;";
-		//String query = "SELECT lobbyID, lobbyName, lobbyTypeName, maxTable, LOBBY.isDeleted, minPrice, lobbyTypeID FROM TYPE_LOBBY, LOBBY WHERE LOBBY.lobbyType = TYPE_LOBBY.lobbyTypeID AND LOBBY.isDeleted = 0 ORDER BY lobbyID ASC;";
-		//Connection connection = MySqlConnection.getInstance().getConnection();
+		String query = "";
+		
 		Connection connection = DBConnection.getInstance().getConnection(UrlConstant.select_DB);
+		switch (UrlConstant.select_DB) {
+		case 1:
+			query = "SELECT lobbyID, lobbyName, lobbyTypeName, maxTable, LOBBY.isDeleted, minPrice, lobbyTypeID FROM TYPE_LOBBY, LOBBY WHERE LOBBY.lobbyType = TYPE_LOBBY.lobbyTypeID AND LOBBY.isDeleted = false ORDER BY lobbyID ASC;";
+			break;
+		case 2:
+			query = "SELECT lobbyID, lobbyName, lobbyTypeName, maxTable, LOBBY.isDeleted, minPrice, lobbyTypeID FROM TYPE_LOBBY, LOBBY WHERE LOBBY.lobbyType = TYPE_LOBBY.lobbyTypeID AND LOBBY.isDeleted = false ORDER BY lobbyID ASC;";
+			break;
+		case 3:
+			query = "SELECT lobbyID, lobbyName, lobbyTypeName, maxTable, LOBBY.isDeleted, minPrice, lobbyTypeID FROM TYPE_LOBBY, LOBBY WHERE LOBBY.lobbyType = TYPE_LOBBY.lobbyTypeID AND LOBBY.isDeleted = 0 ORDER BY lobbyID ASC;";
+			break;
+		}
 		List<Lobby> lobbyList = new ArrayList<Lobby>();
 		try {
 			PreparedStatement statement = connection.prepareStatement(query);
@@ -45,8 +55,8 @@ public class LobbyRepository {
 	}
 	public void addLobby(Lobby sanh) {
 		String query = "INSERT INTO LOBBY(lobbyName, lobbyType, maxTable) VALUES (?, ?, ?);";
-		//Connection connection = MySqlConnection.getInstance().getConnection();
-		Connection connection = SqlServerConnection.getInstance().getConnection();
+
+		Connection connection = DBConnection.getInstance().getConnection(1);
 		try {
 				PreparedStatement prep = connection.prepareStatement(query);
 				prep.setString(1, sanh.getLobbyName());
@@ -60,7 +70,7 @@ public class LobbyRepository {
 	}
 	
 	public void delele(int id) {
-		Connection connection = MySqlConnection.getInstance().getConnection();
+		Connection connection = DBConnection.getInstance().getConnection(1);
 		String query = "UPDATE LOBBY SET isDeleted = ? WHERE lobbyID = ?";
 		try {
 			PreparedStatement statement = connection.prepareStatement(query);
@@ -74,7 +84,7 @@ public class LobbyRepository {
 	}
 	
 	public void update(Lobby sanh) {
-		Connection connection = MySqlConnection.getInstance().getConnection();
+		Connection connection = DBConnection.getInstance().getConnection(1);
 		String query = "UPDATE LOBBY SET lobbyName = ?, maxTable = ?, lobbyType = ? WHERE lobbyID = ?";
 		try {
 			PreparedStatement prep = connection.prepareStatement(query);

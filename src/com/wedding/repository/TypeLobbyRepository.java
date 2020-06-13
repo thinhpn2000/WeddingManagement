@@ -7,13 +7,15 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.wedding.databaseconnection.DBConnection;
 import com.wedding.databaseconnection.MySqlConnection;
 import com.wedding.models.TypeLobby;
+import com.wedding.utils.UrlConstant;
 
 public class TypeLobbyRepository {
 	public List<TypeLobby> getAll() {
 		String query = "SELECT * FROM TYPE_LOBBY WHERE isDeleted IS NOT NULL";
-		Connection connection = MySqlConnection.getInstance().getConnection();
+		Connection connection = DBConnection.getInstance().getConnection(UrlConstant.select_DB);
 		List<TypeLobby> typeLobbyList = new ArrayList<TypeLobby>();
 		try {
 			PreparedStatement prep = connection.prepareStatement(query);
