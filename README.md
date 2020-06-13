@@ -1,6 +1,6 @@
 ## Wedding Management
 **INTRODUCTION:**  project “Wedding Management”.<br>
-### `Reasons for this project:
+### `Reasons for this project:`
 Since most of the wedding receptions nowadays have not applied any special programs for managing weddings, and some of the other related tasks such as ordering the event,  payment, staff management, the foodservice, and the banquet halls. The medium and small size of wedding reception service would perform as follows:
 * The receptionists are still mainly using pens and papers to take notes; and with the higher wedding reception services, they use information technology devices such as phones, tablets, laptops too. So there is still no specific program yet.
 * The menu is mostly used by paper which is difficult to change. 
