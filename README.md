@@ -55,9 +55,9 @@ The website provides the graph which shows the revenue by each month of the year
    * Database Management System: MySql, PostgreSQL, Sql Server...
    
  ### `Roadmap:`
-  ### Stage 1: Requirements Specification 
-  ### Stage 2: Build and complete UI
-  ### Stage 3: Create Views in MVC pattern (Java) and Create Controller and Other packages in IDE
+  ### Stage 1: Requirements Specification.
+  ### Stage 2: Build and complete UI.
+  ### Stage 3: Create Views in MVC pattern (Java) and Create Controller and Other packages in IDE.
   ### Stage 4: Design Database and create connection to Database.
   ### Stage 5: Authentication and Authorization, Implements function.
   ### Stage 6: Testing.
