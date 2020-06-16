@@ -29,6 +29,9 @@ import com.wedding.utils.APIConstant;
 public class FoodRepository {
 	private Gson gson = new Gson();
 	
+	// Call API in repository to get data from server.
+	
+	// Call API GET to get food data.
 	public List<Food> getAll() {
 		// create a request by configure a TCP connection to server port 
 		CloseableHttpClient httpClient = HttpClients.createDefault();
@@ -53,6 +56,7 @@ public class FoodRepository {
 		return null;
 	}
 	
+	// Call API POST to add food.
 	public void add(Food food) {
 		HttpPost req = new HttpPost(APIConstant.API_food_add);
 		List<NameValuePair> urlParamaters = new ArrayList<>();
@@ -77,6 +81,7 @@ public class FoodRepository {
 		}
 	}
 	
+	// Call API DELETE to delete food.
 	public void delele(int id) {
 		CloseableHttpClient httpClient = HttpClients.createDefault();
 		HttpDelete req = new HttpDelete(APIConstant.API_food_delete + "?id=" + id);
@@ -88,6 +93,7 @@ public class FoodRepository {
 		}
 	}
 	
+	// Call API PUT to update food.
 	public void update(Food food) {
 		String json = convertFoodToJSON(food);
 		HttpPut req = new HttpPut(APIConstant.API_food_update);
@@ -108,6 +114,7 @@ public class FoodRepository {
 		}
 	}
 	
+	// Convert JSON data when call API GET to list Object.
 	public List<Food> convertJSONToListFood(String json) {
 		// declare data type is ArrayList<Food>
 		Type typeListFood = new TypeToken<ArrayList<Food>>() {}.getType();
@@ -116,6 +123,7 @@ public class FoodRepository {
 		return listFood;
 	}
 	
+	// Convert object to JSON data.
 	public String convertFoodToJSON(Food food) {
 		// cast Food to json
 		String json = gson.toJson(food);

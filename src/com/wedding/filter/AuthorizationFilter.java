@@ -16,12 +16,14 @@ public class AuthorizationFilter extends HttpFilter {
 	@Override
 	protected void doFilter(HttpServletRequest req, HttpServletResponse res, FilterChain chain)
 			throws IOException, ServletException {
+		// get session to check authorization of user
 		HttpSession session = req.getSession();
 		String userRole = "";
 		String servletPath = req.getServletPath();
 		if(session.getAttribute("USER_ROLE") != null) {
 			userRole = session.getAttribute("USER_ROLE").toString();
 		};
+		// role manager 
 		if(servletPath.startsWith("/employee")) {
 			if(userRole.equalsIgnoreCase("ROLE_MANAGER")) {
 				chain.doFilter(req, res);
@@ -30,6 +32,7 @@ public class AuthorizationFilter extends HttpFilter {
 				res.sendRedirect(req.getContextPath() + "/dashboard");
 		}
 		else if(servletPath.startsWith("/reservation")) {
+			// role employee
 			if(userRole.equalsIgnoreCase("ROLE_EMPLOYEE")) {
 				chain.doFilter(req, res);
 			}

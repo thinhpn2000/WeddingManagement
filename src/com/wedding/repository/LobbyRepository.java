@@ -29,8 +29,12 @@ import com.wedding.utils.APIConstant;
 public class LobbyRepository {
 	Gson gson = new Gson();
 
+	// Call API in repository to get data from server.
+	
+	// Call API GET to get lobby data.
 	public List<Lobby> getAll() {
 		CloseableHttpClient httpClient = HttpClients.createDefault();
+		// create http request to call api
 		HttpGet req = new HttpGet(APIConstant.API_lobby_get);
 		try {
 			CloseableHttpResponse res = httpClient.execute(req);
@@ -49,8 +53,9 @@ public class LobbyRepository {
 		return null;
 
 	}
-
+	// Call API POST to add lobby.
 	public void addLobby(Lobby sanh) {
+		// create http request to call api
 		HttpPost req = new HttpPost(APIConstant.API_lobby_add);
 		CloseableHttpClient httpClient = HttpClients.createDefault();
 		List<NameValuePair> urlParamaters = new ArrayList<>();
@@ -72,8 +77,10 @@ public class LobbyRepository {
 		}
 	}
 
+	// Call API DELETE to delete lobby.
 	public void delele(int id) {
 		CloseableHttpClient httpClient = HttpClients.createDefault();
+		// create http request to call api
 		HttpDelete req = new HttpDelete(APIConstant.API_lobby_delete + "?id=" + id);
 
 		try {
@@ -88,9 +95,11 @@ public class LobbyRepository {
 
 	}
 
+	// Call API PUT to update lobby.
 	public void update(Lobby sanh) {
 		String json = convertLobbyToJSON(sanh);
 		CloseableHttpClient httpClient = HttpClients.createDefault();
+		// create http request to call api
 		HttpPut req = new HttpPut(APIConstant.API_lobby_update);
 		req.setEntity(new StringEntity(json, "UTF-8"));
 		try {
@@ -110,12 +119,14 @@ public class LobbyRepository {
 		}
 	}
 
+	// Convert JSON data when call API GET to list Object.
 	public List<Lobby> convertJSONToListLobby(String json) {
 		Type typeListLobby = new TypeToken<ArrayList<Lobby>>() {
 		}.getType();
 		return gson.fromJson(json, typeListLobby);
 	}
 
+	// Convert object to JSON data.
 	public String convertLobbyToJSON(Lobby lobby) {
 		return gson.toJson(lobby);
 	}

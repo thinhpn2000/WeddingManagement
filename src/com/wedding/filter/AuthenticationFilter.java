@@ -20,11 +20,14 @@ public class AuthenticationFilter extends HttpFilter {
 		response.setCharacterEncoding("UTF-8");
 		HttpSession userSession = request.getSession();
 
+		// Check authentication
 		if (!request.getServletPath().startsWith("/login") && !request.getServletPath().startsWith("/assets")
 				&& userSession.getAttribute("LOGIN_USER") == null) {
+			// if fail authentication
 			response.sendRedirect(request.getContextPath() + "/login");
 
 		} else {
+			// if pass authentication
 			chain.doFilter(request, response);
 			response.setCharacterEncoding("UTF-8");
 			

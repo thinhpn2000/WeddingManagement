@@ -72,6 +72,7 @@ public class FoodController extends HttpServlet {
 		req.setCharacterEncoding("UTF-8");
 		String servletPath = req.getServletPath();
 		
+
 		String foodName = req.getParameter("foodName");
 		int foodPrice = Integer.parseInt(req.getParameter("foodPrice"));
 		String foodNote = req.getParameter("foodNote");
