@@ -1,86 +1,122 @@
 package com.wedding.repository;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.wedding.databaseconnection.MySqlConnection;
+import org.apache.http.HttpEntity;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpDelete;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpPut;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.util.EntityUtils;
+
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.wedding.models.Lobby;
+import com.wedding.utils.APIConstant;
 
 public class LobbyRepository {
+	Gson gson = new Gson();
+
 	public List<Lobby> getAll() {
-
-		String query = "SELECT lobbyID, lobbyName, lobbyTypeName, maxTable, LOBBY.isDeleted, minPrice, lobbyTypeID FROM TYPE_LOBBY, LOBBY WHERE LOBBY.lobbyType = TYPE_LOBBY.lobbyTypeID AND NOT LOBBY.isDeleted ORDER BY lobbyID ASC;";
-
-		Connection connection = MySqlConnection.getInstance().getConnection();
-		List<Lobby> lobbyList = new ArrayList<Lobby>();
+		CloseableHttpClient httpClient = HttpClients.createDefault();
+		HttpGet req = new HttpGet(APIConstant.API_lobby_get);
 		try {
-			PreparedStatement statement = connection.prepareStatement(query);
-			ResultSet res = statement.executeQuery();
-			while (res.next()) {
-				Lobby lobby = new Lobby();
-				lobby.setLobbyID(res.getInt("lobbyID"));
-				lobby.setLobbyName(res.getString("lobbyName"));
-				lobby.setLobbyType(res.getString("lobbyTypeName"));
-				lobby.setMaxTable(res.getInt("maxTable"));
-				lobby.setMinPrice(res.getInt("minPrice"));
-				lobby.setDeleted(res.getBoolean("isDeleted"));
-				lobby.setLobbyTypeID(res.getInt("lobbyTypeID"));
-				lobbyList.add(lobby);
-			}
-			connection.close();
-			return lobbyList;
-		} catch (SQLException e) {
+			CloseableHttpResponse res = httpClient.execute(req);
+			HttpEntity entity = res.getEntity();
+			String json = EntityUtils.toString(entity);
+			return convertJSONToListLobby(json);
+
+		} catch (ClientProtocolException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+
 		return null;
 
 	}
+
 	public void addLobby(Lobby sanh) {
-		String query = "INSERT INTO LOBBY(lobbyName, lobbyType, maxTable) VALUES (?, ?, ?);";
-		Connection connection = MySqlConnection.getInstance().getConnection();
+		HttpPost req = new HttpPost(APIConstant.API_lobby_add);
+		CloseableHttpClient httpClient = HttpClients.createDefault();
+		List<NameValuePair> urlParamaters = new ArrayList<>();
+		urlParamaters.add(new BasicNameValuePair("lobbyName", sanh.getLobbyName()));
+		urlParamaters.add(new BasicNameValuePair("lobbyTypeID", Integer.toString(sanh.getLobbyTypeID())));
+		urlParamaters.add(new BasicNameValuePair("maxTable", Integer.toString(sanh.getMaxTable())));
 		try {
-				PreparedStatement prep = connection.prepareStatement(query);
-				prep.setString(1, sanh.getLobbyName());
-				prep.setInt(2, sanh.getLobbyTypeID());
-				prep.setInt(3, sanh.getMaxTable());
-				prep.executeUpdate();
-				connection.close();
-		} catch (SQLException e) {
+			req.setEntity(new UrlEncodedFormEntity(urlParamaters, "UTF-8"));
+			CloseableHttpResponse res = httpClient.execute(req);
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ClientProtocolException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void delele(int id) {
-		Connection connection = MySqlConnection.getInstance().getConnection();
-		String query = "UPDATE LOBBY SET isDeleted = ? WHERE lobbyID = ?";
+		CloseableHttpClient httpClient = HttpClients.createDefault();
+		HttpDelete req = new HttpDelete(APIConstant.API_lobby_delete + "?id=" + id);
+
 		try {
-			PreparedStatement statement = connection.prepareStatement(query);
-			statement.setBoolean(1, true);
-			statement.setInt(2, id);
-			statement.executeUpdate();
-			connection.close();
-		} catch(SQLException e) {
+			CloseableHttpResponse res = httpClient.execute(req);
+		} catch (ClientProtocolException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
+
+	public void update(Lobby sanh) {
+		String json = convertLobbyToJSON(sanh);
+		CloseableHttpClient httpClient = HttpClients.createDefault();
+		HttpPut req = new HttpPut(APIConstant.API_lobby_update);
+		req.setEntity(new StringEntity(json, "UTF-8"));
+		try {
+			CloseableHttpResponse res = httpClient.execute(req);
+
+			HttpEntity respEntity = res.getEntity();
+			if (respEntity != null) {
+				String content = EntityUtils.toString(respEntity);
+				System.out.println(content);
+			}
+		} catch (ClientProtocolException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
-	
-	public void update(Lobby sanh) {
-		Connection connection = MySqlConnection.getInstance().getConnection();
-		String query = "UPDATE LOBBY SET lobbyName = ?, maxTable = ?, lobbyType = ? WHERE lobbyID = ?";
-		try {
-			PreparedStatement prep = connection.prepareStatement(query);
-			prep.setString(1, sanh.getLobbyName());
-			prep.setInt(2, sanh.getMaxTable());
-			prep.setInt(3, sanh.getLobbyTypeID());
-			prep.setInt(4, sanh.getLobbyID());
-			prep.executeUpdate();
-			connection.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+
+	public List<Lobby> convertJSONToListLobby(String json) {
+		Type typeListLobby = new TypeToken<ArrayList<Lobby>>() {
+		}.getType();
+		return gson.fromJson(json, typeListLobby);
+	}
+
+	public String convertLobbyToJSON(Lobby lobby) {
+		return gson.toJson(lobby);
 	}
 }

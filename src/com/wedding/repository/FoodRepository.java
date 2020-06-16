@@ -1,192 +1,124 @@
 package com.wedding.repository;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.wedding.databaseconnection.MySqlConnection;
+import org.apache.http.HttpEntity;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpDelete;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpPut;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.util.EntityUtils;
+
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.wedding.models.Food;
+import com.wedding.utils.APIConstant;
 
 public class FoodRepository {
-
+	private Gson gson = new Gson();
+	
 	public List<Food> getAll() {
-
-		String queryinFood = "SELECT foodID, foodName, foodPrice, foodNote FROM FOOD WHERE NOT isDeleted AND endingDate IS NULL";
-		String queryinUpdatedFood = "SELECT FOOD.foodID, FOOD.foodName, UPDATEDFOOD.foodPrice, FOOD.foodNote FROM FOOD, UPDATEDFOOD WHERE NOT UPDATEDFOOD.isDeleted AND  FOOD.foodID = UPDATEDFOOD.foodID AND UPDATEDFOOD.endingDate IS NULL";
-
-		Connection connection = MySqlConnection.getInstance().getConnection();
-		List<Food> foodList = new ArrayList<Food>();
+		// create a request by configure a TCP connection to server port 
+		CloseableHttpClient httpClient = HttpClients.createDefault();
+		// create a method with url is passed
+		HttpGet request = new HttpGet(APIConstant.API_food_get);
+		// execute this method
 		try {
-			PreparedStatement statement = connection.prepareStatement(queryinUpdatedFood);
-			ResultSet res = statement.executeQuery();
-			while (res.next()) {
-				Food food = new Food();
-				food.setFoodID(res.getInt("foodID"));
-				food.setFoodName(res.getString("foodName"));
-				food.setFoodPrice(res.getInt("foodPrice"));
-				food.setFoodNote(res.getString("foodNote"));
-		
-				foodList.add(food);
-			}
-			statement = connection.prepareStatement(queryinFood);
-			res = statement.executeQuery();
-			while (res.next()) {
-				Food food = new Food();
-				food.setFoodID(res.getInt("foodID"));
-				food.setFoodName(res.getString("foodName"));
-				food.setFoodPrice(res.getInt("foodPrice"));
-				food.setFoodNote(res.getString("foodNote"));
-				foodList.add(food);
-			}
-			connection.close();
-			return foodList;
-		} catch (SQLException e) {
+			CloseableHttpResponse res = httpClient.execute(request);
+			// Read the response body.
+			HttpEntity entity = res.getEntity();
+			String result = EntityUtils.toString(entity);
+			return convertJSONToListFood(result);
+		} catch (ClientProtocolException e) {
 			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			// notify successful connection and release this connection for other
+			request.releaseConnection();
+			//res.close();
 		}
 		return null;
-
 	}
 	
 	public void add(Food food) {
-		String query = "INSERT INTO FOOD(foodName,foodPrice,foodNote,startingDate,endingDate) VALUES (?,?,?,?,?)";
-		Connection connection = MySqlConnection.getInstance().getConnection();
+		HttpPost req = new HttpPost(APIConstant.API_food_add);
+		List<NameValuePair> urlParamaters = new ArrayList<>();
+		// add obj include key and value 
+		urlParamaters.add(new BasicNameValuePair("foodName", food.getFoodName()));
+		urlParamaters.add(new BasicNameValuePair("foodPrice",Integer.toString(food.getFoodPrice())));
+		urlParamaters.add(new BasicNameValuePair("foodNote", food.getFoodNote()));
 		try {
-			PreparedStatement statement = connection.prepareStatement(query);
-			statement.setString(1, food.getFoodName());
-			statement.setInt(2, food.getFoodPrice());
-			statement.setString(3, food.getFoodNote());
-			statement.setString(4, food.getStartingDate());
-			statement.setString(5, food.getEndingDate());
-			statement.executeUpdate();
-			connection.close();
-		} catch (SQLException e) {
+			req.setEntity(new UrlEncodedFormEntity(urlParamaters,"UTF-8"));
+			CloseableHttpClient httpClient = HttpClients.createDefault();
+			// execute post method
+			CloseableHttpResponse res = httpClient.execute(req);
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
-		
-	}
-	public void delele(int id) {
-		Connection connection = MySqlConnection.getInstance().getConnection();
-		String queryFood = "UPDATE FOOD SET isDeleted = ? WHERE foodID = ?";
-		String queryUpdatedFood = "UPDATE UPDATEDFOOD SET isDeleted = ? WHERE foodID = ?";
-		try {
-			PreparedStatement statement = connection.prepareStatement(queryFood);
-			statement.setBoolean(1, true);
-			statement.setInt(2, id);
-			statement.executeUpdate();
-			statement = connection.prepareStatement(queryUpdatedFood);
-			statement.setBoolean(1, true);
-			statement.setInt(2, id);
-			statement.executeUpdate();
-			connection.close();
-		} catch(SQLException e) {
+		} catch (ClientProtocolException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 	
-	public Food getByIDInFood(int id) {
-		String query = "SELECT * FROM FOOD WHERE FOOD.foodID = ? AND NOT isDeleted";
-		Connection connection = MySqlConnection.getInstance().getConnection();
+	public void delele(int id) {
+		CloseableHttpClient httpClient = HttpClients.createDefault();
+		HttpDelete req = new HttpDelete(APIConstant.API_food_delete + "?id=" + id);
+		try(CloseableHttpResponse res = httpClient.execute(req)) {
+		} catch (ClientProtocolException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void update(Food food) {
+		String json = convertFoodToJSON(food);
+		HttpPut req = new HttpPut(APIConstant.API_food_update);
 		try {
-			PreparedStatement statement = connection.prepareStatement(query);
-			statement.setInt(1, id);
-			ResultSet res = statement.executeQuery();
-			Food food = new Food();
-			if (res.next()) {
-				food.setFoodID(res.getInt("foodID"));
-				food.setFoodName(res.getString("foodName"));
-				food.setFoodPrice(res.getInt("foodPrice"));
-				food.setFoodNote(res.getString("foodNote"));
-				food.setEndingDate(res.getString("endingDate"));
+			CloseableHttpClient httpClient = HttpClients.createDefault();
+			req.setEntity(new StringEntity(json, "UTF-8"));
+			CloseableHttpResponse res = httpClient.execute(req);
+			// get content res
+			HttpEntity respEntity = res.getEntity();
+			if(respEntity != null){
+				String content =  EntityUtils.toString(respEntity);
+				System.out.println(content);
 			}
-			connection.close();
-			return food;
-		} catch (SQLException e) {
+		} catch (ClientProtocolException e) {
 			e.printStackTrace();
-		}
-		return null;
-	}
-	public Food getByIDInUpdatedFood(int id) {
-		String query = "SELECT FOOD.foodID,FOOD.foodName,UPDATEDFOOD.foodPrice, FOOD.foodNote, UPDATEDFOOD.endingDate FROM FOOD,UPDATEDFOOD WHERE UPDATEDFOOD.foodID=FOOD.foodID AND UPDATEDFOOD.ENDINGDATE IS NULL AND FOOD.foodID = ? AND NOT FOOD.isDeleted";
-		Connection connection = MySqlConnection.getInstance().getConnection();
-		try {
-			PreparedStatement statement = connection.prepareStatement(query);
-			statement.setInt(1, id);
-			ResultSet res = statement.executeQuery();
-			Food food = new Food();
-			if (res.next()) {
-				food.setFoodID(res.getInt("foodID"));
-				food.setFoodName(res.getString("foodName"));
-				food.setFoodPrice(res.getInt("foodPrice"));
-				food.setFoodNote(res.getString("foodNote"));
-				food.setEndingDate(res.getString("endingDate"));
-			}
-			connection.close();
-			return food;
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-	public void updateOthersInFood(Food food) {
-		String query = "UPDATE FOOD SET foodName = ?, foodNote = ? WHERE foodID = ?";
-		Connection connection = MySqlConnection.getInstance().getConnection();
-		try {
-			PreparedStatement statement = connection.prepareStatement(query);
-			statement.setString(1, food.getFoodName());
-			statement.setString(2, food.getFoodNote());
-			statement.setInt(3, food.getFoodID());
-			statement.executeUpdate();
-			connection.close();
-		} catch (SQLException e) {
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
-	public void updateHasPriceInFood(Food food) {
-		String query = "UPDATE FOOD SET foodName = ?, foodNote = ?, endingDate = ? WHERE foodID = ?";
-		String queryInsertInUpdated = "INSERT INTO UPDATEDFOOD(foodID,foodPrice,startingDate,endingDate) VALUES (?,?,?,?)";
-		Connection connection = MySqlConnection.getInstance().getConnection();
-		try {
-			PreparedStatement statement = connection.prepareStatement(query);
-			statement.setString(1, food.getFoodName());
-			statement.setString(2, food.getFoodNote());
-			statement.setString(3, food.getStartingDate());
-			statement.setInt(4, food.getFoodID());
-			statement.executeUpdate();
-			statement = connection.prepareStatement(queryInsertInUpdated);
-			statement.setInt(1, food.getFoodID());
-			statement.setInt(2, food.getFoodPrice());
-			statement.setString(3, food.getStartingDate());
-			statement.setString(4, food.getEndingDate());
-			statement.executeUpdate();
-			
-			connection.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+	
+	public List<Food> convertJSONToListFood(String json) {
+		// declare data type is ArrayList<Food>
+		Type typeListFood = new TypeToken<ArrayList<Food>>() {}.getType();
+		// cast string json to ArrayList<Food>
+		List<Food> listFood = gson.fromJson(json,typeListFood);
+		return listFood;
 	}
-	public void updateHasPriceInUpdatedFood(Food food) {
-		updateOthersInFood(food);
-		String query = "UPDATE UPDATEDFOOD SET endingDate = ? WHERE foodID = ? AND endingDate IS NULL";
-		String queryInsertInUpdated = "INSERT INTO UPDATEDFOOD(foodID,foodPrice,startingDate,endingDate) VALUES (?,?,?,?)";
-		Connection connection = MySqlConnection.getInstance().getConnection();
-		try {
-			PreparedStatement statement = connection.prepareStatement(query);
-			statement.setString(1, food.getStartingDate());
-			statement.setInt(2, food.getFoodID());
-			statement.executeUpdate();
-			statement = connection.prepareStatement(queryInsertInUpdated);
-			statement.setInt(1, food.getFoodID());
-			statement.setInt(2, food.getFoodPrice());
-			statement.setString(3, food.getStartingDate());
-			statement.setString(4, food.getEndingDate());
-			statement.executeUpdate();
-			
-			connection.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+	
+	public String convertFoodToJSON(Food food) {
+		// cast Food to json
+		String json = gson.toJson(food);
+		return json;
 	}
 }

@@ -15,6 +15,11 @@ public class FoodServiceImpl implements FoodService {
 	}
 
 	@Override
+	public List<Food> getAllFood() {
+		return foodRepository.getAll();
+	}
+	
+	@Override
 	public void addFood(Food food) {
 		foodRepository.add(food);
 		
@@ -27,36 +32,7 @@ public class FoodServiceImpl implements FoodService {
 	}
 
 	@Override
-	public Food getFoodById(int id) {
-		Food food = foodRepository.getByIDInFood(id);
-		if(food != null) {
-			if(food.getEndingDate() != null) {
-				food = foodRepository.getByIDInUpdatedFood(id);
-				food.setFromUpdatedFood(true);
-				return food;
-			}
-			return food;
-		}
-		return null;
-	}
-
-	@Override
-	public List<Food> getAllFood() {
-		return foodRepository.getAll();
-	}
-
-	@Override
 	public void updateFood(Food foodToUpdate) {
-		Food food = getFoodById(foodToUpdate.getFoodID());
-		if(food != null) {
-			if(food.getFoodPrice() == foodToUpdate.getFoodPrice()) {
-				foodRepository.updateOthersInFood(foodToUpdate);
-			} else if(food.isFromUpdatedFood() && (food.getFoodPrice() != foodToUpdate.getFoodPrice())) {
-				foodRepository.updateHasPriceInUpdatedFood(foodToUpdate);
-			} else {
-				foodRepository.updateHasPriceInFood(foodToUpdate);
-			}
-		}
+		foodRepository.update(foodToUpdate);
 	}
-
 }

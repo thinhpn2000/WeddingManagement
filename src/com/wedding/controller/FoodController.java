@@ -75,15 +75,11 @@ public class FoodController extends HttpServlet {
 		String foodName = req.getParameter("foodName");
 		int foodPrice = Integer.parseInt(req.getParameter("foodPrice"));
 		String foodNote = req.getParameter("foodNote");
-		String startingDate = java.time.LocalDate.now().toString();
-		String endingDate = null;
 		
 		Food food = new Food();
 		food.setFoodName(foodName);
 		food.setFoodPrice(foodPrice);
 		food.setFoodNote(foodNote);
-		food.setStartingDate(startingDate);
-		food.setEndingDate(endingDate);
 		
 		switch(servletPath) {
 			case UrlConstant.URL_FODD_ADD:

@@ -7,7 +7,6 @@ import com.wedding.models.Food;
 public interface FoodService {
 	void addFood(Food food);
 	void deleteFood(int id);
-	public Food getFoodById(int id);
 	public List<Food> getAllFood();
 	void updateFood(Food food);
 }
