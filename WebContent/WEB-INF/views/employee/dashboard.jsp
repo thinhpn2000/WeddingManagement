@@ -118,7 +118,7 @@
 
 					<li><a href="<%=request.getContextPath()%>/payment"> <span
 							class="menu-tab-icon"> <i class="fab fa-cc-visa"></i>
-						</span> <span>Payment</span>
+						</span> <span>Wedding</span>
 					</a></li>
 				</ul>
 			</div>
@@ -188,7 +188,7 @@
 												<img src="<c:url value ="/assets/images/icon11.png"/>"
 													alt="">
 											</div>
-											<div class="content font-sm">Payment</div>
+											<div class="content font-sm">Wedding</div>
 										</div>
 									</a>
 								</div>

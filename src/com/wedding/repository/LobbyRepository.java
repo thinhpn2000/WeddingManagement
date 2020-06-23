@@ -3,6 +3,10 @@ package com.wedding.repository;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Type;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,6 +27,7 @@ import org.apache.http.util.EntityUtils;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.wedding.databaseconnection.MySqlConnection;
 import com.wedding.models.Lobby;
 import com.wedding.utils.APIConstant;
 
@@ -129,5 +134,24 @@ public class LobbyRepository {
 	// Convert object to JSON data.
 	public String convertLobbyToJSON(Lobby lobby) {
 		return gson.toJson(lobby);
+	}
+	
+	// Call API GET  to check which lobby is reserved
+	public List<Lobby> checkLobby(String weddingDate, int shift) {
+		CloseableHttpClient httpClient = HttpClients.createDefault();
+		HttpGet req = new HttpGet(APIConstant.API_lobby_check + "?weddingDate=" + weddingDate + "&shift=" + shift);
+		try {
+			CloseableHttpResponse res = httpClient.execute(req);
+			HttpEntity entity = res.getEntity();
+			String json = EntityUtils.toString(entity, "UTF-8");
+			return convertJSONToListLobby(json);
+		} catch (ClientProtocolException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
 	}
 }

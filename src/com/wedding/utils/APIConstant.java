@@ -26,4 +26,21 @@ public class APIConstant {
 	public static final String API_lobby_add = "http://localhost:8082/WeddingManagementBackend/lobby/add";
 	public static final String API_lobby_delete = "http://localhost:8082/WeddingManagementBackend/lobby/delete";
 	public static final String API_lobby_update = "http://localhost:8082/WeddingManagementBackend/lobby/update";
+	public static final String API_lobby_check = "http://localhost:8082/WeddingManagementBackend/lobby/check";
+	
+	// RESTFUL of API employee
+	public static final String API_employee_get = "http://localhost:8082/WeddingManagementBackend/employee";
+	public static final String API_employee_add = "http://localhost:8082/WeddingManagementBackend/employee/add";
+	public static final String API_employee_delete = "http://localhost:8082/WeddingManagementBackend/employee/delete";
+	public static final String API_employee_update = "http://localhost:8082/WeddingManagementBackend/employee/update";
+	public static final String API_employee_resetpassword = "http://localhost:8082/WeddingManagementBackend/employee/resetpassword";
+	public static final String API_employee_username = "http://localhost:8082/WeddingManagementBackend/employee/username";
+	
+	// RESTFUL of API typelobby
+	public static final String API_typelobby_get = "http://localhost:8082/WeddingManagementBackend/typelobby";
+	
+	// RESTFUL of API reservation
+	public static final String API_reservation = "http://localhost:8082/WeddingManagementBackend/reservation";
+	public static final String API_reservation_add = "http://localhost:8082/WeddingManagementBackend/reservation/add";
+	public static final String API_reservation_delete = "http://localhost:8082/WeddingManagementBackend/reservation/delete";
 }

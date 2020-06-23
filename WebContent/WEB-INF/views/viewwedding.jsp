@@ -1,11 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
-<title>Profile</title>
+<title>List wedding</title>
 <!-- Required meta tags -->
 <meta charset="utf-8">
 <meta name="viewport"
@@ -44,7 +44,8 @@
 					<div class="modal-body">Are you sure?</div>
 					<div class="modal-footer">
 						<a href="<%=request.getContextPath()%>/logout">
-							<button type="button" class="btn btn-danger btn-sm">Sign out</button>
+							<button type="button" class="btn btn-danger btn-sm">Sign
+								out</button>
 						</a>
 						<button type="button" class="btn btn-success btn-sm"
 							data-dismiss="modal">Cancel</button>
@@ -80,14 +81,14 @@
 					data-toggle="tooltip" title="Sign out!">
 					<i class="fa fa-sign-out-alt mx-4" aria-hidden="true"></i>
 				</div>
-				<div class="avatar-user" onclick="" data-toggle="tooltip" title="Your profile">
-					<img src="<c:url value="/assets/images/avatar.png"/>">
+				<div class="avatar-user" data-toggle="tooltip" title="Your profile">
+					<a href="<%=request.getContextPath()%>/profile"> <img
+						src="<c:url value="/assets/images/avatar.png"/>">
+					</a>
 				</div>
 			</div>
 
 		</div>
-
-
 		<!-- /Header -->
 
 		<!-- Navbar -->
@@ -131,8 +132,9 @@
 						</span> <span>Service</span>
 					</a></li>
 
-					<li><a href="<%=request.getContextPath()%>/payment"> <span
-							class="menu-tab-icon"> <i class="fab fa-cc-visa"></i>
+					<li><a href="<%=request.getContextPath()%>/payment"
+						class="active"> <span class="menu-tab-icon"> <i
+								class="fab fa-cc-visa"></i>
 						</span> <span>Wedding</span>
 					</a></li>
 				</ul>
@@ -140,100 +142,135 @@
 		</div>
 		<!-- //Navbar -->
 
-		<!-- always call show...Updated-->
 		<!-- Page Content -->
 		<div
 			class="body-content d-flex align-items-center justify-content-center">
-			<!-- Profile -->
-			<div id="profile" class="profile">
-				<div class="container-fluid">
+			<!-- List wedding-->
+			<div id="listWedding" class="listWedding">
+				<div class="container-fluid mt-3">
 					<div class="row">
 						<div class="col-sm"></div>
-						<div class="col-sm-8">
-							<div class="profile-content">
-								<div class="profile-title text-center">Formal profile</div>
-								<div class="profile-body">
-									<div class="profile-info text-center">
-										<div class="avatar-profile">
-											<img src="<c:url value="/assets/images/avatar.png"/>">
-										</div>
-										<div class="pt-3">
-											<button type="button" class="btn btn-primary"
-												onclick="changePassword()">Change password</button>
-										</div>
-										<div class="py-4">Đinh Ngọc Uyên Phương</div>
-										<c:choose>
-											<c:when test="${ userRole == 'ROLE_MANAGER'}">
-												<div class="pb-4">Manager</div>
-											</c:when>
-											<c:otherwise>
-												<div class="pb-4">Employee</div>
-											</c:otherwise>
-										</c:choose>
+						<div class="col-sm-10">
 
-										<div class="static-user container-fluid">
-											<div class="row">
-												<div class="col-sm text-center wedding">
-													<h5>Wedding</h5>
-													<p class="counter">350</p>
-												</div>
-												<div class="col-sm text-center revenue">
-													<h5>Revenue</h5>
-													<p class="counter">240</p>
-												</div>
-												<div class="col-sm text-center invoice">
-													<h5>Invoice</h5>
-													<p class="counter">350</p>
-												</div>
-											</div>
+							<div
+								class="title-list-wedding d-flex align-items-center justify-content-center">
+								<h2>Wedding Invoice</h2>
+							</div>
+							<div class="modal-body" id="invoice">
+								<div class="container-fluid">
+									<div class="row mb-3">
+										<div class="col-sm-6 col-lg-6">
+											<strong>Name of Groom: </strong> <span>${wedding.groom }</span>
+										</div>
+										<div class="col-sm-6 col-lg-6">
+											<strong>Name of Bride: </strong> <span>${wedding.bride }</span>
+										</div>
+										<div class="col-sm-6 col-lg-4">
+											<strong>Number of Tables: </strong> <span>${wedding.tableQuantity + wedding.reservedTable }</span>
+										</div>
+										<div class="col-sm-6 col-lg-4">
+											<strong>Price per Table: </strong> <span>${wedding.tablePrice }</span>
+										</div>
+										<div class="col-sm-6 col-lg-4">
+											<strong>Total cost of table: </strong> <span>${wedding.totalTablePrice }</span>
 										</div>
 									</div>
-									<div class="profile-password">
-										<form id="profile-password" action="<%=request.getContextPath()%>/profile" method="POST">
-											<p>Current password</p>
-											<input name="currentPassword" type="password" required>
-											<p>New password</p>
-											<input name="newPassword" type="password"
-												onblur="checkMatching()" required>
-											<p>Re-type new password</p>
-											<input type="password" id="confirmPassword"
-												onblur="checkMatching()" class="mb-3" required>
-											<div class="alert p-0">*Passwords do not match</div>
-											<div class="text-center mb-3">
-												<button type="button" class="btn" onclick="changePassword()">Cancel</button>
-												<button type="submit" class="btn" id="btnAccept">Accept</button>
-											</div>
-										</form>
+									<div class="row">
+										<div class="col-sm" style="overflow-y: scroll; height: 250px;">
+											<table class="table table-sm">
+												<thead>
+													<tr>
+														<th>No.</th>
+														<th>Name</th>
+														<th>Quantity</th>
+														<th>Price</th>
+														<th>Total Price</th>
+													</tr>
+												</thead>
+												<tbody>
+													<c:forEach var="service"
+														items="${wedding.listServicePrice }" varStatus="status">
+														<tr>
+
+															<td>${status.count }</td>
+															<td>${service.serviceName }</td>
+															<td>${service.serviceQuantity }</td>
+															<td>${service.service1Price }</td>
+															<td>${service.servicePrice }</td>
+														</tr>
+													</c:forEach>
+												<tbody>
+											</table>
+
+										</div>
+									</div>
+									<div>
+										<strong>Total service cost: </strong> <span>${wedding.totalServicePrice }</span>
+									</div>
+									<div>
+										<strong>Total wedding cost: </strong> <span>${wedding.totalWeddingPrice }</span>
+									</div>
+									<div>
+										<strong>Deposit paid: </strong> <span>${wedding.deposit }</span>
+									</div>
+									<div>
+										<strong>Balance: </strong> <span>${wedding.balance }</span>
 									</div>
 								</div>
 							</div>
+							<div class="text-right">
+							<a href="<%=request.getContextPath()%>/payment">
+								<button type="button" class="btn btn-danger btn-sm">Close</button>
+							</a>
+								<button type="button" class="btn btn-success btn-sm">Print</button>
+								<button type="button" class="btn btn-success btn-sm"
+									id="btnPay" data-toggle="modal" data-target="#payWeddingModal">Pay</button>
+							</div>
+
+
 						</div>
-						<div class="col-sm"></div>
+
+						<div class="col-sm">
+							
+						</div>
 					</div>
 				</div>
 			</div>
+			<!--Confirm Payment-->
+			<div class="modal fade" id="payWeddingModal" tabindex="-1"
+				role="dialog" aria-labelledby="" aria-hidden="true">
+				<div class="modal-dialog modal-sm modal-dialog-centered"
+					role="document">
+					<form id="deleteWedding" class="modal-content"
+						action="<%=request.getContextPath()%>/payment/pay" method="POST">
+						<div class="modal-header">
+							<h5 class="modal-title" id="">Payment</h5>
+							<button type="button" class="close" data-dismiss="modal"
+								aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+						<div class="modal-body">
+							Do you want to pay this wedding? <input type="hidden"
+								name="weddingID" value=${wedding.weddingID }>
+						</div>
+						<div class="modal-footer">
+							<button type="submit" class="btn btn-danger btn-sm">Yes</button>
+							<button type="button" class="btn btn-success btn-sm"
+								data-dismiss="modal">Cancel</button>
+						</div>
+					</form>
+				</div>
+			</div>
 		</div>
-
 		<footer class="footer text-center"> 2020 UIT &copy;
 			wedding.com </footer>
 	</div>
 
 
 	<!-- Optional JavaScript -->
-	<script src="<c:url value="/assets/js/header.js"/>">
-		
-	</script>
-	<script src="<c:url value="/assets/js/profile.js"/>"></script>
 
-	<!-- JS for counter up-->
-	<script
-		src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-	<script
-		src="https://cdnjs.cloudflare.com/ajax/libs/waypoints/2.0.5/waypoints.min.js"></script>
-	<script src="<c:url value="/assets/js/jquery.countup.min.js"/>"></script>
-	<script>
-		$('.counter').countUp();
-	</script>
+	<script src="<c:url value="/assets/js/header.js"/>"></script>
 
 	<!-- jQuery first, then Popper.js, then Bootstrap JS -->
 	<script src="<c:url value="/assets/bootstrap/jquery.slim.min.js"/>"></script>

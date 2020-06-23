@@ -35,4 +35,10 @@ public class LobbyServiceImpl implements LobbyService {
 		lobbyRepository.update(sanh);
 	}
 
+	@Override
+	public List<Lobby> checkLobby(String weddingDate, int shift) {
+		// TODO Auto-generated method stub
+		return lobbyRepository.checkLobby(weddingDate, shift);
+	}
+
 }

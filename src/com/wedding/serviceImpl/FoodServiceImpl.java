@@ -35,4 +35,12 @@ public class FoodServiceImpl implements FoodService {
 	public void updateFood(Food foodToUpdate) {
 		foodRepository.update(foodToUpdate);
 	}
+
+	@Override
+	public List<Food> removeFood(List<Food> listReservedFood) {
+		// TODO Auto-generated method stub
+		return foodRepository.removeFood(listReservedFood);
+	}
+
+	
 }

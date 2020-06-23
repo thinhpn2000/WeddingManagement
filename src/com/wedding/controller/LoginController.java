@@ -9,30 +9,41 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.wedding.service.EmployeeService;
+import com.wedding.service.RecoverPasswordService;
+import com.wedding.serviceImpl.EmployeeServiceImpl;
+import com.wedding.serviceImpl.RecoverPasswordServiceImpl;
 import com.wedding.utils.PathConstant;
 import com.wedding.utils.UrlConstant;
 
-@WebServlet({UrlConstant.URL_LOGIN, UrlConstant.URL_LOGOUT})
+@WebServlet({ UrlConstant.URL_LOGIN, UrlConstant.URL_LOGOUT, UrlConstant.URL_LOGIN_RECOVER })
 public class LoginController extends HttpServlet {
+	EmployeeService employeeService;
+	RecoverPasswordService recoverPasswordService;
+	@Override
+	public void init() throws ServletException {
+		// TODO Auto-generated method stub
+		super.init();
+		employeeService = new EmployeeServiceImpl();
+		recoverPasswordService = new RecoverPasswordServiceImpl();
+	}
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-			
+
 		String servletPath = req.getServletPath();
-		
-		if(servletPath.equals(UrlConstant.URL_LOGIN)) {
-			
+
+		if (servletPath.equals(UrlConstant.URL_LOGIN)) {
+
 			HttpSession userSession = req.getSession();
-			if(userSession.getAttribute("LOGIN_USER") != null) {
+			if (userSession.getAttribute("LOGIN_USER") != null) {
 				resp.sendRedirect(req.getContextPath() + "/dashboard");
-			} 
-			else {
+			} else {
+				req.setAttribute("alert", "");
 				req.getRequestDispatcher("/WEB-INF/views/login.jsp").forward(req, resp);
 			}
-			
-		}
-		else
-		{
+
+		} else {
 			req.getSession().invalidate();
 			resp.sendRedirect(req.getContextPath() + "/dashboard");
 		}
@@ -40,36 +51,57 @@ public class LoginController extends HttpServlet {
 
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		String username = req.getParameter("username");
-		String password = req.getParameter("password");
-		String roleUser = "";
+		String servletPath = req.getServletPath();
+		switch (servletPath) {
+			case UrlConstant.URL_LOGIN:
+				String username = req.getParameter("username");
+				String password = req.getParameter("password");
+				String roleUser = "";
+	
+				if (username.equals("admin") && password.equals("admin")) {
+	
+					HttpSession session = req.getSession();
+					session.setAttribute("LOGIN_USER", username);
+					session.setAttribute("USER_ROLE", "ROLE_MANAGER");
+					// set cookies cho user
+	
+					// set session
+					session.setMaxInactiveInterval(60 * 60);
+					resp.sendRedirect(req.getContextPath() + "/dashboard");
+				} else if (username.equals("1") && password.equals("1")) {
+					HttpSession session = req.getSession();
+					session.setAttribute("LOGIN_USER", username);
+					session.setAttribute("USER_ROLE", "ROLE_EMPLOYEE");
+					// set cookies cho user
+	
+					// set session
+					session.setMaxInactiveInterval(60 * 60);
+					resp.sendRedirect(req.getContextPath() + "/dashboard");
+				} else {
+					req.setAttribute("alert", "");
+					req.getRequestDispatcher(PathConstant.Path_VIEWS + "login.jsp").forward(req, resp);
+				}
+				break;
+			case UrlConstant.URL_LOGIN_RECOVER:
+				username = req.getParameter("username");
+				boolean isValidUsername = employeeService.checkUsername(username);
+				if(isValidUsername) {
+					System.out.println("Valid");
+					recoverPasswordService.sendEmail(username);
+					resp.sendRedirect(req.getContextPath() + "/login");
+				} else {
+					System.out.println("Invalid");
+					String alert = "Invalid username.";
+					req.setAttribute("alert", alert);
+					req.getRequestDispatcher(PathConstant.Path_VIEWS + "login.jsp").forward(req, resp);
+				}
+				break;
+			default: 
+				break;
 		
-		if(username.equals("admin") && password.equals("admin")) {
 
-			HttpSession session = req.getSession();
-			session.setAttribute("LOGIN_USER", username);
-			session.setAttribute("USER_ROLE", "ROLE_MANAGER");
-			//set cookies cho user
-			
-			//set session
-			session.setMaxInactiveInterval(60*60);
-			resp.sendRedirect(req.getContextPath() + "/dashboard");
 		}
-		else if(username.equals("1") && password.equals("1")) {
-			HttpSession session = req.getSession();
-			session.setAttribute("LOGIN_USER", username);
-			session.setAttribute("USER_ROLE", "ROLE_EMPLOYEE");
-			//set cookies cho user
-			
-			//set session
-			session.setMaxInactiveInterval(60*60);
-			resp.sendRedirect(req.getContextPath() + "/dashboard");
-		}
-		else {
-			req.getRequestDispatcher(PathConstant.Path_VIEWS + "login.jsp").forward(req, resp);
-		}
+
 	}
-	
-	
 
 }

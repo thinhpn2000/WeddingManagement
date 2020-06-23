@@ -11,45 +11,25 @@ var showInvoice = () => {
     
     
     invoices = {
-        groom: obj.getElementById('groom').value,
-        bride: obj.getElementById('bride').value,
-        date: obj.getElementById('weddingDate').value,
         tableQuantity: tableTotal,
         unitPrice: totalFood,
         totalFood: totalFood * tableTotal,
         totalService: totalServices,
         total: totalFood * tableTotal + totalServices,
-        balance: totalFood * tableTotal + totalServices,
-        reservedServices: reservedServices,
-        shift: document.querySelector('input[name="shift"]:checked').value,
-        lobbyName: reservedLobby.name,
-        reservedfood: reservedfood
+        //deposit: obj.getElementById('deposit').value,
+        balance: totalFood * tableTotal + totalServices - parseInt(obj.getElementById('deposit').innerHTML),
     }
-    
+    console.log(invoices.balance);
     var invoice = document.getElementById("modalInvoice");
     info = invoice.getElementsByTagName('span');
-    for(let i=0; i<info.length; i++)
-        info[i].innerHTML = invoices[[Object.keys(invoices)[i]]];
-    let j = 0;
-    let services = invoices.reservedServices.map((service) => {
-        j++;
-        return `<tr><td>${j}</td><td>${service.serviceName}</td><td>${service.servicePrice}</td><td>${service.quantity}</td><td>${service.servicePrice * service.quantity}</td></tr>`;
-    });
-    j = 0;
-    let foods = invoices.reservedfood.map((food) => {
-        j++;
-        return `<tr><td>${j}</td><td>${food.foodName}</td><td>${food.foodPrice}</td></tr>`;
-    });
+    for(let i = 3; i<info.length-2; i++)
+        info[i].innerHTML = invoices[[Object.keys(invoices)[i-3]]];
+    
     let date = new Date();
     document.getElementById('payment-date').innerHTML = `${date.getDate()}/${date.getMonth()+1}/${date.getFullYear()}`;
-    console.log(foods);
-    invoice.getElementsByTagName('tbody')[0].innerHTML = services.join('');
-    document.getElementById('menuInvoice').getElementsByTagName('tbody')[0].innerHTML= foods.join('');
     
 
 }
-
-
 var moveTab = (n) => {
     var btnPrev = document.getElementById("btnPrev");
     var btnNext = document.getElementById("btnNext");
@@ -60,7 +40,7 @@ var moveTab = (n) => {
     // Btn Next
     currentTab = currentTab + n;
     console.log('current tab',currentTab);
-    if(currentTab <= 3) {
+    if(currentTab <= 2) {
         //btn next
         if(n === 1) {
             showTab(currentTab);
@@ -77,15 +57,15 @@ var moveTab = (n) => {
             }
         }
         
-        if(currentTab === 3) {
+        if(currentTab === 2) {
             btnNext.children[0].className = btnNext.children[0].className.replace(" fa-angle-right"," fa-check");  
-            console.log(btnNext.children[0]);
+            
         }
         else {
             btnNext.children[0].className = btnNext.children[0].className.replace(" fa-check", " fa-angle-right")
         }
     } else {
-        currentTab = 3;
+        currentTab = 2;
         showTab(currentTab);
         btnNext.dataset.target = "#exampleModal";
         btnNext.dataset.toggle = "modal";
@@ -95,27 +75,10 @@ var moveTab = (n) => {
     }
     return true;
 }
+
 function showTab(n) {
     tab[n].style.display = "block";
-    if(currentTab !== 0) 
-        document.getElementById('filterLobby').style.display = "none";
-    else 
-        document.getElementById('filterLobby').style.display = "flex";
-    if(currentTab === 1) {
-        
-        var idLobby = 'S' + document.querySelector('input[name="lobbyID"]:checked').value;
-        console.log(idLobby);
-        reservedLobby = {
-            name: document.getElementById(idLobby).getElementsByTagName('td')[0].innerHTML,
-            tableMax: document.getElementById(idLobby).getElementsByTagName('td')[2].innerHTML,
-            costMin: document.getElementById(idLobby).getElementsByTagName('td')[3].innerHTML
-        }
-        document.querySelector('input[name="maxTable"]').value = reservedLobby.tableMax;
-        document.getElementById("costMin").innerHTML = "Minimum price per table: <i>"+reservedLobby.costMin+"</i>";
-        if(isValidateTable) {
-            validate("tableQuantity");
-        }
-    }
+    return true;
 }
 var successField = (field) => {
     if(field.classList.contains("danger"))
@@ -133,18 +96,12 @@ var unsuccessField = (field) => {
 }
 var validate = (id) => {
     var field = document.getElementById(id);
-    if(id === "weddingDate") {
-        var date = new Date();
-        var dateWedding = new Date(field.value);
-        if(date < dateWedding) {
-            return successField(field);
-        } else {
-            return unsuccessField(field);
-        }
-    } else if (id === "tableQuantity" || id === "reservedTable") {
+    if (id === "tableQuantity" || id === "reservedTable") {
         isValidateTable = true;
         let table = parseInt(document.getElementById("tableQuantity").value) + parseInt(document.getElementById("reservedTable").value);
-        if(table > reservedLobby.tableMax ||  table <= 0 || document.getElementById("tableQuantity").value == '' || document.getElementById("reservedTable").value == '') {
+        let tableMax = parseInt(document.getElementById('maxTable').value);
+        //console.log(tableMax);
+        if(table > tableMax ||  table <= 0) {
             unsuccessField(document.getElementById("reservedTable"));
             return unsuccessField(document.getElementById("tableQuantity"));
         } else {
@@ -156,16 +113,11 @@ var validate = (id) => {
     } else return successField(field);
     
 }
-var validateRadio = () => {
-    if(document.querySelector('input[name="lobbyID"]:checked') == null) {
-        document.getElementById('alert-lobby').className += " active";
-        return false;
-    }
-    document.getElementById('alert-lobby').classList.remove('active');
-    return true;
-}
+
 var validateTotal = () => {
-    if(totalFood < reservedLobby.costMin) {
+	let costMin = parseInt(document.getElementById('costMin').innerHTML);
+	
+    if(totalFood < costMin) {
         document.getElementById('alert-food').className += " active";
         return false;
     }
@@ -180,187 +132,22 @@ var confirm = () => {
             isSuccess = validate(arr[i].id) && isSuccess;
         }
     }
-    if(currentTab === 0) 
-        isSuccess = validateRadio() && isSuccess && validate('weddingDate');
-    if(currentTab === 2) 
+    if(currentTab === 1) 
         isSuccess = validateTotal() && isSuccess;
     return isSuccess;
 }
 /* Lobby */
-var lobbies = [
-    {
-        idLobby: 'S1',
-        nameLobby: 'Sảnh A',
-        typeLobby: 'A',
-        tableMax: 40,
-        costMin: 1000000,
-        note: 'A',
-        statusLobby: 1
-    },
-    {
-        idLobby: 'S2',
-        nameLobby: 'Sảnh B',
-        typeLobby: 'B',
-        tableMax: 50,
-        costMin: 1100000,
-        note: 'B',
-        statusLobby: 1
-    },
-    {
-        idLobby: 'S3',
-        nameLobby: 'Sảnh C',
-        typeLobby: 'C',
-        tableMax: 40,
-        costMin: 1200000,
-        note: '',
-        statusLobby: 1
-    },
-    {
-        idLobby: 'S4',
-        nameLobby: 'Sảnh D',
-        typeLobby: 'D',
-        tableMax: 60,
-        costMin: 1400000,
-        note: '',
-        statusLobby: 1
-    },
-    {
-        idLobby: 'S5',
-        nameLobby: 'Sảnh E',
-        typeLobby: 'E',
-        tableMax: 50,
-        costMin: 1600000,
-        note: 'E',
-        statusLobby: 1
-    },
-    {
-        idLobby: 'S6',
-        nameLobby: 'Sảnh F',
-        typeLobby: 'F',
-        tableMax: 40,
-        costMin: 1200000,
-        note: '',
-        statusLobby: 1
-    },
-    {
-        idLobby: 'S7',
-        nameLobby: 'Sảnh G',
-        typeLobby: 'G',
-        tableMax: 60,
-        costMin: 1400000,
-        note: 'G',
-        statusLobby: 1
-    },
-    {
-        idLobby: 'S8',
-        nameLobby: 'Sảnh H',
-        typeLobby: 'H',
-        tableMax: 50,
-        costMin: 1600000,
-        note: 'H',
-        statusLobby: 1
-    }
-]
-var filter = () => {
-    
-    var newLobby = lobbies.map((lobby) => {
-        if(lobby.statusLobby === 1)
-        return `<tr id='${lobby.idLobby}'><td>${lobby.nameLobby}</td><td>${lobby.typeLobby}</td><td>${lobby.tableMax}</td><td>${lobby.costMin}</td><td><div class="radio"><input type="radio" name="lobbyID" value=${lobby.idLobby}></div></td></tr>`;
-    });
-    if(newLobby.length === 0) 
-        document.getElementById('tableLobby').getElementsByTagName('tbody')[0].innerHTML = "Không tồn tại sảnh phù hợp";
-    else
-        document.getElementById('tableLobby').getElementsByTagName('tbody')[0].innerHTML = newLobby.join('');
-}
+
 
 /* Food */
 var reservedfood = [];
 
-var menu = [
-    {
-        idFood: 'MA1',
-        nameFood: 'Món A',
-        costFood: 100000,
-        note: 'Khai vị',
-        statusFood: 1,
-    },
-    {
-        idFood: 'MA2',
-        nameFood: 'Món B',
-        costFood: 200000,
-        note: ' Món chính',
-        statusFood: 1,
-    },
-    {
-        idFood: 'MA3',
-        nameFood: 'Món C',
-        costFood: 300000,
-        note: 'Món chính',
-        statusFood: 1,
-    },
-    {
-        idFood: 'MA4',
-        nameFood: 'Món D',
-        costFood: 400000,
-        note: 'Món chính',
-        statusFood: 1,
-    },
-    {
-        idFood: 'MA5',
-        nameFood: 'Món E',
-        costFood: 500000,
-        note: 'Tráng miệng',
-        statusFood: 1,
-    },
-    {
-        idFood: 'MA6',
-        nameFood: 'Món F',
-        costFood: 600000,
-        note: 'Tráng miệng',
-        statusFood: 1,
-    },
-    {
-        idFood: 'MA7',
-        nameFood: 'Món G',
-        costFood: 300000,
-        note: 'Món chính',
-        statusFood: 1,
-    },
-    {
-        idFood: 'MA8',
-        nameFood: 'Món H',
-        costFood: 400000,
-        note: 'Món chính',
-        statusFood: 1,
-    },
-    {
-        idFood: 'MA9',
-        nameFood: 'Món I',
-        costFood: 500000,
-        note: 'Tráng miệng',
-        statusFood: 1,
-    },
-    {
-        idFood: 'MA10',
-        nameFood: 'Món G',
-        costFood: 600000,
-        note: 'Tráng miệng',
-        statusFood: 1,
-    }
-]
+var totalFood = 0;
 
-var showMenu = () => { 
-    if(!isShownMenu) {
-        var newMenu = menu.map((food) => {
-            if(food.statusFood === 1)
-            return `<tr><td>${food.nameFood}</td><td>${food.note}</td><td>${food.costFood}</td><td><input type="checkbox" id='${food.idFood}menu' onclick="updateReservedFood(this,'${food.idFood}')"></td></tr>`;
-        });
-        document.getElementById('menu').getElementsByTagName('tbody')[0].innerHTML = newMenu.join('');
-        isShownMenu = true;
-    }
+var bindTotal = (tablePrice, totalServicePrice) => {
+	totalFood = tablePrice;
+	totalServices = totalServicePrice;
 }
-
-var totalFood=0;
 var updateReservedFood = (checkboxElem, id, name, price) => {
     let foods = document.getElementById('food').getElementsByTagName('tbody')[0];
     if(checkboxElem.checked) {
@@ -385,8 +172,6 @@ var updateReservedFood = (checkboxElem, id, name, price) => {
             reservedfood = reservedfood.filter(food => {
                 if(food.foodID == id) {
                 	totalFood -= food.foodPrice;
-                	console.log(id);
-                	console.log(food.foodID);
                 }
                 return food.foodID != id;
             });
@@ -398,36 +183,27 @@ var updateReservedFood = (checkboxElem, id, name, price) => {
     	food.foodID = food.foodID.replace("MA","");
         return `<tr><td>${food.foodName}</td><td class="costFood">${food.foodPrice}</td><td><input name="food" value='${food.foodID}' type="checkbox" id='MA${food.foodID}' onclick="updateReservedFood(this,'${food.foodID}','${food.foodName}','${food.foodPrice}')" checked></td></tr>`;
     });
-    
     foods.innerHTML = newReservedFood.join('');
 }
-
+var recalculateFood = (element, price) => {
+	
+	if(element.checked) {
+		totalFood += parseInt(price);
+	} else {
+		totalFood -= parseInt(price);
+	}
+	document.getElementById('totalFood').innerHTML = totalFood;
+}
 /* Service */
 var reservedServices = [];
-
-
-var validateDeposit = () => {
-	let deposit = document.getElementById('deposit');
-	if(deposit.value > invoices.total || deposit.value == ""){
-		document.getElementById('btnConfirm').disabled = true;
-		return unsuccessField(document.getElementById("deposit"));
-	}
-	else{
-		document.getElementById('btnConfirm').disabled = false;
-		document.querySelector('input[name="deposit"]').value = deposit.value;
-		document.getElementById('balance').innerHTML = invoices.total - deposit.value;
-		return successField(document.getElementById("deposit"));
-	}
-}
 var totalServices = 0;
-
+var oldQuantity = 0;
+var currentID = 0;
+var isGetQuantity = false;
 var updateQuantity = (service, id) => {
     for(let i=0; i<reservedServices.length; i++)
     {
         let quantity = parseInt(service.value);
-        console.log(quantity);
-        
-
         if(id == reservedServices[i].serviceID) {
             if(quantity <= 0) {
                 quantity = 1;
@@ -435,12 +211,40 @@ var updateQuantity = (service, id) => {
             }
             totalAllServices(reservedServices[i], quantity);
             reservedServices[i].quantity = quantity;
-            console.log(service.value);
             return;
         }
     }
 }
-
+var recalculateService = (element, price) => {
+	var inputQuantity = document.getElementById(element.id + 'quantity');
+	if(element.checked) {
+		inputQuantity.value = 1;
+		totalServices += price * inputQuantity.value;
+		inputQuantity.disabled = false;
+	} else {
+		totalServices -= price * inputQuantity.value;
+		inputQuantity.value = 1;
+		inputQuantity.disabled = true;
+	}
+	document.getElementById('totalServices').innerHTML = totalServices;
+}
+var recalculateServiceQuantity = (element, price) => {
+	if(element.value == "") 
+		element.value = 1;
+	totalServices = totalServices - price * oldQuantity + price * element.value;
+	document.getElementById('totalServices').innerHTML = totalServices;
+	currentID = 0;
+}
+var getQuantity = (element) => {
+	if(currentID == 0) {
+		currentID = element.id;
+		oldQuantity = element.value;
+	}
+	if(currentID != element.id) {
+		oldQuantity = element.value;
+		currentID = element.id;
+	}
+}
 var totalAllServices = (service, newQuantity) => {
     totalServices = totalServices - service.servicePrice * service.quantity + service.servicePrice * newQuantity;
     

@@ -19,5 +19,34 @@ public class EmployeeServiceImpl implements EmployeeService{
 		// TODO Auto-generated method stub
 		return employeeRepository.getAll();
 	}
+
+	@Override
+	public void add(Employee employee) {
+		employeeRepository.add(employee);
+		
+	}
+
+	@Override
+	public void delete(int id) {
+		employeeRepository.delete(id);
+		
+	}
+
+	@Override
+	public void update(Employee employee) {
+		employeeRepository.update(employee);
+		
+	}
+
+	@Override
+	public void reset(int id) {
+		employeeRepository.reset(id);
+		
+	}
+
+	@Override
+	public boolean checkUsername(String username) {
+		return employeeRepository.checkUsername(username);
+	}
 	
 }

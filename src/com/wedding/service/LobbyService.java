@@ -9,4 +9,5 @@ public interface LobbyService {
 	void addLobby(Lobby sanh);
 	void deleteLobby(int id);
 	void updateLobby(Lobby sanh);
+	List<Lobby> checkLobby(String weddingDate, int shift);
 }

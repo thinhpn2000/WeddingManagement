@@ -11,16 +11,18 @@
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <!-- CSS -->
-<link rel="stylesheet" href="<c:url value="/assets/font-awesome-5.13.0/css/all.min.css"/>">
+<link rel="stylesheet"
+	href="<c:url value="/assets/font-awesome-5.13.0/css/all.min.css"/>">
 <link rel="stylesheet" href="<c:url value="/assets/css/style.css"/>">
 <!-- Favicon -->
 <link rel="icon" href="<c:url value="/assets/images/logo1-dark.png"/>"
 	type="image/x-icon">
 <!-- Bootstrap CSS -->
-<link rel="stylesheet" href="<c:url value="/assets/bootstrap/css/bootstrap.min.css"/>">
+<link rel="stylesheet"
+	href="<c:url value="/assets/bootstrap/css/bootstrap.min.css"/>">
 </head>
 
-<body onload="startTime() && showDate() && searchWedding()">
+<body onload="startTime() && showDate()">
 	<div class="preloader">
 		<div class="cssload-speeding-wheel"></div>
 	</div>
@@ -42,7 +44,8 @@
 					<div class="modal-body">Are you sure?</div>
 					<div class="modal-footer">
 						<a href="<%=request.getContextPath()%>/logout">
-							<button type="button" class="btn btn-danger btn-sm">Sign out</button>
+							<button type="button" class="btn btn-danger btn-sm">Sign
+								out</button>
 						</a>
 						<button type="button" class="btn btn-success btn-sm"
 							data-dismiss="modal">Cancel</button>
@@ -79,8 +82,8 @@
 					<i class="fa fa-sign-out-alt mx-4" aria-hidden="true"></i>
 				</div>
 				<div class="avatar-user" data-toggle="tooltip" title="Your profile">
-					<a href="<%=request.getContextPath() %>/profile">
-						<img src="<c:url value="/assets/images/avatar.png"/>">
+					<a href="<%=request.getContextPath()%>/profile"> <img
+						src="<c:url value="/assets/images/avatar.png"/>">
 					</a>
 				</div>
 			</div>
@@ -132,7 +135,7 @@
 					<li><a href="<%=request.getContextPath()%>/payment"
 						class="active"> <span class="menu-tab-icon"> <i
 								class="fab fa-cc-visa"></i>
-						</span> <span>Payment</span>
+						</span> <span>Wedding</span>
 					</a></li>
 				</ul>
 			</div>
@@ -153,28 +156,6 @@
 								class="title-list-wedding d-flex align-items-center justify-content-center">
 								<h2>Wedding List</h2>
 							</div>
-							<!--Filter-->
-							<div class="container-fluid border py-2">
-								<form class="row" action="" method="">
-									<div class="col-xl-5 col-sm">
-										<div class="form-group">
-											<label for="">Name of Groom: </label> <input type="text"
-												class="form-control" name="groom" required>
-										</div>
-									</div>
-									<div class="col-xl-5 col-sm">
-										<div class="form-group">
-											<label for="">Wedding Date:</label> <input type="date"
-												class="form-control" name="date" required>
-										</div>
-									</div>
-									<div
-										class="col-xl col-sm-3 d-flex justify-content-center align-items-center">
-										<button id="btnSearchEmployee" type="submit"
-											class="btn btn-secondary" onclick="">Search</button>
-									</div>
-								</form>
-							</div>
 
 							<!--List Event-->
 							<div class="scroll">
@@ -188,121 +169,90 @@
 											<th>Wedding Date</th>
 											<th>Shift</th>
 											<th>Number of Tables</th>
+											<th>Payment Status</th>
 											<th>Action</th>
 										</tr>
 									</thead>
 									<tbody>
+										<c:forEach var="wedding" items="${weddings }"
+											varStatus="status">
+											<tr>
 
+												<td>${status.count }</td>
+												<td>${wedding.bride }</td>
+												<td>${wedding.groom }</td>
+												<td>${wedding.lobbyName }</td>
+												<td>${wedding.weddingDate }</td>
+												<td>${wedding.shiftTypeName }</td>
+												<td>${wedding.tableQuantity + wedding.reservedTable }</td>
+												<c:choose>
+													<c:when test="${ wedding.weddingStatus == 0}">
+														<td>Not Yet</td>
+													</c:when>
+													<c:otherwise>
+														<td>Paid</td>
+													</c:otherwise>
+												</c:choose>
+												<td><button type="submit"
+														class="btn btn-success btn-sm" form="getWedding"
+														onclick="getIdWedding('${wedding.weddingID}')"
+														name="action" value="view">View</button> <c:choose>
+														<c:when test="${ userRole != 'ROLE_MANAGER'}">
+															<button type="submit" class="btn btn-warning btn-sm"
+																form="getWedding"
+																onclick="getIdWedding('${wedding.weddingID}')"
+																name="action" value="edit">Edit</button>
+														</c:when>
+														<c:otherwise>
+														</c:otherwise>
+													</c:choose>
+													<button type="button" class="btn btn-danger btn-sm"
+														data-toggle="modal" data-target="#deleteWeddingModal"
+														onclick="deleteWedding('${wedding.weddingID}')">
+														Delete</button></td>
+											</tr>
+										</c:forEach>
 									</tbody>
 								</table>
 							</div>
 
 						</div>
 
-						<div class="col-sm"></div>
-					</div>
-				</div>
-			</div>
-
-			<!--invoice-->
-			<div class="modal fade" id="invoiceModal" tabindex="-1" role="dialog"
-				aria-labelledby="exampleModalLabel" aria-hidden="true">
-				<div class="modal-dialog modal-lg modal-dialog-centered"
-					role="document">
-					<div class="modal-content">
-						<div class="modal-header">
-							<h5 class="modal-title" id="">Your invoice</h5>
-							<button type="button" class="close" data-dismiss="modal"
-								aria-label="Close">
-								<span aria-hidden="true">&times;</span>
-							</button>
-						</div>
-						<div class="modal-body" id="invoice">
-							<div class="container-fluid">
-								<div class="row mb-3">
-									<div class="col-sm-6 col-lg-4">
-										<strong>Name of Groom: </strong> <span></span>
-									</div>
-									<div class="col-sm-6 col-lg-4">
-										<strong>Name of Bride: </strong> <span></span>
-									</div>
-									<div class="col-sm-6 col-lg-4" id="payDate">
-										<strong>Payment Date: </strong> <span></span>
-									</div>
-									<div class="col-sm-6 col-lg-4">
-										<strong>Number of Tables: </strong> <span></span>
-									</div>
-									<div class="col-sm-6 col-lg-4">
-										<strong>Price per Table: </strong> <span></span>
-									</div>
-									<div class="col-sm-6 col-lg-4">
-										<strong>Total cost of table: </strong> <span></span>
-									</div>
-								</div>
-								<div class="row">
-									<div class="col-sm" style="overflow-y: scroll; height: 250px;">
-										<table class="table table-sm">
-											<thead>
-												<tr>
-													<th>No.</th>
-													<th>Name</th>
-													<th>Price</th>
-													<th>Quantity</th>
-													<th>Action</th>
-												</tr>
-											</thead>
-											<tbody>
-											<tbody>
-										</table>
-
-									</div>
-								</div>
-								<div>
-									<strong>Total service cost: </strong> <span></span>
-								</div>
-								<div>
-									<strong>Total wedding cost: </strong> <span></span>
-								</div>
-								<div>
-									<strong>Deposit paid: </strong> <span></span>
-								</div>
-								<div>
-									<strong>Balance: </strong> <span></span>
-								</div>
-							</div>
-						</div>
-						<div class="modal-footer">
-							<button type="button" class="btn btn-danger btn-sm"
-								data-dismiss="modal">Close</button>
-							<button type="button" class="btn btn-success btn-sm"
-								data-dismiss="modal">Print</button>
-							<button type="button" class="btn btn-success btn-sm"
-								data-toggle="modal" id="btnPay" data-target="#paymentSuccess"
-								onclick="pay()">Pay</button>
+						<div class="col-sm">
+							<form id="getWedding"
+								action="<%=request.getContextPath()%>/payment" method="POST">
+								<input type="hidden" name="weddingID">
+							</form>
 						</div>
 					</div>
 				</div>
 			</div>
 
-			<!--Payment Success-->
-			<div class="modal fade" id="paymentSuccess" tabindex="-1"
-				role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+
+			<!--Delete Payment-->
+			<div class="modal fade" id="deleteWeddingModal" tabindex="-1"
+				role="dialog" aria-labelledby="" aria-hidden="true">
 				<div class="modal-dialog modal-sm modal-dialog-centered"
 					role="document">
-					<div class="modal-content">
+					<form id="deleteWedding" class="modal-content"
+						action="<%=request.getContextPath()%>/payment/delete" method="GET">
 						<div class="modal-header">
-							<h5 class="modal-title" id="exampleModalLabel">Your invoice</h5>
+							<h5 class="modal-title" id="">Delete Wedding</h5>
 							<button type="button" class="close" data-dismiss="modal"
 								aria-label="Close">
 								<span aria-hidden="true">&times;</span>
 							</button>
 						</div>
-						<div class="modal-body">Your payment successed</div>
-						<div class="modal-footer">
-							<button type="button" class="btn btn-success btn-sm"
-								data-dismiss="modal">Close</button>
+						<div class="modal-body">
+							Do you want to delete this wedding? <input type="hidden"
+								name="weddingID">
 						</div>
-					</div>
+						<div class="modal-footer">
+							<button type="submit" class="btn btn-danger btn-sm">Yes</button>
+							<button type="button" class="btn btn-success btn-sm"
+								data-dismiss="modal">Cancel</button>
+						</div>
+					</form>
 				</div>
 			</div>
 

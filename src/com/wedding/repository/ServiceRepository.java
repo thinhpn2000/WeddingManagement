@@ -23,7 +23,9 @@ import org.apache.http.util.EntityUtils;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.wedding.models.Food;
 import com.wedding.models.Service;
+import com.wedding.models.ServicePrice;
 import com.wedding.utils.APIConstant;
 
 public class ServiceRepository {
@@ -109,5 +111,21 @@ public class ServiceRepository {
 	public List<Service> convertJSONToListService(String json) {
 		Type typeListService = new TypeToken<ArrayList<Service>>() {}.getType();
 		return gson.fromJson(json, typeListService);
+	}
+	
+	public List<Service> removeService(List<ServicePrice> listReservedService) {
+		List<Service> listService = getAll();
+		
+		for (int i = 0; i < listService.size(); i++) 
+		{
+			for(ServicePrice reservedService : listReservedService)
+				if(listService.get(i).getServiceID() == reservedService.getServiceID()) {
+					listService.remove(i);
+					i--;
+					break;
+				}
+					
+		}
+		return listService;
 	}
 }

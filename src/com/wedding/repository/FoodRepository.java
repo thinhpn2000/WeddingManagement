@@ -43,6 +43,7 @@ public class FoodRepository {
 			// Read the response body.
 			HttpEntity entity = res.getEntity();
 			String result = EntityUtils.toString(entity);
+			//System.out.println(result);
 			return convertJSONToListFood(result);
 		} catch (ClientProtocolException e) {
 			e.printStackTrace();
@@ -128,5 +129,21 @@ public class FoodRepository {
 		// cast Food to json
 		String json = gson.toJson(food);
 		return json;
+	}
+
+	public List<Food> removeFood(List<Food> listReservedFood) {
+		List<Food> listFood = getAll();
+		
+		for (int i = 0; i < listFood.size(); i++) 
+		{
+			for(Food reservedFood : listReservedFood)
+				if(listFood.get(i).getFoodID() == reservedFood.getFoodID()) {
+					listFood.remove(i);
+					i--;
+					break;
+				}
+					
+		}
+		return listFood;
 	}
 }

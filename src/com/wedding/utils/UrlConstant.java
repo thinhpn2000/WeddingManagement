@@ -4,6 +4,7 @@ public class UrlConstant {
 	
 	// URL LOGIN/ LOGOUT
 	public static final String URL_LOGIN = "/login";
+	public static final String URL_LOGIN_RECOVER = "/login_recover";
 	public static final String URL_LOGOUT = "/logout";
 	
 	// URL LOBBY
@@ -27,18 +28,26 @@ public class UrlConstant {
 	//URL PROFILE
 	public static final String URL_PROFILE = "/profile";
 	
+	//URL PAYMENT
 	public static final String URL_PAYMENT = "/payment";
+	public static final String URL_PAYMENT_GET = "/payment/get";
+	public static final String URL_PAYMENT_UPDATE = "/payment/update";
+	public static final String URL_PAYMENT_DELETE = "/payment/delete";
+	public static final String URL_PAYMENT_PAY = "/payment/pay";
+	
 	public static final String URL_DASHBOARD = "/dashboard";
 	
+	//URL EMPLOYEE
 	public static final String URL_EMPLOYEE = "/employee";
-//	public static final String URL_MANAGER_LOBBY = "/manager/lobby";
-//	public static final String URL_MANAGER_FOOD = "/manager/food";
-//	public static final String URL_MANAGER_SERVICE = "/manager/service";
-//	public static final String URL_MANAGER_PAYMENT = "/manager/payment";
+	public static final String URL_EMPLOYEE_ADD = "/employee/add";
+	public static final String URL_EMPLOYEE_DELETE = "/employee/delete";
+	public static final String URL_EMPLOYEE_UPDATE = "/employee/update";
+	public static final String URL_EMPLOYEE_RESET = "/employee/reset";
 	
-	
-	//public static final String URL_EMPLOYEE_DASHBOARD = "/employee/dashboard";
+	//URL RESERVATION
 	public static final String URL_RESERVATION = "/reservation";
+	public static final String URL_RESERVATION_ADD = "/reservation/add";
+	public static final String URL_RESERVATION_CHECK = "/reservation/check";
 //	public static final String URL_EMPLOYEE_LOBBY = "/employee/lobby";
 //	public static final String URL_EMPLOYEE_FOOD = "/employee/food";
 //	public static final String URL_EMPLOYEE_SERVICE = "/employee/service";

@@ -1,37 +1,45 @@
 package com.wedding.repository;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.io.IOException;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.wedding.databaseconnection.MySqlConnection;
+import org.apache.http.HttpEntity;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
+
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.wedding.models.TypeLobby;
+import com.wedding.utils.APIConstant;
 
 public class TypeLobbyRepository {
+	Gson gson = new Gson();
 	public List<TypeLobby> getAll() {
-		String query = "SELECT * FROM TYPE_LOBBY WHERE isDeleted IS NOT NULL";
-		Connection connection = MySqlConnection.getInstance().getConnection();
-		List<TypeLobby> typeLobbyList = new ArrayList<TypeLobby>();
+		CloseableHttpClient httpClient = HttpClients.createDefault();
+		HttpGet req = new HttpGet(APIConstant.API_typelobby_get);
 		try {
-			PreparedStatement prep = connection.prepareStatement(query);
-			ResultSet res = prep.executeQuery();
-			while(res.next()) {
-				TypeLobby typeLobby = new TypeLobby();
-				typeLobby.setLobbyTypeID(res.getInt("lobbyTypeID"));
-				typeLobby.setLobbyTypeName(res.getString("lobbyTypeName"));
-				typeLobby.setMinPrice(res.getInt("minPrice"));
-				typeLobby.setDeleted(res.getBoolean("isDeleted"));
-				typeLobbyList.add(typeLobby);
-			}
-			connection.close();
-			return typeLobbyList;
-		} catch (SQLException e) {
+			CloseableHttpResponse res = httpClient.execute(req);
+			HttpEntity entity = res.getEntity();
+			String json = EntityUtils.toString(entity, "UTF-8");
+			return convertJSONToListTypeLobby(json);
+		} catch (ClientProtocolException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
 		return null;
+	}
+	
+	public List<TypeLobby> convertJSONToListTypeLobby(String json) {
+		Type typeList = new TypeToken <ArrayList<TypeLobby>>() {}.getType();
+		return gson.fromJson(json, typeList);
 	}
 }

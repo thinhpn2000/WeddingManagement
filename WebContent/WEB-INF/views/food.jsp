@@ -133,7 +133,7 @@
 
 					<li><a href="<%=request.getContextPath()%>/payment"> <span
 							class="menu-tab-icon"> <i class="fab fa-cc-visa"></i>
-						</span> <span>Payment</span>
+						</span> <span>Wedding</span>
 					</a></li>
 				</ul>
 			</div>

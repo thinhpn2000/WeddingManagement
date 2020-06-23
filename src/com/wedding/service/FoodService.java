@@ -8,5 +8,6 @@ public interface FoodService {
 	void addFood(Food food);
 	void deleteFood(int id);
 	public List<Food> getAllFood();
+	public List<Food> removeFood(List<Food> listReservedFood);
 	void updateFood(Food food);
 }
