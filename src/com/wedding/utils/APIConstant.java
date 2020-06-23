@@ -43,4 +43,6 @@ public class APIConstant {
 	public static final String API_reservation = "http://localhost:8082/WeddingManagementBackend/reservation";
 	public static final String API_reservation_add = "http://localhost:8082/WeddingManagementBackend/reservation/add";
 	public static final String API_reservation_delete = "http://localhost:8082/WeddingManagementBackend/reservation/delete";
+	
+	public static final String API_login = "http://localhost:8082/WeddingManagementBackend/login";
 }

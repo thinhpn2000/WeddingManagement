@@ -9,8 +9,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.mindrot.jbcrypt.BCrypt;
+
+import com.wedding.dto.UserDTO;
+import com.wedding.service.AuthenAccountService;
 import com.wedding.service.EmployeeService;
 import com.wedding.service.RecoverPasswordService;
+import com.wedding.serviceImpl.AuthenAccountServiceImpl;
 import com.wedding.serviceImpl.EmployeeServiceImpl;
 import com.wedding.serviceImpl.RecoverPasswordServiceImpl;
 import com.wedding.utils.PathConstant;
@@ -20,12 +25,14 @@ import com.wedding.utils.UrlConstant;
 public class LoginController extends HttpServlet {
 	EmployeeService employeeService;
 	RecoverPasswordService recoverPasswordService;
+	private AuthenAccountService authenAccountService;
 	@Override
 	public void init() throws ServletException {
 		// TODO Auto-generated method stub
 		super.init();
 		employeeService = new EmployeeServiceImpl();
 		recoverPasswordService = new RecoverPasswordServiceImpl();
+		authenAccountService = new AuthenAccountServiceImpl();
 	}
 
 	@Override
@@ -57,30 +64,55 @@ public class LoginController extends HttpServlet {
 				String username = req.getParameter("username");
 				String password = req.getParameter("password");
 				String roleUser = "";
-	
-				if (username.equals("admin") && password.equals("admin")) {
-	
+				
+				UserDTO user = authenAccountService.authenAccountLogin(username, password);
+				if(user == null) {
+					req.setAttribute("alert", "");
+					req.getRequestDispatcher(PathConstant.Path_VIEWS + "login.jsp").forward(req, resp);
+				}
+				else if(user != null && BCrypt.checkpw("ROLE_MANAGER", user.getAccess())) {
 					HttpSession session = req.getSession();
-					session.setAttribute("LOGIN_USER", username);
+					session.setAttribute("LOGIN_USER", user.getFullname());
 					session.setAttribute("USER_ROLE", "ROLE_MANAGER");
 					// set cookies cho user
 	
 					// set session
 					session.setMaxInactiveInterval(60 * 60);
 					resp.sendRedirect(req.getContextPath() + "/dashboard");
-				} else if (username.equals("1") && password.equals("1")) {
+				}
+				else if(user != null && BCrypt.checkpw("ROLE_EMPLOYEE", user.getAccess())) {
 					HttpSession session = req.getSession();
-					session.setAttribute("LOGIN_USER", username);
+					session.setAttribute("LOGIN_USER", user.getFullname());
 					session.setAttribute("USER_ROLE", "ROLE_EMPLOYEE");
 					// set cookies cho user
 	
 					// set session
 					session.setMaxInactiveInterval(60 * 60);
 					resp.sendRedirect(req.getContextPath() + "/dashboard");
-				} else {
-					req.setAttribute("alert", "");
-					req.getRequestDispatcher(PathConstant.Path_VIEWS + "login.jsp").forward(req, resp);
 				}
+//				if (username.equals("admin") && password.equals("admin")) {
+//	
+//					HttpSession session = req.getSession();
+//					session.setAttribute("LOGIN_USER", username);
+//					session.setAttribute("USER_ROLE", "ROLE_MANAGER");
+//					// set cookies cho user
+//	
+//					// set session
+//					session.setMaxInactiveInterval(60 * 60);
+//					resp.sendRedirect(req.getContextPath() + "/dashboard");
+//				} else if (username.equals("1") && password.equals("1")) {
+//					HttpSession session = req.getSession();
+//					session.setAttribute("LOGIN_USER", username);
+//					session.setAttribute("USER_ROLE", "ROLE_EMPLOYEE");
+//					// set cookies cho user
+//	
+//					// set session
+//					session.setMaxInactiveInterval(60 * 60);
+//					resp.sendRedirect(req.getContextPath() + "/dashboard");
+//				} else {
+//					req.setAttribute("alert", "");
+//					req.getRequestDispatcher(PathConstant.Path_VIEWS + "login.jsp").forward(req, resp);
+//				}
 				break;
 			case UrlConstant.URL_LOGIN_RECOVER:
 				username = req.getParameter("username");
