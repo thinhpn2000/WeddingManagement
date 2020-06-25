@@ -63,7 +63,7 @@ public class LoginController extends HttpServlet {
 			case UrlConstant.URL_LOGIN:
 				String username = req.getParameter("username");
 				String password = req.getParameter("password");
-				String roleUser = "";
+				
 				
 				UserDTO user = authenAccountService.authenAccountLogin(username, password);
 				if(user == null) {
@@ -72,8 +72,10 @@ public class LoginController extends HttpServlet {
 				}
 				else if(user != null && BCrypt.checkpw("ROLE_MANAGER", user.getAccess())) {
 					HttpSession session = req.getSession();
+					System.out.println(user.getUserID());
 					session.setAttribute("LOGIN_USER", user.getFullname());
 					session.setAttribute("USER_ROLE", "ROLE_MANAGER");
+					session.setAttribute("USER_ID", user.getUserID());
 					// set cookies cho user
 	
 					// set session
@@ -84,6 +86,7 @@ public class LoginController extends HttpServlet {
 					HttpSession session = req.getSession();
 					session.setAttribute("LOGIN_USER", user.getFullname());
 					session.setAttribute("USER_ROLE", "ROLE_EMPLOYEE");
+					session.setAttribute("USER_ID", user.getUserID());
 					// set cookies cho user
 	
 					// set session

@@ -9,12 +9,19 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.wedding.service.EmployeeService;
+import com.wedding.serviceImpl.EmployeeServiceImpl;
 import com.wedding.utils.PathConstant;
 import com.wedding.utils.UrlConstant;
 
 @WebServlet({UrlConstant.URL_PROFILE})
 public class ProfileController extends HttpServlet{
+	private EmployeeService employeeService;
 
+	@Override
+	public void init() throws ServletException {
+		employeeService = new EmployeeServiceImpl();
+	}
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -28,10 +35,12 @@ public class ProfileController extends HttpServlet{
 	
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		String currentPswd = req.getParameter("currentPassword");
-		String newPswd = req.getParameter("newPassword");
-		System.out.println(currentPswd);
+		HttpSession userSession = req.getSession();
+		int userID = Integer.parseInt(userSession.getAttribute("USER_ID").toString());
+		String newPswd = req.getParameter("password");
+		System.out.println(userID);
 		System.out.println(newPswd);
+		employeeService.changePassword(newPswd, userID);
 		resp.sendRedirect(req.getContextPath() + "/profile");
 	}
 }

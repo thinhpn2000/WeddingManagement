@@ -36,6 +36,9 @@ public class APIConstant {
 	public static final String API_employee_resetpassword = "http://localhost:8082/WeddingManagementBackend/employee/resetpassword";
 	public static final String API_employee_username = "http://localhost:8082/WeddingManagementBackend/employee/username";
 	
+	// RESTFUL of API change password
+	public static final String API_employee_changepassword = "http://localhost:8082/WeddingManagementBackend/updatepassword";
+	
 	// RESTFUL of API typelobby
 	public static final String API_typelobby_get = "http://localhost:8082/WeddingManagementBackend/typelobby";
 	
@@ -43,6 +46,12 @@ public class APIConstant {
 	public static final String API_reservation = "http://localhost:8082/WeddingManagementBackend/reservation";
 	public static final String API_reservation_add = "http://localhost:8082/WeddingManagementBackend/reservation/add";
 	public static final String API_reservation_delete = "http://localhost:8082/WeddingManagementBackend/reservation/delete";
+	public static final String API_reservation_update = "http://localhost:8082/WeddingManagementBackend/reservation/update";
+	public static final String API_reservation_pay = "http://localhost:8082/WeddingManagementBackend/reservation/pay";
+	
+	// RESTFUL of API total revenue
+	public static final String API_total_revenue = "http://localhost:8082/WeddingManagementBackend/totalrevenue";
+	public static final String API_month_revenue = "http://localhost:8082/WeddingManagementBackend/monthrevenue";
 	
 	public static final String API_login = "http://localhost:8082/WeddingManagementBackend/login";
 }

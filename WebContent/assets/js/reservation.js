@@ -137,8 +137,10 @@ var validate = (id) => {
         var date = new Date();
         var dateWedding = new Date(field.value);
         if(date < dateWedding) {
+        	document.getElementById('btnFilter').disabled = false;
             return successField(field);
         } else {
+        	document.getElementById('btnFilter').disabled = true;
             return unsuccessField(field);
         }
     } else if (id === "tableQuantity" || id === "reservedTable") {
@@ -182,6 +184,7 @@ var confirm = () => {
     }
     if(currentTab === 0) 
         isSuccess = validateRadio() && isSuccess && validate('weddingDate');
+
     if(currentTab === 2) 
         isSuccess = validateTotal() && isSuccess;
     return isSuccess;

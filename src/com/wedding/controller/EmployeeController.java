@@ -35,12 +35,13 @@ public class EmployeeController extends HttpServlet {
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		HttpSession userSession = req.getSession();
 		String username = userSession.getAttribute("LOGIN_USER").toString();
+		int userID = Integer.parseInt(userSession.getAttribute("USER_ID").toString());
 		req.setAttribute("username", username);
-		int userID;
+		
 		String servletPath = req.getServletPath();
 		switch (servletPath) {
 		case UrlConstant.URL_EMPLOYEE:
-			List<Employee> employees = employeeService.getAllEmployee();
+			List<Employee> employees = employeeService.getAllEmployee(userID);
 			req.setAttribute("employees", employees);
 			req.getRequestDispatcher(PathConstant.Path_VIEWS_MANAGER + "employee.jsp").forward(req, resp);
 			break;

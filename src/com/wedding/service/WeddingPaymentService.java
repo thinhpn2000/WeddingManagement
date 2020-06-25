@@ -10,5 +10,5 @@ public interface WeddingPaymentService {
 	public WeddingPayment getById(int id);
 	public void update(UpdatePayment updatePayment);
 	public void delete(int id);
-	public void pay(int id);
+	public void pay(int id, int userID);
 }

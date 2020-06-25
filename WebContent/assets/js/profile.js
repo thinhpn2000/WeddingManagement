@@ -14,7 +14,7 @@ var changePassword = () => {
 }
 var checkMatching = () => {
     let repswd = document.getElementById('confirmPassword').value;
-    let pswd = document.querySelector('input[name="newPassword"').value;
+    let pswd = document.querySelector('input[name="password"').value;
     if(repswd !== pswd && repswd !== '') {
         document.getElementsByClassName('alert')[0].style.display = 'block';
         document.getElementById('btnAccept').disabled = true;

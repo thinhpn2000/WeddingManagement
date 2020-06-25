@@ -145,4 +145,19 @@ public class EmployeeRepository {
 		}
 		return false;
 	}
+	
+	public void changePassword(String password, int userID) {
+		CloseableHttpClient httpClient = HttpClients.createDefault();
+		HttpPut req = new HttpPut(APIConstant.API_employee_changepassword + "?id=" + userID);
+		try {
+			req.setEntity(new StringEntity(password, "UTF-8"));
+			httpClient.execute(req);
+		} catch (ClientProtocolException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 }

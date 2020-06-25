@@ -161,7 +161,7 @@
 											<button type="button" class="btn btn-primary"
 												onclick="changePassword()">Change password</button>
 										</div>
-										<div class="py-4">Đinh Ngọc Uyên Phương</div>
+										<div class="py-4"><%=username%></div>
 										<c:choose>
 											<c:when test="${ userRole == 'ROLE_MANAGER'}">
 												<div class="pb-4">Manager</div>
@@ -190,10 +190,9 @@
 									</div>
 									<div class="profile-password">
 										<form id="profile-password" action="<%=request.getContextPath()%>/profile" method="POST">
-											<p>Current password</p>
-											<input name="currentPassword" type="password" required>
+											
 											<p>New password</p>
-											<input name="newPassword" type="password"
+											<input name="password" type="password"
 												onblur="checkMatching()" required>
 											<p>Re-type new password</p>
 											<input type="password" id="confirmPassword"

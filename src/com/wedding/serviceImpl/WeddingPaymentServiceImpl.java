@@ -38,8 +38,8 @@ public class WeddingPaymentServiceImpl implements WeddingPaymentService {
 	}
 
 	@Override
-	public void pay(int id) {
-		weddingPaymentRepository.pay(id);
+	public void pay(int id, int userID) {
+		weddingPaymentRepository.pay(id, userID);
 		
 	}
 

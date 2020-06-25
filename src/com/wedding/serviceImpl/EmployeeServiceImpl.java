@@ -15,9 +15,16 @@ public class EmployeeServiceImpl implements EmployeeService{
 	}
 
 	@Override
-	public List<Employee> getAllEmployee() {
+	public List<Employee> getAllEmployee(int userID) {
 		// TODO Auto-generated method stub
-		return employeeRepository.getAll();
+		List<Employee> listEmployee = employeeRepository.getAll();
+		for(Employee employee : listEmployee) {
+			if(employee.getUserID() == userID) {
+				listEmployee.remove(employee);
+				break;
+			}
+		}
+		return listEmployee;
 	}
 
 	@Override
@@ -47,6 +54,12 @@ public class EmployeeServiceImpl implements EmployeeService{
 	@Override
 	public boolean checkUsername(String username) {
 		return employeeRepository.checkUsername(username);
+	}
+
+	@Override
+	public void changePassword(String password, int userID) {
+		employeeRepository.changePassword(password, userID);
+		
 	}
 	
 }

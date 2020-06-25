@@ -180,15 +180,19 @@
 								<div class="row">
 									<div class="col-sm">
 										<div class="regEvent py-3">
-											<form id="regEvent" name="regEvent" class="" action="<%=request.getContextPath()%>/payment/update"
+											<form id="regEvent" name="regEvent" class=""
+												action="<%=request.getContextPath()%>/payment/update"
 												method="POST">
-												<input type="hidden"
-													name="weddingID" value=${wedding.weddingID }>
+												<input type="hidden" name="weddingID"
+													value=${wedding.weddingID }> <input type="hidden"
+													name="deposit"
+													value="${wedding.deposit }">
 												<!-- info bride and grooom -->
 												<div class="container-fluid tab">
 													<div class="row">
 														<div class="col-sm-1"></div>
 														<div class="col-sm">
+
 															<div class="row">
 																<div class="col-xl col-sm-6">
 																	<div class="form-group">
@@ -241,8 +245,8 @@
 																<div class="col-xl-3 col-sm-4">
 																	<div class="form-group">
 																		<label>Maximum table</label> <input type="text"
-																			class="form-control disable" 
-																			placeholder="" id="maxTable" value=${wedding.maxTable } disabled>
+																			class="form-control disable" placeholder=""
+																			id="maxTable" value=${wedding.maxTable } disabled>
 																	</div>
 																</div>
 																<div class="col-xl-3 col-sm-4">
@@ -278,7 +282,7 @@
 														<div class="col-sm-1"></div>
 														<div class="col-sm">
 															<h2 style="text-align: center;">Reserved Food</h2>
-															<div style="overflow-y: scroll; max-height: 150px;">
+															<div style="overflow-y: scroll; max-height: 140px;">
 																<!-- Reserved Food-->
 																<table id="reservedFood"
 																	class="table table-hover table-sm">
@@ -305,7 +309,7 @@
 
 															</div>
 															<h2 style="text-align: center;">New Food</h2>
-															<div style="overflow-y: scroll; max-height: 150px;">
+															<div style="overflow-y: scroll; max-height: 140px;">
 																<!-- New Food-->
 																<table id="food" class="table table-hover table-sm">
 																	<thead>
@@ -353,7 +357,7 @@
 														<div class="col-sm-1"></div>
 														<div class="col-sm">
 															<h2 style="text-align: center;">Reserved Services</h2>
-															<div style="overflow-y: scroll; max-height: 150px;">
+															<div style="overflow-y: scroll; max-height: 140px;">
 																<!-- Reserved Services-->
 																<table class="table table-sm table-hover">
 																	<thead>
@@ -389,7 +393,7 @@
 																</table>
 															</div>
 															<h2 style="text-align: center;">New Services</h2>
-															<div style="overflow-y: scroll; max-height: 150px;">
+															<div style="overflow-y: scroll; max-height: 140px;">
 																<!-- New Service-->
 																<table id="services" class="table table-sm table-hover">
 																	<thead>

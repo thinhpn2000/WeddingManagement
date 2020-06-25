@@ -11,16 +11,19 @@
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <!-- CSS -->
-<link rel="stylesheet" href="<c:url value="/assets/font-awesome-5.13.0/css/all.min.css"/>">
+<link rel="stylesheet"
+	href="<c:url value="/assets/font-awesome-5.13.0/css/all.min.css"/>">
 <link rel="stylesheet" href="<c:url value="/assets/css/style.css"/>">
 <!-- Favicon -->
 <link rel="icon" href="<c:url value="/assets/images/logo1-dark.png"/>"
 	type="image/x-icon">
 <!-- Bootstrap CSS -->
-<link rel="stylesheet" href="<c:url value="/assets/bootstrap/css/bootstrap.min.css"/>">
+<link rel="stylesheet"
+	href="<c:url value="/assets/bootstrap/css/bootstrap.min.css"/>">
 </head>
 
-<body onload="startTime() && showDate() && drawChart()">
+<body
+	onload="startTime() && showDate() && drawChart(${listRevenue}, ${year }) && showModal(${signal })">
 	<div class="preloader">
 		<div class="cssload-speeding-wheel"></div>
 	</div>
@@ -42,7 +45,8 @@
 					<div class="modal-body">Are you sure?</div>
 					<div class="modal-footer">
 						<a href="<%=request.getContextPath()%>/logout">
-							<button type="button" class="btn btn-danger btn-sm">Sign out</button>
+							<button type="button" class="btn btn-danger btn-sm">Sign
+								out</button>
 						</a>
 						<button type="button" class="btn btn-success btn-sm"
 							data-dismiss="modal">Cancel</button>
@@ -79,8 +83,8 @@
 					<i class="fa fa-sign-out-alt mx-4" aria-hidden="true"></i>
 				</div>
 				<div class="avatar-user" data-toggle="tooltip" title="Your profile">
-					<a href="<%=request.getContextPath() %>/profile">
-						<img src="<c:url value="/assets/images/avatar.png"/>">
+					<a href="<%=request.getContextPath()%>/profile"> <img
+						src="<c:url value="/assets/images/avatar.png"/>">
 					</a>
 				</div>
 			</div>
@@ -134,7 +138,8 @@
 				<div class="row">
 					<div class="col-sm">
 						<!--filter-->
-						<form class="form-group text-center" action="" method="">
+						<form class="form-group text-center"
+							action="<%=request.getContextPath()%>/totalrevenue" method="POST">
 							<select class="form-control" id="yearRevenue" name="yearRevenue">
 							</select>
 							<button class="btn btn-primary mt-2" type="submit"
@@ -218,7 +223,13 @@
 							</div>
 						</div>
 					</div>
-					<div class="col-sm"></div>
+					<div class="col-sm">
+						<form id="monthRevenue" method="POST"
+							action="<%=request.getContextPath()%>/monthrevenue">
+							<input type="hidden" name="year"> <input type="hidden"
+								name="month">
+						</form>
+					</div>
 				</div>
 			</div>
 			<!--Modal report-->
@@ -228,7 +239,9 @@
 					role="document">
 					<div class="modal-content">
 						<div class="modal-header">
-							<h5 class="modal-title" id="revenue-title"></h5>
+							<h5 class="modal-title" id="revenue-title">
+							Revenue Report  ${month }  ${year }
+							</h5>
 							<button type="button" class="close" data-dismiss="modal"
 								aria-label="Close">
 								<span aria-hidden="true">&times;</span>
@@ -249,6 +262,15 @@
 												</tr>
 											</thead>
 											<tbody>
+												<c:forEach var="day" items="${revenue }" varStatus="status">
+													<tr>
+														<td>${ status.count}</td>
+														<td>${day.date}</td>
+														<td>${day.amountWedding}</td>
+														<td>${day.revenue}</td>
+														<td>${day.proportion}</td>
+													</tr>
+												</c:forEach>
 											<tbody>
 										</table>
 

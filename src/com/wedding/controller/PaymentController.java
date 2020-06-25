@@ -83,6 +83,9 @@ public class PaymentController extends HttpServlet {
 
 		String username = userSession.getAttribute("LOGIN_USER").toString();
 		req.setAttribute("username", username);
+		
+		int userID = Integer.parseInt(userSession.getAttribute("USER_ID").toString());
+		//req.setAttribute("userID", userID);
 
 		String servletPath = req.getServletPath();
 		int weddingID = Integer.parseInt(req.getParameter("weddingID"));
@@ -133,7 +136,7 @@ public class PaymentController extends HttpServlet {
 			resp.sendRedirect(req.getContextPath() + "/payment");
 			break;
 		case UrlConstant.URL_PAYMENT_PAY:
-			weddingPaymentService.pay(weddingID);
+			weddingPaymentService.pay(weddingID, userID);
 			resp.sendRedirect(req.getContextPath() + "/payment");
 			break;
 		case UrlConstant.URL_PAYMENT:

@@ -485,22 +485,22 @@
 						<div class="modal-body" id="modalInvoice">
 							<div class="container-fluid">
 								<div class="row mb-3">
-									<div class="col-sm-6 col-lg-5">
+									<div class="col-sm-6 col-lg-6">
 										<strong>Name of Groom:</strong> <span></span>
 									</div>
-									<div class="col-sm-6 col-lg-5">
+									<div class="col-sm-6 col-lg-6">
 										<strong>Name of Bride:</strong> <span></span>
 									</div>
-									<div class="col-sm-6 col-lg-2" id="payDate">
+									<div class="col-sm-6 col-lg-6" id="payDate">
 										<strong>Wedding date:</strong> <span></span>
 									</div>
-									<div class="col-sm-6 col-lg-4">
+									<div class="col-sm-6 col-lg-6">
 										<strong>Number of tables:</strong> <span></span>
 									</div>
-									<div class="col-sm-6 col-lg-4">
+									<div class="col-sm-6 col-lg-6">
 										<strong>Price per table:</strong> <span></span>
 									</div>
-									<div class="col-sm-6 col-lg-4">
+									<div class="col-sm-6 col-lg-6">
 										<strong>Total cost of table:</strong> <span></span>
 									</div>
 								</div>
