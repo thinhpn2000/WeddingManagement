@@ -435,7 +435,7 @@ document.getElementById("dashboard-revenue-chart").onclick = function(evt) {
   case 'November':
 	  id = 11;
 	  break;
-  case 'September':
+  case 'December':
 	  id = 12;
 	  break;
 	  default: 
@@ -443,9 +443,7 @@ document.getElementById("dashboard-revenue-chart").onclick = function(evt) {
 	  break;
   }
 	  let form = document.getElementById('monthRevenue');
-	  console.log(yearRevenue);
-	  console.log(id);
-	  console.log(form.querySelector('input[name="year"]'));
+	  
 	  form.querySelector('input[name="year"]').value = yearRevenue;
 	  form.querySelector('input[name="month"]').value = id;
 	  form.submit();

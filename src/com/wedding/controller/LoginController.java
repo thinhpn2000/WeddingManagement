@@ -26,6 +26,7 @@ public class LoginController extends HttpServlet {
 	EmployeeService employeeService;
 	RecoverPasswordService recoverPasswordService;
 	private AuthenAccountService authenAccountService;
+
 	@Override
 	public void init() throws ServletException {
 		// TODO Auto-generated method stub
@@ -60,80 +61,54 @@ public class LoginController extends HttpServlet {
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		String servletPath = req.getServletPath();
 		switch (servletPath) {
-			case UrlConstant.URL_LOGIN:
-				String username = req.getParameter("username");
-				String password = req.getParameter("password");
-				
-				
-				UserDTO user = authenAccountService.authenAccountLogin(username, password);
-				if(user == null) {
-					req.setAttribute("alert", "");
-					req.getRequestDispatcher(PathConstant.Path_VIEWS + "login.jsp").forward(req, resp);
-				}
-				else if(user != null && BCrypt.checkpw("ROLE_MANAGER", user.getAccess())) {
-					HttpSession session = req.getSession();
-					System.out.println(user.getUserID());
-					session.setAttribute("LOGIN_USER", user.getFullname());
-					session.setAttribute("USER_ROLE", "ROLE_MANAGER");
-					session.setAttribute("USER_ID", user.getUserID());
-					// set cookies cho user
-	
-					// set session
-					session.setMaxInactiveInterval(60 * 60);
-					resp.sendRedirect(req.getContextPath() + "/dashboard");
-				}
-				else if(user != null && BCrypt.checkpw("ROLE_EMPLOYEE", user.getAccess())) {
-					HttpSession session = req.getSession();
-					session.setAttribute("LOGIN_USER", user.getFullname());
-					session.setAttribute("USER_ROLE", "ROLE_EMPLOYEE");
-					session.setAttribute("USER_ID", user.getUserID());
-					// set cookies cho user
-	
-					// set session
-					session.setMaxInactiveInterval(60 * 60);
-					resp.sendRedirect(req.getContextPath() + "/dashboard");
-				}
-//				if (username.equals("admin") && password.equals("admin")) {
-//	
-//					HttpSession session = req.getSession();
-//					session.setAttribute("LOGIN_USER", username);
-//					session.setAttribute("USER_ROLE", "ROLE_MANAGER");
-//					// set cookies cho user
-//	
-//					// set session
-//					session.setMaxInactiveInterval(60 * 60);
-//					resp.sendRedirect(req.getContextPath() + "/dashboard");
-//				} else if (username.equals("1") && password.equals("1")) {
-//					HttpSession session = req.getSession();
-//					session.setAttribute("LOGIN_USER", username);
-//					session.setAttribute("USER_ROLE", "ROLE_EMPLOYEE");
-//					// set cookies cho user
-//	
-//					// set session
-//					session.setMaxInactiveInterval(60 * 60);
-//					resp.sendRedirect(req.getContextPath() + "/dashboard");
-//				} else {
-//					req.setAttribute("alert", "");
-//					req.getRequestDispatcher(PathConstant.Path_VIEWS + "login.jsp").forward(req, resp);
-//				}
-				break;
-			case UrlConstant.URL_LOGIN_RECOVER:
-				username = req.getParameter("username");
-				boolean isValidUsername = employeeService.checkUsername(username);
-				if(isValidUsername) {
-					System.out.println("Valid");
-					recoverPasswordService.sendEmail(username);
-					resp.sendRedirect(req.getContextPath() + "/login");
-				} else {
-					System.out.println("Invalid");
-					String alert = "Invalid username.";
-					req.setAttribute("alert", alert);
-					req.getRequestDispatcher(PathConstant.Path_VIEWS + "login.jsp").forward(req, resp);
-				}
-				break;
-			default: 
-				break;
-		
+		case UrlConstant.URL_LOGIN:
+			String username = req.getParameter("username");
+			String password = req.getParameter("password");
+
+			UserDTO user = authenAccountService.authenAccountLogin(username, password);
+			if (user == null) {
+				req.setAttribute("alert", "");
+				req.getRequestDispatcher(PathConstant.Path_VIEWS + "login.jsp").forward(req, resp);
+			} else if (user != null && BCrypt.checkpw("ROLE_MANAGER", user.getAccess())) {
+				HttpSession session = req.getSession();
+
+				session.setAttribute("LOGIN_USER", user.getFullname());
+				session.setAttribute("USER_ROLE", "ROLE_MANAGER");
+				session.setAttribute("USER_ID", user.getUserID());
+				// set cookies cho user
+
+				// set session
+				session.setMaxInactiveInterval(60 * 60);
+				resp.sendRedirect(req.getContextPath() + "/dashboard");
+			} else if (user != null && BCrypt.checkpw("ROLE_EMPLOYEE", user.getAccess())) {
+				HttpSession session = req.getSession();
+				session.setAttribute("LOGIN_USER", user.getFullname());
+				session.setAttribute("USER_ROLE", "ROLE_EMPLOYEE");
+				session.setAttribute("USER_ID", user.getUserID());
+				// set cookies cho user
+
+				// set session
+				session.setMaxInactiveInterval(60 * 60);
+				resp.sendRedirect(req.getContextPath() + "/dashboard");
+			}
+
+			break;
+		case UrlConstant.URL_LOGIN_RECOVER:
+			username = req.getParameter("username");
+			boolean isValidUsername = employeeService.checkUsername(username);
+			if (isValidUsername) {
+				System.out.println("Valid");
+				recoverPasswordService.sendEmail(username);
+				resp.sendRedirect(req.getContextPath() + "/login");
+			} else {
+				System.out.println("Invalid");
+				String alert = "Invalid username.";
+				req.setAttribute("alert", alert);
+				req.getRequestDispatcher(PathConstant.Path_VIEWS + "login.jsp").forward(req, resp);
+			}
+			break;
+		default:
+			break;
 
 		}
 

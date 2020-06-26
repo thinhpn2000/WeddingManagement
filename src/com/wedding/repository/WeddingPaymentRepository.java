@@ -66,7 +66,6 @@ public class WeddingPaymentRepository {
 	
 	public void update(UpdatePayment updatePayment) {
 		String json = gson.toJson(updatePayment);
-		System.out.println(json);
 		HttpPut req = new HttpPut(APIConstant.API_reservation_update);
 		req.setEntity(new StringEntity(json, "UTF-8"));
 		

@@ -184,7 +184,7 @@ var confirm = () => {
     }
     if(currentTab === 0) 
         isSuccess = validateRadio() && isSuccess && validate('weddingDate');
-
+    	//isSuccess = validateRadio() && isSuccess;
     if(currentTab === 2) 
         isSuccess = validateTotal() && isSuccess;
     return isSuccess;

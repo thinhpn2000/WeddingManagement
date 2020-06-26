@@ -23,7 +23,6 @@ public class ReservationRepository {
 
 	public void add(Reservation reservation) {
 		String json = convertReservationToJSON(reservation);
-		System.out.println(json);
 		CloseableHttpClient httpClient = HttpClients.createDefault();
 		HttpPost req = new HttpPost(APIConstant.API_reservation_add);
 		req.setEntity(new StringEntity(json, "UTF-8"));

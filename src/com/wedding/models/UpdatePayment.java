@@ -9,7 +9,7 @@ public class UpdatePayment {
 	private int reservedTable;
 	private List<Integer> listFoodID;
 	private List<ServicePair> listServiceReservation;
-
+	private List<ServicePair> listOldServiceReservation;
 	public UpdatePayment() {
 		super();
 	}
@@ -60,6 +60,14 @@ public class UpdatePayment {
 
 	public void setWeddingID(int weddingID) {
 		this.weddingID = weddingID;
+	}
+
+	public List<ServicePair> getListOldServiceReservation() {
+		return listOldServiceReservation;
+	}
+
+	public void setListOldServiceReservation(List<ServicePair> listOldServiceReservation) {
+		this.listOldServiceReservation = listOldServiceReservation;
 	}
 
 }

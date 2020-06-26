@@ -38,8 +38,6 @@ public class ProfileController extends HttpServlet{
 		HttpSession userSession = req.getSession();
 		int userID = Integer.parseInt(userSession.getAttribute("USER_ID").toString());
 		String newPswd = req.getParameter("password");
-		System.out.println(userID);
-		System.out.println(newPswd);
 		employeeService.changePassword(newPswd, userID);
 		resp.sendRedirect(req.getContextPath() + "/profile");
 	}

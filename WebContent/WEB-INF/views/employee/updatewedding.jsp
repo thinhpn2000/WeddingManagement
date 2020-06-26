@@ -374,14 +374,14 @@
 																			<tr>
 																				<td>${service.serviceName}</td>
 																				<td><input id='DV${service.serviceID}quantity'
-																					type="text" min=1 name="quantity"
+																					type="text" min=1 name="quantityOld"
 																					value=${service.serviceQuantity
 																					}
 																					onclick="getQuantity(this)"
 																					onkeypress='return event.charCode >= 49 && event.charCode <= 57'
 																					onblur="recalculateServiceQuantity(this,${service.service1Price})"></td>
 																				<td>${service.service1Price}</td>
-																				<td><input type="checkbox" name="service"
+																				<td><input type="checkbox" name="serviceOld"
 																					value=${service.serviceID
 																					}
 																					id='DV${service.serviceID}'

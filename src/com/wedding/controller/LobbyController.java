@@ -70,10 +70,10 @@ public class LobbyController extends HttpServlet {
 		req.setCharacterEncoding("UTF-8");
 		String servletPath = req.getServletPath();
 		String lobbyName = req.getParameter("lobbyName").toString();
-		;
+		
 		int lobbyTypeID = Integer.parseInt(req.getParameter("lobbyTypeID"));
 		int maxTable = Integer.parseInt(req.getParameter("maxTable"));
-		;
+		
 		Lobby lobby = new Lobby();
 		lobby.setLobbyName(lobbyName);
 		lobby.setLobbyTypeID(lobbyTypeID);

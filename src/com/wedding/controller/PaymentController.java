@@ -122,6 +122,22 @@ public class PaymentController extends HttpServlet {
 					pair.setServiceQuantity(Integer.parseInt(quantity[i]));
 					listService.add(pair);
 				}
+			
+			// get list old service pair
+			List<ServicePair> listOldService = new ArrayList<ServicePair>();
+			service = req.getParameterValues("serviceOld");
+			quantity = req.getParameterValues("quantityOld");
+			if (service != null && service.length > 0)
+				// convert to array service
+				for (int i = 0; i < service.length; i++) {
+					// get service ID from serviceString [DV1] => 1
+					int serviceID = Integer.parseInt(service[i].replace("DV", ""));
+					// create service include serviceID, serviceQuantity
+					ServicePair pair = new ServicePair();
+					pair.setServiceID(serviceID);
+					pair.setServiceQuantity(Integer.parseInt(quantity[i]));
+					listOldService.add(pair);
+				}
 
 			UpdatePayment updatePayment = new UpdatePayment();
 			updatePayment.setWeddingID(weddingID);
@@ -130,7 +146,8 @@ public class PaymentController extends HttpServlet {
 			updatePayment.setTableQuantity(tableQuantity);
 			updatePayment.setListFoodID(listFoodID);
 			updatePayment.setListServiceReservation(listService);
-
+			updatePayment.setListOldServiceReservation(listOldService);
+			
 			// call API to update
 			weddingPaymentService.update(updatePayment);
 			resp.sendRedirect(req.getContextPath() + "/payment");

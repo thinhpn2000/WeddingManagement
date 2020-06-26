@@ -67,15 +67,14 @@ public class ReservationController extends HttpServlet {
 
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		HttpSession userSession = req.getSession();
+		int userID = Integer.parseInt(userSession.getAttribute("USER_ID").toString());
 		req.setCharacterEncoding("UTF-8");
 		String servletPath = req.getServletPath();
 		switch(servletPath) {
 		case UrlConstant.URL_RESERVATION_ADD:
 			String weddingDate = req.getParameter("weddingDate");
 			int shift = Integer.parseInt(req.getParameter("shift"));
-			//String weddingDate = "2020-02-02";
-			//int shift = 1;
-			int userID = 1;
 			int lobbyID = Integer.parseInt(req.getParameter("lobbyID").replace("S", ""));
 			String groom = req.getParameter("groom");
 			String bride = req.getParameter("bride");
@@ -132,7 +131,7 @@ public class ReservationController extends HttpServlet {
 			shift = Integer.parseInt(req.getParameter("shift"));
 			List<Lobby> listLobby = lobbyService.checkLobby(weddingDate, shift);
 			
-			HttpSession userSession = req.getSession();
+			userSession = req.getSession();
 
 			String username = userSession.getAttribute("LOGIN_USER").toString();
 			req.setAttribute("username", username);
@@ -151,7 +150,7 @@ public class ReservationController extends HttpServlet {
 			req.setAttribute("shift", shift);
 			req.setAttribute("lobbies", listLobby);
 			
-			System.out.println(weddingDate);
+			
 			req.getRequestDispatcher(PathConstant.Path_VIEWS_EMPLOYEE + "reservation.jsp").forward(req, resp);
 			break;
 		default:
